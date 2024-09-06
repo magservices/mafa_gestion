@@ -5,8 +5,6 @@ import { ElevePageComponent } from './core-component/Views/eleve-page/eleve-page
 import { AuthComponent } from './core-component/Views/auth/auth.component';
 import { PayementPageComponent } from './core-component/Views/payement-page/payement-page.component';
 import { RegisterEleveComponent } from './core-component/Views/register-eleve/register-eleve.component';
-import { HeaderPageComponent } from './core-component/layout/header-page/header-page.component';
-import { FooterPageComponent } from './core-component/layout/footer-page/footer-page.component';
 
 const routes: Routes = [
   {path: '', component: AuthComponent},
