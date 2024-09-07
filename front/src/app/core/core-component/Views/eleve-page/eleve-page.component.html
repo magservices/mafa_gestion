@@ -1,1 +1,66 @@
-<p>eleve-page works!</p>
+<div class="container mt-5">
+  <div class="row">
+    <!-- Section Listes des étudiants -->
+    <div class="col-md-8">
+      <h4>Listes eleves</h4>
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th scope="col">N°</th>
+          <th scope="col">Nom complet</th>
+          <th scope="col">Classe</th>
+          <th scope="col">Régulière</th>
+          <th scope="col">Paiement</th>
+          <th scope="col">Date mise à jour</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Mohamed Coulibaly</td>
+          <td>1 eme</td>
+          <td>R</td>
+          <td><span class="badge badge-primary">NORMAL</span></td>
+          <td>01 oct 2024</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Abdoulaye Cissé</td>
+          <td>1 eme</td>
+          <td>R</td>
+          <td><span class="badge badge-success">AVANCE</span></td>
+          <td>01 oct 2024</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Mariame Diallo</td>
+          <td>1 eme</td>
+          <td>R</td>
+          <td><span class="badge badge-danger">RETARD</span></td>
+          <td>01 oct 2024</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section Filtre des étudiants -->
+    <div class="col-md-4">
+      <h4>Filtre les eveles par établissements</h4>
+      <form>
+        <div class="form-group">
+          <label for="studentName">Nom étudiants</label>
+          <input type="text" class="form-control" id="studentName" placeholder="Nom étudiants">
+        </div>
+        <div class="form-group">
+          <label for="school">Établissements</label>
+          <input type="text" class="form-control" id="school" placeholder="Établissements">
+        </div>
+        <div class="form-group">
+          <label for="class">Classe</label>
+          <input type="text" class="form-control" id="class" placeholder="Classe">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+      </form>
+    </div>
+  </div>
+</div>

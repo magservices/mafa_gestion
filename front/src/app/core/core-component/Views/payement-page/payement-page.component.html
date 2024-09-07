@@ -1,1 +1,80 @@
-<p>payement-page works!</p>
+<div class="container">
+  <!-- Payment List and Form -->
+  <div class="row">
+    <div class="col-md-8">
+      <!-- Payment List Table -->
+      <div class="flex justify-between items-center p-[32px]">
+        <h5>Listes paiement</h5>
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Rechercher...">
+        </div>
+      </div>
+      <table class="table table-bordered">
+        <thead class="table-light">
+        <tr>
+          <th scope="col">N°</th>
+          <th scope="col">Nom complet</th>
+          <th scope="col">Classe</th>
+          <th scope="col">Régulière</th>
+          <th scope="col">Paiement</th>
+          <th scope="col">Date mise à jour</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mohamed Coulibaly</td>
+          <td>1 eme</td>
+          <td>R</td>
+          <td><span class="badge bg-primary">NORMAL</span></td>
+          <td>01 oct 2024</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Abdoulaye Cissé</td>
+          <td>1 eme</td>
+          <td>R</td>
+          <td><span class="badge bg-success">AVANCE</span></td>
+          <td>01 oct 2024</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Mariame Diallo</td>
+          <td>1 eme</td>
+          <td>R</td>
+          <td><span class="badge bg-danger">RETARD</span></td>
+          <td>01 oct 2024</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Payment Form -->
+    <div class="col-md-4">
+      <h5>Nouveau paiement</h5>
+      <form>
+        <div class="mb-3">
+          <label for="nomEtudiant" class="form-label">Nom étudiants</label>
+          <input type="text" class="form-control" id="nomEtudiant" placeholder="Nom complet">
+        </div>
+        <div class="mb-3">
+          <label for="etablissement" class="form-label">Etablissements</label>
+          <input type="text" class="form-control" id="etablissement" placeholder="Nom de l'établissement">
+        </div>
+        <div class="mb-3">
+          <label for="classe" class="form-label">Classe</label>
+          <input type="text" class="form-control" id="classe" placeholder="Classe">
+        </div>
+        <div class="mb-3">
+          <label for="montant" class="form-label">Montant</label>
+          <input type="text" class="form-control" id="montant" placeholder="Montant à payer">
+        </div>
+        <div class="mb-3">
+          <label for="datePaiement" class="form-label">Date de paiement</label>
+          <input type="date" class="form-control" id="datePaiement">
+        </div>
+        <button type="submit" class="btn btn-success w-100">Appliquez</button>
+      </form>
+    </div>
+  </div>
+</div>

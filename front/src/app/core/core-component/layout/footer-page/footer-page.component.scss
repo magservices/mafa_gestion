@@ -1,0 +1,12 @@
+$primary-color: #1c2b5a;
+$secondary-color: #fff;
+
+footer {
+  color: $primary-color;
+  position: relative; // Change 'absolute' to 'relative'
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 15px 0;
+}

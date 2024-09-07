@@ -17,7 +17,7 @@ function createWindow() {
   });
 
   // Charger l'application Angular en mode développement
-  win.loadURL(`http://localhost:4200`);
+  win.loadURL(`http://localhost:4200//dash/pay`);
 
   // Gérer l'événement de fermeture
   win.on('closed', () => {
