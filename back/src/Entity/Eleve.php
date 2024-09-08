@@ -46,10 +46,10 @@ class Eleve
     #[ORM\Column(length: 50)]
     private ?string $nomPere = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $prenomMere = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $nomMere = null;
 
     #[ORM\Column(length: 25)]
@@ -58,10 +58,10 @@ class Eleve
     #[ORM\Column(length: 25, nullable: true)]
     private ?string $tel2 = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $photoPath = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $photoName = null;
 
     #[ORM\OneToMany(mappedBy: 'eleve', targetEntity: Payement::class)]
