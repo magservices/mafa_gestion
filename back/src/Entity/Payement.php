@@ -15,15 +15,15 @@ class Payement
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $anneeScolaire = null;
+    #[ORM\Column(length: 25)]
+    private ?string $anneeScolaire = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $fretIncription = null;
 
     #[ORM\Column]
     private ?float $fretTotal = null;
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $fretMois = null;
 
    
@@ -48,12 +48,12 @@ class Payement
         return $this->id;
     }
 
-    public function getAnneeScolaire(): ?\DateTimeInterface
+    public function getAnneeScolaire(): ?string
     {
         return $this->anneeScolaire;
     }
 
-    public function setAnneeScolaire(\DateTimeInterface $anneeScolaire): static
+    public function setAnneeScolaire(string $anneeScolaire): static
     {
         $this->anneeScolaire = $anneeScolaire;
 
@@ -92,7 +92,7 @@ class Payement
 
     public function setFretMois(float $fretMois): static
     {
-        $this->fretTotal = $fretMois;
+        $this->fretMois = $fretMois;
 
         return $this;
     }

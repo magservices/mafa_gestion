@@ -55,7 +55,7 @@ class Mois
         return $this->payement;
     }
 
-    public function setEleve(?Payement $payement): static
+    public function setPayement(?Payement $payement): static
     {
         $this->payement = $payement;
 
