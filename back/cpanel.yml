@@ -1,0 +1,5 @@
+##### CELA NOUS PERMET DE DÉPLOYER LE SITE À PARTIR D'UN REPO GIT ET GITHUB ######
+—Deployment:
+  Tasks:
+    – export DEPLOYPATH=/home/c2285360c/public_html/app.mafa.gestion/back
+    /bin/cp index.html $DEPLOYPATH
