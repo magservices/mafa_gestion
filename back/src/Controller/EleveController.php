@@ -25,7 +25,7 @@ class EleveController extends AbstractController
     }
 
 
-    #[Route('', name: 'create_eleve', methods: ['POST'])]
+    #[Route('/create', name: 'create_student', methods: ['POST'])]
     public function createEleve(Request $request,#[Autowire('%photo_dir%')] string $photoDir): JsonResponse
     {
         $data = json_decode($request->request->get('eleveData'), true);
@@ -127,28 +127,6 @@ class EleveController extends AbstractController
         return new JsonResponse(['status' => 'Eleve deleted!'], Response::HTTP_OK);
     }
 
-   /* #[Route('/{id}/photo', name: 'get_eleve_photo', methods: ['GET'])]
-    public function getElevePhoto(int $id): Response
-    {
-        $eleve = $this->eleveRepository->find($id);
-
-        if (!$eleve || !$eleve->getPhotoPath()) {
-            return new JsonResponse(['status' => 'Photo not found!'], Response::HTTP_NOT_FOUND);
-        }
-
-        $photoPath = $this->getParameter('kernel.project_dir').'/public'.$eleve->getPhotoPath();
-        if (!file_exists($photoPath)) {
-            return new JsonResponse(['status' => 'Photo file does not exist!'], Response::HTTP_NOT_FOUND);
-        }
-
-        $fileContent = file_get_contents($photoPath);
-
-        return new Response($fileContent, Response::HTTP_OK, [
-            'Content-Type' => mime_content_type($photoPath),
-            'Content-Length' => filesize($photoPath),
-        ]);
-    }*/
-    // Get an Eleve by ID
     #[Route('/{id}', name: 'get_eleve', methods: ['GET'])]
     public function getEleve(int $id): JsonResponse
     {
@@ -180,4 +158,40 @@ class EleveController extends AbstractController
 
         return new JsonResponse($data, Response::HTTP_OK);
     }
+
+    #[Route('/', name: 'get_all_eleves', methods: ['GET'])]
+    public function getAllEleves(): JsonResponse
+    {
+        $eleves = $this->eleveRepository->findAll();
+
+        if (!$eleves) {
+            return new JsonResponse(['status' => 'No students found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = [];
+        foreach ($eleves as $eleve) {
+            $data[] = [
+                'id' => $eleve->getId(),
+                'nom' => $eleve->getNom(),
+                'prenom' => $eleve->getPrenom(),
+                'dateNaissance' => $eleve->getDateNaissance()->format('Y-m-d'),
+                'niveau' => $eleve->getNiveau(),
+                'classe' => $eleve->getClasse(),
+                'prive' => $eleve->isPrive(),
+                'transfere' => $eleve->getTransfere(),
+                'matricule' => $eleve->getMatricule(),
+                'prenomPere' => $eleve->getPrenomPere(),
+                'nomPere' => $eleve->getNomPere(),
+                'prenomMere' => $eleve->getPrenomMere(),
+                'nomMere' => $eleve->getNomMere(),
+                'tel1' => $eleve->getTel1(),
+                'tel2' => $eleve->getTel2(),
+                'photoPath' => $eleve->getPhotoPath(),
+                'photoName' => $eleve->getPhotoName(),
+            ];
+        }
+
+        return new JsonResponse($data, Response::HTTP_OK);
+    }
+
 }

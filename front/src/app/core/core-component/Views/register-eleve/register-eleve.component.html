@@ -1,113 +1,123 @@
 <div class="container">
   <div class="row justify-content-between">
-    <div class="col-md-7">
-      <h5>Ajouter un nouveau étudiant</h5>
-      <form>
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <label for="prenom" class="form-label">Prénom</label>
-            <input type="text" class="form-control" id="prenom">
+    <div class="container p-4 shadow-md rounded">
+      <div class="row justify-content-between mb-4">
+        <div class="col-md-8">
+          <div class="flex justify-between">
+            <h5>Ajouter un nouveau étudiant</h5>
+            <a href="#" class="btn btn-secondary">Retour</a>
           </div>
-          <div class="col-md-4">
-            <label for="nom" class="form-label">Nom</label>
-            <input type="text" class="form-control" id="nom"> 
-          </div>
-          <div class="col-md-4">
-            <label for="dateN" class="form-label">Date de naissance</label>
-            <input type="date" class="form-control" id="dateN">
-          </div>
+          <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="prenom" class="form-label">Prénom</label>
+                <input type="text" class="form-control" id="prenom" formControlName="prenom"
+                       placeholder="Entrez le prénom">
+              </div>
+              <div class="col-md-4">
+                <label for="nom" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Entrez le nom">
+              </div>
+              <div class="col-md-4">
+                <label for="dateN" class="form-label">Date de naissance</label>
+                <input type="date" class="form-control" id="dateN" formControlName="dateNaissance">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="prenomPere" class="form-label">Prénom du père</label>
+                <input type="text" class="form-control" id="prenomPere" formControlName="prenomPere"
+                       placeholder="Entrez le prénom du père">
+              </div>
+              <div class="col-md-4">
+                <label for="nomPere" class="form-label">Nom du père</label>
+                <input type="text" class="form-control" id="nomPere" formControlName="nomPere"
+                       placeholder="Entrez le nom du père">
+              </div>
+              <div class="col-md-4">
+                <label for="tel1" class="form-label">Numéro de téléphone</label>
+                <input type="text" class="form-control" id="tel1" formControlName="tel1"
+                       placeholder="Numéro de téléphone">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="prenomMere" class="form-label">Prénom de la mère</label>
+                <input type="text" class="form-control" id="prenomMere" formControlName="prenomMere"
+                       placeholder="Entrez le prénom de la mère">
+              </div>
+              <div class="col-md-4">
+                <label for="nomMere" class="form-label">Nom de la mère</label>
+                <input type="text" class="form-control" id="nomMere" formControlName="nomMere"
+                       placeholder="Entrez le nom de la mère">
+              </div>
+              <div class="col-md-4">
+                <label for="tel2" class="form-label">Numéro de téléphone</label>
+                <input type="text" class="form-control" id="tel2" formControlName="tel2"
+                       placeholder="Numéro de téléphone">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-2">
+                <label for="niveau" class="form-label">Niveau</label>
+                <select class="form-select" id="niveau" formControlName="niveau">
+                  <option value="cycle1">1er cycle</option>
+                  <option value="cycle2">2e cycle</option>
+                  <option value="Lycee">Lycée</option>
+                  <option value="sante">École de santé</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label for="classe" class="form-label">Classe</label>
+                <input type="text" class="form-control" id="classe" formControlName="classe"
+                       placeholder="Entrez la classe">
+              </div>
+
+              <div class="col-md-2">
+                <label for="prive" class="form-label">Privé</label>
+                <select class="form-select" id="prive" formControlName="prive">
+                  <option value="oui">Oui</option>
+                  <option value="non">Non</option>
+                </select>
+              </div>
+
+              <div class="col-md-2">
+                <label for="transfere" class="form-label">Transfère</label>
+                <select class="form-select" id="transfere" formControlName="transfere">
+                  <option value="non">Non</option>
+                  <option value="oui">Oui</option>
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <label for="matricule" class="form-label">Matricule</label>
+                <input type="text" class="form-control" id="matricule" formControlName="matricule"
+                       placeholder="Entrez le matricule">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </form>
         </div>
 
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <label for="prenomPere" class="form-label">Prenom du père</label>
-            <input type="text" class="form-control" id="nomPere">
-          </div>
-          <div class="col-md-4">
-            <label for="nomPere" class="form-label">Nom du père</label>
-            <input type="text" class="form-control" id="tel1">
-          </div>
-          <div class="col-md-4">
-            <label for="tel1" class="form-label">Numero de telephone</label>
-            <input type="text" class="form-control" id="nomMere">
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <label for="prenomMere" class="form-label">Prenom de la mère</label>
-            <input type="text" class="form-control" id="nomPere">
-          </div>
-          <div class="col-md-4">
-            <label for="nomMere" class="form-label">Nom de la mère</label>
-            <input type="text" class="form-control" id="nomMere">
-          </div>
-          <div class="col-md-4">
-            <label for="tel2" class="form-label">Numero de telephone</label>
-            <input type="text" class="form-control" id="tel2">
+        <div class="col-md-4 d-flex justify-content-center align-items-center">
+          <div class="flex items-center justify-center w-full">
+            <label for="photo"
+                   class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer">
+              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <p class="mb-2 text-sm text-gray-500">Image d'élève</p>
+                <p class="text-xs text-gray-500">SVG, PNG, JPG ou GIF (MAX. 800x400px)</p>
+              </div>
+              <input id="photo" type="file" (change)="onFileChange($event)" class="hidden">
+            </label>
+            <!-- Image preview -->
+            <img *ngIf="previewUrl" [src]="previewUrl" alt="Aperçu de l'image" class="img-thumbnail" width="200"
+                 height="200">
           </div>
         </div>
-
-        
-        <div class="row mb-3">
-          <div class="col-md-2">
-            <label for="status" class="form-label">Niveau</label>
-            <select class="form-select" id="status">
-              <option value="cycle1">1er cycle</option>
-              <option value="cycle2">2eme cycle</option>
-              <option value="Lycee">Lycée</option>
-              <option value="sante">Ecole de santé</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label for="classe" class="form-label">Classe</label>
-            <input type="text" class="form-control" id="matricule">
-          </div>
-
-        
-          <div class="col-md-2">
-            <label for="prive" class="form-label">Privé</label>
-            <select class="form-select" id="prive">
-              <option value="oui">Oui</option>
-              <option value="non">Non</option>
-            </select>
-          </div>
-        
-          <div class="col-md-2">
-            <label for="transfere" class="form-label">Transfère</label>
-            <select class="form-select" id="transfere">
-              <option value="non">Non</option>
-              <option value="oui">Oui</option>
-            </select>
-          </div>
-        
-          <div class="col-md-3">
-            <label for="matricule" class="form-label">Matricule</label>
-            <input type="text" class="form-control" id="matricule">
-          </div>
-        </div>
-        
-
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
-      </form>
-    </div>
-    <div class="col-md-5 d-flex justify-content-center align-items-center">
-
-      <div class="flex items-center justify-center w-full">
-        <label for="dropzone-file"
-               class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-          <div class="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-            </svg>
-            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Image d'eleves</span>
-            </p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-          </div>
-          <input id="dropzone-file" type="file" class="hidden"/>
-        </label>
       </div>
     </div>
   </div>
