@@ -1,114 +1,118 @@
 <div class="container">
+  <!-- Statistiques en haut -->
   <div class="row text-center mb-4">
-    <div class="col-md-3">
-      <h5>Nombre étudiants</h5>
-      <p class="display-6">2 000</p>
+    <div class="col-md-3 mb-3">
+      <div class="p-4 bg-light rounded shadow-sm">
+        <h5>Nombre d'étudiants</h5>
+        <p class="text-xl fw-bold text-primary">2 000</p>
+      </div>
     </div>
-    <div class="col-md-3">
-      <h5>Nombre de transfert</h5>
-      <p class="display-6">400</p>
+    <div class="col-md-3 mb-3">
+      <div class="p-4 bg-light rounded shadow-sm">
+        <h5>Nombre de transferts</h5>
+        <p class="text-xl fw-bold text-success">400</p>
+      </div>
     </div>
-    <div class="col-md-3">
-      <h5>Revenus total</h5>
-      <p class="display-6">10 000 000</p>
+    <div class="col-md-3 mb-3">
+      <div class="p-4 bg-light rounded shadow-sm">
+        <h5>Revenus totaux</h5>
+        <p class="text-xl fw-bold text-info">10 000 000 FCFA</p>
+      </div>
     </div>
-    <div class="col-md-3">
-      <h5>Dette</h5>
-      <p class="display-6">100 000</p>
+    <div class="col-md-3 mb-3">
+      <div class="p-4 bg-light rounded shadow-sm">
+        <h5>Dette</h5>
+        <p class="text-xl fw-bold text-danger">100 000 FCFA</p>
+      </div>
     </div>
   </div>
 
+  <!-- Tableau aperçu des étudiants -->
   <div class="row">
-    <div class="col-md-8">
-      <h4>Aperçu des étudiants</h4>
-      <table class="table table-bordered">
-        <thead>
-        <tr>
-          <th scope="col">N°</th>
-          <th scope="col">Nom complet</th>
-          <th scope="col">Classe</th>
-          <th scope="col">Régulière</th>
-          <th scope="col">Paiement</th>
-          <th scope="col">Date mise à jour</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mohamed Coulibaly</td>
-          <td>1 eme</td>
-          <td>R</td>
-          <td><span class="badge bg-primary">NORMAL</span></td>
-          <td>01 oct 2024</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Abdoulaye Cissé</td>
-          <td>1 eme</td>
-          <td>R</td>
-          <td><span class="badge bg-success">AVANCE</span></td>
-          <td>01 oct 2024</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Mariame Diallo</td>
-          <td>1 eme</td>
-          <td>R</td>
-          <td><span class="badge bg-danger">RETARD</span></td>
-          <td>01 oct 2024</td>
-        </tr>
-        </tbody>
-      </table>
+    <div class="col-md-8 mb-4">
+      <h4 class="mb-3">Aperçu des étudiants</h4>
+      <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover table-bordered">
+          <thead class="table-light">
+          <tr>
+            <th scope="col">N°</th>
+            <th scope="col">Nom complet</th>
+            <th scope="col">Classe</th>
+            <th scope="col">Régulière</th>
+            <th scope="col">Paiement</th>
+            <th scope="col">Date mise à jour</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>1</td>
+            <td>Mohamed Coulibaly</td>
+            <td>1ère</td>
+            <td>R</td>
+            <td><span class="badge bg-primary">NORMAL</span></td>
+            <td>01 oct 2024</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Abdoulaye Cissé</td>
+            <td>1ère</td>
+            <td>R</td>
+            <td><span class="badge bg-success">AVANCE</span></td>
+            <td>01 oct 2024</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Mariame Diallo</td>
+            <td>1ère</td>
+            <td>R</td>
+            <td><span class="badge bg-danger">RETARD</span></td>
+            <td>01 oct 2024</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+
+    <!-- Notifications -->
     <div class="col-md-4">
-      <h4>Notifications</h4>
-      <div class="p-3 border rounded">
+      <h4 class="mb-3">Notifications</h4>
+      <div class="p-3 border rounded shadow-sm bg-light">
         <p><strong>Nouvelle inscription</strong> : Moussa Camara</p>
         <p><strong>Paiement</strong> : Mariame Diallo</p>
       </div>
     </div>
   </div>
+
+  <!-- Tableau aperçu des paiements -->
   <div class="row">
     <div class="col-md-12">
-      <h4>Aperçu des paiement</h4>
-      <table class="table table-bordered">
-        <thead>
-        <tr>
-          <th scope="col">N°</th>
-          <th scope="col">Nom complet</th>
-          <th scope="col">Classe</th>
-          <th scope="col">Régulière</th>
-          <th scope="col">Paiement</th>
-          <th scope="col">Date mise à jour</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mohamed Coulibaly</td>
-          <td>1 eme</td>
-          <td>R</td>
-          <td><span class="badge bg-primary">NORMAL</span></td>
-          <td>01 oct 2024</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Abdoulaye Cissé</td>
-          <td>1 eme</td>
-          <td>R</td>
-          <td><span class="badge bg-success">AVANCE</span></td>
-          <td>01 oct 2024</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Mariame Diallo</td>
-          <td>1 eme</td>
-          <td>R</td>
-          <td><span class="badge bg-danger">RETARD</span></td>
-          <td>01 oct 2024</td>
-        </tr>
-        </tbody>
-      </table>
+      <h4 class="mb-3">Aperçu des paiements</h4>
+      <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover table-bordered">
+          <thead class="table-light">
+          <tr>
+            <th scope="col">N°</th>
+            <th scope="col">Nom complet</th>
+            <th scope="col">Classe</th>
+            <th scope="col">Mois de paiement</th>
+            <th scope="col">Statut du paiement</th>
+            <th scope="col">Montant payé</th>
+            <th scope="col">Date de paiement</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>1</td>
+            <td>Mohamed Coulibaly</td>
+            <td>12ème</td>
+            <td>Octobre</td>
+            <td><span class="badge bg-primary">NORMAL</span></td>
+            <td>15 000 FCFA</td>
+            <td>01 octobre 2024</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
