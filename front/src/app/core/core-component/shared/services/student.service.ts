@@ -20,6 +20,14 @@ export class StudentService {
       // Add any custom headers here if needed
     });
 
-    return this.http.post<Eleve>(`${environment.apiUrl}/eleve`, formData, {headers});
+    return this.http.post<Eleve>(`${environment.apiUrl}/eleve/create`, formData, {headers});
+  }
+
+  getAllStudent(): Observable<Eleve[]> {
+    return this.http.get<Eleve[]>(`${environment.apiUrl}/eleve`);
+  }
+
+  getStudentByID(id: number): Observable<Eleve> {
+    return this.http.get<Eleve>(`${environment.apiUrl}/eleve/${id}`);
   }
 }

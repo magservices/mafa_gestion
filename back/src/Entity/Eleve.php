@@ -64,7 +64,7 @@ class Eleve
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photoName = null;
 
-    #[ORM\OneToMany(mappedBy: 'eleve', targetEntity: Payement::class)]
+    #[ORM\OneToMany(targetEntity: Payement::class, mappedBy: 'eleve')]
     private Collection $paiements;
 
     public function __construct()

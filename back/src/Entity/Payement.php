@@ -35,7 +35,7 @@ class Payement
     #[ORM\JoinColumn(nullable: false)]
     private ?Eleve $eleve = null;
 
-    #[ORM\OneToMany(mappedBy: 'payement', targetEntity: Mois::class)]
+    #[ORM\OneToMany(targetEntity: Mois::class, mappedBy: 'payement')]
     private Collection $mois;
 
     public function __construct()

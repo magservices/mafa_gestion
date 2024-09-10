@@ -1,10 +1,11 @@
 <div class="container mt-5">
   <div class="row">
     <!-- Section Listes des étudiants -->
-    <div class="col-md-8">
+    <div class="col-md-9">
       <div class="flex items-center justify-between py-4 px-6 bg-gray-100 rounded-md shadow-md">
         <h4 class="text-xl font-semibold text-gray-800">Liste des élèves</h4>
-        <a routerLink="/dash/register-student" class="text-sm bg-blue-500  text-decoration-none hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+        <a routerLink="/dash/register-student"
+           class="text-sm bg-blue-500  text-decoration-none hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
           Ajouter un élève
         </a>
       </div>
@@ -12,32 +13,52 @@
         <thead>
         <tr>
           <th scope="col">N°</th>
+          <th scope="col">Photo</th> <!-- Nouvelle colonne pour la photo -->
           <th scope="col">Nom complet</th>
           <th scope="col">Classe</th>
           <th scope="col">Parents</th>
-          <th scope="col">Paiement</th>
+          <th scope="col">Telephone</th>
           <th scope="col">Date</th>
-          <th scope="col">voir</th>
+          <th scope="col">Voir</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mohamed Coulibaly</td>
-          <td>1 eme</td>
-          <td>+223 00 00 00 00</td>
-          <td><span class="badge badge-primary">NORMAL</span></td>
-          <td>01 oct 2024</td>
-          <td class="text-red-400">
-            <a href="#"><i class="fas fa-eye text-red-400"></i></a>
-          </td>
-        </tr>
+          @if (students && students.length !== 0) {
+            @for (student of students; track student; let i = $index) {
+              <tr>
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                  <!-- Affichage de la photo -->
+                  @if (student.photoPath != undefined) {
+                    <img
+                      ngSrc="{{ student.photoPath }}"
+                      alt="{{ student.photoName }}" class="img-thumbnail" width="50" height="50">
+                  } @else {
+                    <img
+                      src="images/no-profile.png"
+                      alt="no-profile.png" class="img-thumbnail" width="50" height="50">
+                  }
+                </td>
+                <td>{{ student.prenom +' '+ student.nom  }}</td>
+                <td>{{ student.classe }}</td>
+                <td>{{ student.prenomPere +' '+ student.nomPere  }}</td>
+                <td>{{ student.tel1 }}</td>
+                <td>01 oct 2024</td>
+                <td class="text-red-400">
+                  <a routerLink="/dash/detail-student/{{student.id}}" ><i class="fas fa-eye text-red-400"></i></a>
+                </td>
+              </tr>
+            }
+          } @else {
+            slmqlmqsl
+          }
         </tbody>
       </table>
+
     </div>
 
     <!-- Section Filtre des étudiants -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <h4>Filtre les eveles par établissements</h4>
       <form>
         <div class="form-group">

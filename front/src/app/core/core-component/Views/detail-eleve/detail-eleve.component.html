@@ -1,26 +1,49 @@
-<div class="container">
-  <div class="row student-details ">
-    <div class="col-md-8">
-      <h5>Détails étudiants</h5>
-      <div class="d-flex">
-        <img src="https://www.gala.fr/imgre/fit/~1~gal~2021~02~25~2aacfea7-fbb5-4293-8f66-d5eb4b676b9c.jpeg/1200x600/crop-from/top/fathia-youssouf.jpg" alt="photo étudiant" class="img-student me-3">
-        <div>
-          <p><strong>Nom complet :</strong> Fathia Youssouf Siby</p>
-          <p><strong>Date de naissance :</strong> 01 juin XXXX</p>
-          <p><strong>Fils de :</strong> Youssouf Siby</p>
-          <p><strong>et de :</strong> Anta Kebe</p>
-          <p><strong>Téléphone :</strong> +223 00 00 00 00</p>
+<div class="container" [@fadeInOut]>
+  <!-- Bouton retour -->
+  <div class="mb-4">
+    <a href="/dash/student" class="btn btn-secondary">Retour</a>
+  </div>
+  @if (student) {
+    <div class="row student-details">
+      <div class="col-md-8">
+        <h5>Détails Eleves</h5>
+        <div class="d-flex">
+          @if (student.photoPath != undefined) {
+            <img src="{{ student.photoPath }}" height="250" width="250"
+                 alt="{{ student.photoName }}" class="img-student me-3">
+          } @else {
+            <img src="images/no-profile.png" height="250" width="250"
+                 alt="photo étudiant" class="img-student me-3">
+
+          }
+          <div>
+            <p><strong>Nom complet :</strong> {{ student.prenom + ' ' + student.nom }}</p>
+            <p><strong>Date de naissance :</strong> {{ student.dateNaissance | date }}</p>
+            <p><strong>Fils de :</strong> {{ student.prenomPere + ' ' + student.nomPere }}</p>
+            <p><strong>et de :</strong> {{ student.prenomMere + ' ' + student.prenomMere }}</p>
+            <p><strong>Téléphone 1:</strong> {{ student.tel1 }}</p>
+            @if (student.tel2 != null) {
+              <p><strong>Téléphone 2:</strong> {{ student.tel2 }}</p>
+            }
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Payment Status -->
-    <div class="col-md-4">
-      <h5>Status paiement : <span class="text-success">à jours</span></h5>
-      <p><strong>Etablissement :</strong> MAFA</p>
-      <p><strong>CLASSE :</strong> 1 eme</p>
-      <p><strong>Statut étudiant :</strong> CL</p>
-      <p><strong>Numéro de transfert :</strong> null</p>
+      <!-- Payment Status -->
+      <div class="col-md-4">
+        <h5>Status paiement : <span class="text-success">à jours</span></h5>
+        <p><strong>Etablissement :</strong> MAFA</p>
+        <p><strong>Niveau :</strong> {{ student.niveau }}</p>
+        <p><strong>CLASSE :</strong> {{ student.classe }}</p>
+        @if (student.prive) {
+          <p><strong>Statut eleve :</strong> Privée</p>
+        } @else {
+          <p><strong>Statut eleve :</strong> Public</p>
+        }
+        @if (student.matricule != null) {
+          <p><strong>Numéro de transfert :</strong> {{ student.matricule }}</p>
+        }
+      </div>
     </div>
-  </div>
+  }
 </div>

@@ -17,7 +17,7 @@ class EleveController extends AbstractController
 {
     private $entityManager;
     private $eleveRepository;
-    
+
     public function __construct(EntityManagerInterface $entityManager, EleveRepository $eleveRepository)
     {
         $this->entityManager = $entityManager;
@@ -26,10 +26,10 @@ class EleveController extends AbstractController
 
 
     #[Route('/create', name: 'create_student', methods: ['POST'])]
-    public function createEleve(Request $request,#[Autowire('%photo_dir%')] string $photoDir): JsonResponse
+    public function createEleve(Request $request, #[Autowire('%photo_dir%')] string $photoDir): JsonResponse
     {
         $data = json_decode($request->request->get('eleveData'), true);
-        
+
         $eleve = new Eleve();
         $eleve->setNom($data['nom']);
         $eleve->setPrenom($data['prenom']);
@@ -37,20 +37,22 @@ class EleveController extends AbstractController
         $eleve->setNiveau($data['niveau']);
         $eleve->setClasse($data['classe']);
         $eleve->setPrive($data['prive']);
-       /* $eleve->setTransfere($data['transfere']);
+        /*$eleve->setTransfere($data['transfere']);
         $eleve->setMatricule($data['matricule']);*/
         $eleve->setPrenomPere($data['prenomPere']);
         $eleve->setNomPere($data['nomPere']);
         /*$eleve->setPrenomMere($data['prenomMere']);
         $eleve->setNomMere($data['nomMere']);*/
         $eleve->setTel1($data['tel1']);
-      //  $eleve->setTel2($data['tel2']);
+        //$eleve->setTel2($data['tel2']);
 
         $file = $request->files->get('photo');
-        if ($file){
-            $photoName = uniqid().'.'.$file->guessExtension();
+        if ($file) {
+            $photoName = uniqid() . '.' . $file->guessExtension();
             $file->move($photoDir, $photoName);
-            $eleve->setPhotoPath($photoDir.$photoName);
+
+            // Stocker seulement le nom du fichier pour accéder via URL
+            $eleve->setPhotoPath('https://mafa.magservices-mali.org/public/uploads/' . $photoName);
             $eleve->setPhotoName($photoName);
         }
 
@@ -59,6 +61,7 @@ class EleveController extends AbstractController
 
         return new JsonResponse(['status' => 'Eleve created!'], Response::HTTP_CREATED);
     }
+
 
     // Update an existing Eleve
     #[Route('/{id}', name: 'update_eleve', methods: ['POST'])]
@@ -78,28 +81,28 @@ class EleveController extends AbstractController
         $eleve->setNiveau($data['niveau'] ?? $eleve->getNiveau());
         $eleve->setClasse($data['classe'] ?? $eleve->getClasse());
         $eleve->setPrive($data['prive'] ?? $eleve->isPrive());
-       /* $eleve->setTransfere($data['transfere'] ?? $eleve->getTransfere());
-        $eleve->setMatricule($data['matricule'] ?? $eleve->getMatricule());*/
+        /* $eleve->setTransfere($data['transfere'] ?? $eleve->getTransfere());
+         $eleve->setMatricule($data['matricule'] ?? $eleve->getMatricule());*/
         $eleve->setPrenomPere($data['prenomPere'] ?? $eleve->getPrenomPere());
         $eleve->setNomPere($data['nomPere'] ?? $eleve->getNomPere());
-       /* $eleve->setPrenomMere($data['prenomMere'] ?? $eleve->getPrenomMere());
-        $eleve->setNomMere($data['nomMere'] ?? $eleve->getNomMere());*/
+        /* $eleve->setPrenomMere($data['prenomMere'] ?? $eleve->getPrenomMere());
+         $eleve->setNomMere($data['nomMere'] ?? $eleve->getNomMere());*/
         $eleve->setTel1($data['tel1'] ?? $eleve->getTel1());
-       // $eleve->setTel2($data['tel2'] ?? $eleve->getTel2());
+        // $eleve->setTel2($data['tel2'] ?? $eleve->getTel2());
 
-      
+
         $file = $request->files->get('photo');
         if($file){
             if ($eleve->getPhotoPath()) {
                 unlink($eleve->getPhotoPath());
             }
-            
+
             $photoName = uniqid().'.'.$file->guessExtension();
             $file->move($photoDir, $photoName);
             $eleve->setPhotoPath($photoDir.$photoName);
             $eleve->setPhotoName($photoName);
         }
-            
+
         $this->entityManager->persist($eleve);
         $this->entityManager->flush();
 
@@ -162,7 +165,8 @@ class EleveController extends AbstractController
     #[Route('/', name: 'get_all_eleves', methods: ['GET'])]
     public function getAllEleves(): JsonResponse
     {
-        $eleves = $this->eleveRepository->findAll();
+        // Récupérer tous les élèves triés par ID de manière décroissante
+        $eleves = $this->eleveRepository->findBy([], ['id' => 'DESC']);
 
         if (!$eleves) {
             return new JsonResponse(['status' => 'No students found!'], Response::HTTP_NOT_FOUND);
@@ -193,5 +197,6 @@ class EleveController extends AbstractController
 
         return new JsonResponse($data, Response::HTTP_OK);
     }
+
 
 }

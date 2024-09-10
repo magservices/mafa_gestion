@@ -13,3 +13,27 @@
     margin-bottom: 5px;
   }
 }
+
+
+.container {
+  padding: 20px;
+}
+
+.student-details {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.img-student {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.student-info p {
+  margin: 5px 0;
+  font-size: 1.1em;
+}
