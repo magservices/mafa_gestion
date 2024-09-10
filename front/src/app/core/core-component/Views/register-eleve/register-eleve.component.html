@@ -4,48 +4,89 @@
       <h5>Ajouter un nouveau étudiant</h5>
       <form>
         <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="nom" class="form-label">Nom</label>
-            <input type="text" class="form-control" id="nom">
-          </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label for="prenom" class="form-label">Prénom</label>
             <input type="text" class="form-control" id="prenom">
+          </div>
+          <div class="col-md-4">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="nom"> 
+          </div>
+          <div class="col-md-4">
+            <label for="dateN" class="form-label">Date de naissance</label>
+            <input type="date" class="form-control" id="dateN">
           </div>
         </div>
 
         <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="nomPere" class="form-label">Nom du père</label>
+          <div class="col-md-4">
+            <label for="prenomPere" class="form-label">Prenom du père</label>
             <input type="text" class="form-control" id="nomPere">
           </div>
-          <div class="col-md-6">
-            <label for="nomMere" class="form-label">Nom de la mère</label>
+          <div class="col-md-4">
+            <label for="nomPere" class="form-label">Nom du père</label>
+            <input type="text" class="form-control" id="tel1">
+          </div>
+          <div class="col-md-4">
+            <label for="tel1" class="form-label">Numero de telephone</label>
             <input type="text" class="form-control" id="nomMere">
           </div>
         </div>
 
         <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="etablissement" class="form-label">Établissement</label>
-            <input type="text" class="form-control" id="etablissement">
+          <div class="col-md-4">
+            <label for="prenomMere" class="form-label">Prenom de la mère</label>
+            <input type="text" class="form-control" id="nomPere">
           </div>
-          <div class="col-md-6">
-            <label for="classe" class="form-label">Classe</label>
-            <input type="text" class="form-control" id="classe">
+          <div class="col-md-4">
+            <label for="nomMere" class="form-label">Nom de la mère</label>
+            <input type="text" class="form-control" id="nomMere">
+          </div>
+          <div class="col-md-4">
+            <label for="tel2" class="form-label">Numero de telephone</label>
+            <input type="text" class="form-control" id="tel2">
           </div>
         </div>
 
+        
         <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="status" class="form-label">Status étudiant</label>
-            <input type="text" class="form-control" id="status">
+          <div class="col-md-2">
+            <label for="status" class="form-label">Niveau</label>
+            <select class="form-select" id="status">
+              <option value="cycle1">1er cycle</option>
+              <option value="cycle2">2eme cycle</option>
+              <option value="Lycee">Lycée</option>
+              <option value="sante">Ecole de santé</option>
+            </select>
           </div>
-          <div class="col-md-6">
-            <label for="numeroTransfer" class="form-label">Numéro de transfert</label>
-            <input type="text" class="form-control" id="numeroTransfer">
+          <div class="col-md-3">
+            <label for="classe" class="form-label">Classe</label>
+            <input type="text" class="form-control" id="matricule">
+          </div>
+
+        
+          <div class="col-md-2">
+            <label for="prive" class="form-label">Privé</label>
+            <select class="form-select" id="prive">
+              <option value="oui">Oui</option>
+              <option value="non">Non</option>
+            </select>
+          </div>
+        
+          <div class="col-md-2">
+            <label for="transfere" class="form-label">Transfère</label>
+            <select class="form-select" id="transfere">
+              <option value="non">Non</option>
+              <option value="oui">Oui</option>
+            </select>
+          </div>
+        
+          <div class="col-md-3">
+            <label for="matricule" class="form-label">Matricule</label>
+            <input type="text" class="form-control" id="matricule">
           </div>
         </div>
+        
 
         <button type="submit" class="btn btn-primary">Enregistrer</button>
       </form>

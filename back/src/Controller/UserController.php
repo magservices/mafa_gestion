@@ -1,0 +1,117 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
+#[Route('/api/user-register')]
+class UserController extends AbstractController
+{
+    private $entityManager;
+    private $userRepository;
+    private $passwordHasher;
+
+    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->entityManager = $entityManager;
+        $this->userRepository = $userRepository;
+        $this->passwordHasher = $passwordHasher;
+    }
+
+    // Create a new user
+    #[Route('', name: 'create_user_connexion', methods: ['POST'])]
+    public function createUser(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $user = new User();
+        $user->setLogin($data['login']);
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $data['password']);
+        $user->setPassword($hashedPassword);
+        $user->setRoles($data['roles'] ?? ['ROLE_USER']);
+        $user->setNom($data['nom']);
+        $user->setPrenom($data['prenom']);
+        $user->setTel($data['tel']);
+        $user->setEmail($data['mail']);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return new JsonResponse(['status' => 'User created!'], Response::HTTP_CREATED);
+    }
+
+    // Update an existing user
+    #[Route('/{id}', name: 'update_user_connexion', methods: ['POST'])]
+    public function updateUser(Request $request, int $id): JsonResponse
+    {
+        $user = $this->userRepository->find($id);
+
+        if (!$user) {
+            return new JsonResponse(['status' => 'User not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $user->setLogin($data['login'] ?? $user->getLogin());
+        if (isset($data['password'])) {
+            $hashedPassword = $this->passwordHasher->hashPassword($user, $data['password']);
+            $user->setPassword($hashedPassword);
+        }
+        $user->setRoles($data['roles'] ?? ['ROLE_USER']);
+        $user->setNom($data['nom'] ?? $user->getNom());
+        $user->setPrenom($data['prenom'] ?? $user->getPrenom());
+        $user->setTel($data['tel'] ?? $user->getTel());
+        $user->setEmail($data['mail'] ?? $user->getEmail());
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return new JsonResponse(['status' => 'User updated!'], Response::HTTP_OK);
+    }
+
+    // Delete a user
+    #[Route('/{id}', name: 'delete_user_connexion', methods: ['DELETE'])]
+    public function deleteUser(int $id): JsonResponse
+    {
+        $user = $this->userRepository->find($id);
+
+        if (!$user) {
+            return new JsonResponse(['status' => 'User not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+
+        return new JsonResponse(['status' => 'User deleted!'], Response::HTTP_OK);
+    }
+
+    // Get a user by ID
+    #[Route('/{id}', name: 'get_user_connexion', methods: ['GET'])]
+    public function getUserById(int $id): JsonResponse
+    {
+        $user = $this->userRepository->find($id);
+
+        if (!$user) {
+            return new JsonResponse(['status' => 'User not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = [
+            'id' => $user->getId(),
+            'login' => $user->getLogin(),
+            'roles' => $user->getRoles(),
+            'nom' => $user->getNom(),
+            'prenom' => $user->getPrenom(),
+            'tel' => $user->getTel(),
+            'mail' => $user->getEmail(),
+        ];
+
+        return new JsonResponse($data, Response::HTTP_OK);
+    }
+}
