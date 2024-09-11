@@ -37,14 +37,14 @@ class EleveController extends AbstractController
         $eleve->setNiveau($data['niveau']);
         $eleve->setClasse($data['classe']);
         $eleve->setPrive($data['prive']);
-        /*$eleve->setTransfere($data['transfere']);
-        $eleve->setMatricule($data['matricule']);*/
+        $eleve->setTransfere($data['transfere']);
+        $eleve->setMatricule($data['matricule']);
         $eleve->setPrenomPere($data['prenomPere']);
         $eleve->setNomPere($data['nomPere']);
-        /*$eleve->setPrenomMere($data['prenomMere']);
-        $eleve->setNomMere($data['nomMere']);*/
+        $eleve->setPrenomMere($data['prenomMere']);
+        $eleve->setNomMere($data['nomMere']);
         $eleve->setTel1($data['tel1']);
-        //$eleve->setTel2($data['tel2']);
+        $eleve->setTel2($data['tel2']);
 
         $file = $request->files->get('photo');
         if ($file) {
@@ -81,14 +81,14 @@ class EleveController extends AbstractController
         $eleve->setNiveau($data['niveau'] ?? $eleve->getNiveau());
         $eleve->setClasse($data['classe'] ?? $eleve->getClasse());
         $eleve->setPrive($data['prive'] ?? $eleve->isPrive());
-        /* $eleve->setTransfere($data['transfere'] ?? $eleve->getTransfere());
-         $eleve->setMatricule($data['matricule'] ?? $eleve->getMatricule());*/
+        $eleve->setTransfere($data['transfere'] ?? $eleve->getTransfere());
+        $eleve->setMatricule($data['matricule'] ?? $eleve->getMatricule());
         $eleve->setPrenomPere($data['prenomPere'] ?? $eleve->getPrenomPere());
         $eleve->setNomPere($data['nomPere'] ?? $eleve->getNomPere());
-        /* $eleve->setPrenomMere($data['prenomMere'] ?? $eleve->getPrenomMere());
-         $eleve->setNomMere($data['nomMere'] ?? $eleve->getNomMere());*/
+        $eleve->setPrenomMere($data['prenomMere'] ?? $eleve->getPrenomMere());
+        $eleve->setNomMere($data['nomMere'] ?? $eleve->getNomMere());
         $eleve->setTel1($data['tel1'] ?? $eleve->getTel1());
-        // $eleve->setTel2($data['tel2'] ?? $eleve->getTel2());
+        $eleve->setTel2($data['tel2'] ?? $eleve->getTel2());
 
 
         $file = $request->files->get('photo');

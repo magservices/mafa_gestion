@@ -64,10 +64,11 @@
               <div class="col-md-2">
                 <label for="niveau" class="form-label">Niveau</label>
                 <select class="form-select" id="niveau" formControlName="niveau">
-                  <option value="cycle1">1er cycle</option>
-                  <option value="cycle2">2e cycle</option>
-                  <option value="Lycee">Lycée</option>
-                  <option value="sante">École de santé</option>
+                  <option value="1er cycle">1er cycle</option>
+                  <option value="2e cycle">2e cycle</option>
+                  <option value="Lycée">Lycée</option>
+                  <option value="Professoinel">Professoinel</option>
+                  <option value="École de santé">École de santé</option>
                 </select>
               </div>
               <div class="col-md-3">
@@ -105,7 +106,7 @@
 
         <div class="col-md-4 d-flex justify-content-center align-items-center">
           <div class="flex items-center justify-center w-full">
-            <label for="photo"
+            <label *ngIf="!previewUrl" for="photo"
                    class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer">
               <div class="flex flex-col items-center justify-center pt-5 pb-6">
                 <p class="mb-2 text-sm text-gray-500">Image d'élève</p>
@@ -114,8 +115,13 @@
               <input id="photo" type="file" (change)="onFileChange($event)" class="hidden">
             </label>
             <!-- Image preview -->
-            <img *ngIf="previewUrl" [src]="previewUrl" alt="Aperçu de l'image" class="img-thumbnail" width="200"
-                 height="200">
+            <div *ngIf="previewUrl" class="relative">
+              <img [src]="previewUrl" alt="Aperçu de l'image" class="img-thumbnail" width="300" height="300">
+              <!-- Icone poubelle -->
+              <button (click)="removeImage()" class="absolute top-0 right-0 mt-2 mr-2  text-white p-2 rounded-full">
+                  <i class="fas fa-trash-alt text-red-400"></i>
+              </button>
+          </div>
           </div>
         </div>
       </div>

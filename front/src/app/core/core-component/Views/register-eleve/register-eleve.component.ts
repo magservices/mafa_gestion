@@ -52,6 +52,11 @@ export class RegisterEleveComponent {
       this.selectedFile = file;
     }
   }
+  removeImage(){
+    this.selectedFile= null;
+    this.previewUrl=null;
+  }
+
 
   onSubmit(): void {
     if (this.studentForm.valid && this.selectedFile) {
