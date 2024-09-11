@@ -12,6 +12,7 @@ export class RegisterEleveComponent {
   studentForm: FormGroup;
   selectedFile: File | null = null;
   previewUrl: any = null;
+  imagePreview: string | ArrayBuffer | null = null;
 
   constructor(private fb: FormBuilder,
               private studentService: StudentService, private router: Router) {
@@ -51,6 +52,19 @@ export class RegisterEleveComponent {
       // Optionally set the file into the form control
       this.selectedFile = file;
     }
+  }
+
+  // Trigger file upload when "Mettre une photo" is clicked
+  triggerFileUpload(): void {
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    fileInput.click();
+  }
+
+  // Remove image preview and reset file input
+  removeImage(): void {
+    this.previewUrl = null;
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    fileInput.value = '';  // Clear the file input
   }
 
   onSubmit(): void {

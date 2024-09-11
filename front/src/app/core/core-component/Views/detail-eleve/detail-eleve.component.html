@@ -1,48 +1,89 @@
-<div class="container" [@fadeInOut]>
-  <!-- Bouton retour -->
-  <div class="mb-4">
-    <a href="/dash/student" class="btn btn-secondary">Retour</a>
-  </div>
+<div class="container mt-5">
+  <!-- Student Details -->
   @if (student) {
-    <div class="row student-details">
-      <div class="col-md-8">
-        <h5>Détails Eleves</h5>
-        <div class="d-flex">
-          @if (student.photoPath != undefined) {
-            <img src="{{ student.photoPath }}" height="250" width="250"
-                 alt="{{ student.photoName }}" class="img-student me-3">
-          } @else {
-            <img src="images/no-profile.png" height="250" width="250"
-                 alt="photo étudiant" class="img-student me-3">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="flex gap-4 p-4 pb-0">
+            @if (student.photoPath != undefined) {
+              <img src="{{ student.photoPath }}"
+                   alt="{{ student.photoName }}" class="card-img-top w-25 h-25">
+            } @else {
+              <img src="images/no-profile.png"
+                   alt="photo étudiant" class="card-img-top">
 
-          }
-          <div>
-            <p><strong>Nom complet :</strong> {{ student.prenom + ' ' + student.nom }}</p>
-            <p><strong>Date de naissance :</strong> {{ student.dateNaissance | date }}</p>
-            <p><strong>Fils de :</strong> {{ student.prenomPere + ' ' + student.nomPere }}</p>
-            <p><strong>et de :</strong> {{ student.prenomMere + ' ' + student.prenomMere }}</p>
-            <p><strong>Téléphone 1:</strong> {{ student.tel1 }}</p>
-            @if (student.tel2 != null) {
-              <p><strong>Téléphone 2:</strong> {{ student.tel2 }}</p>
             }
+            <div>
+              <h5 class="card-title">{{ student.prenom + ' ' + student.nom }}</h5>
+              <p class="card-text">AD1256589</p>
+              <span class="badge bg-success">Active</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <hr>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Date de Naissance:</strong> {{ student.dateNaissance | date }}</li>
+              <li class="list-group-item"><strong>Pere:</strong> {{ student.prenomPere + ' ' + student.nomPere }}</li>
+              <li class="list-group-item"><strong>Mere:</strong> {{ student.prenomMere + ' ' + student.prenomMere }}</li>
+              <li class="list-group-item"><strong>Téléphone 1:</strong> {{ student.tel1 }}</li>
+              <li class="list-group-item"><strong>Niveau:</strong> {{ student.niveau }}</li>
+              <li class="list-group-item"><strong>Classe:</strong> {{ student.classe }}</li>
+              @if (student.matricule != null) {
+                <li class="list-group-item"><strong>matricule:</strong> {{ student.matricule }}</li>
+              }
+            </ul>
           </div>
         </div>
       </div>
 
-      <!-- Payment Status -->
-      <div class="col-md-4">
-        <h5>Status paiement : <span class="text-success">à jours</span></h5>
-        <p><strong>Etablissement :</strong> MAFA</p>
-        <p><strong>Niveau :</strong> {{ student.niveau }}</p>
-        <p><strong>CLASSE :</strong> {{ student.classe }}</p>
-        @if (student.prive) {
-          <p><strong>Statut eleve :</strong> Privée</p>
-        } @else {
-          <p><strong>Statut eleve :</strong> Public</p>
-        }
-        @if (student.matricule != null) {
-          <p><strong>Numéro de transfert :</strong> {{ student.matricule }}</p>
-        }
+      <!-- Fees Details -->
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-header">
+            Frais Mensuel
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>Fees Group</th>
+                  <th>Fees Code</th>
+                  <th>Due Date</th>
+                  <th>Amount $</th>
+                  <th>Status</th>
+                  <th>Ref ID</th>
+                  <th>Mode</th>
+                  <th>Date Paid</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Class 1 General (Dec month Fees)</td>
+                  <td>dec-month-fees</td>
+                  <td>10 Jan 2024</td>
+                  <td>2500</td>
+                  <td><span class="badge bg-success">Paid</span></td>
+                  <td>#435443</td>
+                  <td>Cash</td>
+                  <td>05 Jan 2024</td>
+                </tr>
+                <tr>
+                  <td>Class 1 General (Jan month Fees)</td>
+                  <td>jan-month-fees</td>
+                  <td>10 Feb 2024</td>
+                  <td>2000</td>
+                  <td><span class="badge bg-success">Paid</span></td>
+                  <td>#435444</td>
+                  <td>Cash</td>
+                  <td>01 Feb 2024</td>
+                </tr>
+                <!-- Add more rows as needed -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   }

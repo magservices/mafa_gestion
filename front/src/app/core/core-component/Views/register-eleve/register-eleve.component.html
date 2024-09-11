@@ -1,124 +1,152 @@
-<div class="container">
-  <div class="row justify-content-between">
-    <div class="container p-4 shadow-md rounded">
-      <div class="row justify-content-between mb-4">
-        <div class="col-md-8">
-          <div class="flex justify-between">
-            <h5>Ajouter un nouveau étudiant</h5>
-            <a href="#" class="btn btn-secondary">Retour</a>
+<div class="container mt-4">
+  <h3>Add Student</h3>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="#">Students</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Add Student</li>
+    </ol>
+  </nav>
+
+  <div class="card p-4">
+    <h5 class="card-title">Personal Information</h5>
+
+    <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+      <div class="row pb-5">
+        <div class="col-md-6">
+          <div class="upload-container d-flex gap-2">
+            <div class="upload-box">
+              <label for="fileUpload" class="upload-label">
+                <i class="bi bi-image"></i>
+                <span>Images</span>
+              </label>
+              <input (change)="onFileChange($event)" type="file" id="fileUpload" class="d-none" accept="image/*"/>
+            </div>
+
+            <div class="preview-box" *ngIf="previewUrl">
+              <img [src]="previewUrl" alt="Image Preview" class="img-thumbnail" style="width: 100px; height: 100px;"/>
+            </div>
+
+            <div class="d-flex flex-column gap-2">
+              <button class="btn btn-secondary mt-2" (click)="triggerFileUpload()">Mettre une photo</button>
+              <button class="btn btn-danger mt-2" (click)="removeImage()">Supprimer</button>
+            </div>
           </div>
-          <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
-            <div class="row mb-3">
-              <div class="col-md-4">
-                <label for="prenom" class="form-label">Prénom</label>
-                <input type="text" class="form-control" id="prenom" formControlName="prenom"
-                       placeholder="Entrez le prénom">
-              </div>
-              <div class="col-md-4">
-                <label for="nom" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Entrez le nom">
-              </div>
-              <div class="col-md-4">
-                <label for="dateN" class="form-label">Date de naissance</label>
-                <input type="date" class="form-control" id="dateN" formControlName="dateNaissance">
-              </div>
-            </div>
 
-            <div class="row mb-3">
-              <div class="col-md-4">
-                <label for="prenomPere" class="form-label">Prénom du père</label>
-                <input type="text" class="form-control" id="prenomPere" formControlName="prenomPere"
-                       placeholder="Entrez le prénom du père">
-              </div>
-              <div class="col-md-4">
-                <label for="nomPere" class="form-label">Nom du père</label>
-                <input type="text" class="form-control" id="nomPere" formControlName="nomPere"
-                       placeholder="Entrez le nom du père">
-              </div>
-              <div class="col-md-4">
-                <label for="tel1" class="form-label">Numéro de téléphone</label>
-                <input type="text" class="form-control" id="tel1" formControlName="tel1"
-                       placeholder="Numéro de téléphone">
-              </div>
-            </div>
+          <small class="text-muted">Upload image size 4MB, Format JPG, PNG, SVG</small>
 
-            <div class="row mb-3">
-              <div class="col-md-4">
-                <label for="prenomMere" class="form-label">Prénom de la mère</label>
-                <input type="text" class="form-control" id="prenomMere" formControlName="prenomMere"
-                       placeholder="Entrez le prénom de la mère">
-              </div>
-              <div class="col-md-4">
-                <label for="nomMere" class="form-label">Nom de la mère</label>
-                <input type="text" class="form-control" id="nomMere" formControlName="nomMere"
-                       placeholder="Entrez le nom de la mère">
-              </div>
-              <div class="col-md-4">
-                <label for="tel2" class="form-label">Numéro de téléphone</label>
-                <input type="text" class="form-control" id="tel2" formControlName="tel2"
-                       placeholder="Numéro de téléphone">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <div class="col-md-2">
-                <label for="niveau" class="form-label">Niveau</label>
-                <select class="form-select" id="niveau" formControlName="niveau">
-                  <option value="cycle1">1er cycle</option>
-                  <option value="cycle2">2e cycle</option>
-                  <option value="Lycee">Lycée</option>
-                  <option value="sante">École de santé</option>
-                </select>
-              </div>
-              <div class="col-md-3">
-                <label for="classe" class="form-label">Classe</label>
-                <input type="text" class="form-control" id="classe" formControlName="classe"
-                       placeholder="Entrez la classe">
-              </div>
-
-              <div class="col-md-2">
-                <label for="prive" class="form-label">Privé</label>
-                <select class="form-select" id="prive" formControlName="prive">
-                  <option value="oui">Oui</option>
-                  <option value="non">Non</option>
-                </select>
-              </div>
-
-              <div class="col-md-2">
-                <label for="transfere" class="form-label">Transfère</label>
-                <select class="form-select" id="transfere" formControlName="transfere">
-                  <option value="non">Non</option>
-                  <option value="oui">Oui</option>
-                </select>
-              </div>
-
-              <div class="col-md-3">
-                <label for="matricule" class="form-label">Matricule</label>
-                <input type="text" class="form-control" id="matricule" formControlName="matricule"
-                       placeholder="Entrez le matricule">
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
-          </form>
-        </div>
-
-        <div class="col-md-4 d-flex justify-content-center align-items-center">
-          <div class="flex items-center justify-center w-full">
-            <label for="photo"
-                   class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer">
-              <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                <p class="mb-2 text-sm text-gray-500">Image d'élève</p>
-                <p class="text-xs text-gray-500">SVG, PNG, JPG ou GIF (MAX. 800x400px)</p>
-              </div>
-              <input id="photo" type="file" (change)="onFileChange($event)" class="hidden">
-            </label>
-            <!-- Image preview -->
-            <img *ngIf="previewUrl" [src]="previewUrl" alt="Aperçu de l'image" class="img-thumbnail" width="200"
-                 height="200">
-          </div>
         </div>
       </div>
-    </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-4">
+              <label for="lastName" class="form-label">Prenom d'élève</label>
+              <input type="text" class="form-control" id="lastName" formControlName="prenom"
+                     placeholder="Entrez le prénom d'élève">
+            </div>
+            <div class="col-md-4">
+              <label for="nom" class="form-label">Nom d'élève</label>
+              <input type="text" class="form-control" id="nom" formControlName="nom"
+                     placeholder="Entrez le nom d'élève">
+            </div>
+            <div class="col-md-4">
+              <label for="admissionDate" class="form-label">Date de naissance</label>
+              <input type="date" class="form-control" id="admissionDate" formControlName="dateNaissance">
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <label for="firstName" class="form-label">Prenom Pere</label>
+              <input type="text" class="form-control" id="firstName" formControlName="prenomPere"
+                     placeholder="Entrez le prénom du père">
+            </div>
+            <div class="col-md-4">
+              <label for="lastName" class="form-label">Nom du Pere</label>
+              <input type="text" class="form-control" id="pere" formControlName="nomPere"
+                     placeholder="Entrez le nom du père">
+            </div>
+            <div class="col-md-4">
+              <label for="rollNumber" class="form-label">Numéro de téléphone</label>
+              <input type="text" class="form-control" id="rollNumber" formControlName="tel1"
+                     placeholder="Numéro de téléphone">
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <label for="mereName" class="form-label">Prenom de la Mere</label>
+              <input type="text" class="form-control" id="mereName" formControlName="prenomMere"
+                     placeholder="Entrez le prénom de la mere">
+            </div>
+            <div class="col-md-4">
+              <label for="lastName" class="form-label">Nom de la mère</label>
+              <input type="text" class="form-control" id="mere" formControlName="nomMere"
+                     placeholder="Entrez le nom de la mère">
+            </div>
+            <div class="col-md-4">
+              <label for="rollNumber" class="form-label">Numéro de téléphone 2</label>
+              <input type="text" class="form-control" id="tel2" formControlName="tel2"
+                     placeholder="Numéro de téléphone 2">
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <label for="niveau" class="form-label">Niveau</label>
+              <select class="form-select" id="niveau" formControlName="niveau">
+                <option value="cycle1" selected>1er cycle</option>
+                <option value="cycle2">2e cycle</option>
+                <option value="Lycee">Lycée</option>
+                <option value="sante">École de santé</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="classe" class="form-label">Classe</label>
+              <input type="text" class="form-control" id="classe" formControlName="classe"
+                     placeholder="Entrez la classe">
+            </div>
+            <div class="col-md-4">
+              <label for="prive" class="form-label">Privé</label>
+              <select class="form-select" id="prive" formControlName="prive">
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <label for="transfere" class="form-label">Transfère</label>
+              <select class="form-select" id="transfere" formControlName="transfere">
+                <option value="non">Non</option>
+                <option value="oui">Oui</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="matricule" class="form-label">Matricule</label>
+              <input type="text" class="form-control" id="matricule" formControlName="matricule"
+                     placeholder="Entrez le matricule">
+            </div>
+            <div class="col-md-4">
+              <label for="matricule" class="form-label">Frais d'inscription</label>
+              <div class="flex">
+                <input type="number" min="100"
+                       step="0.01" formControlName="fees" name="price"
+                       placeholder="0.00"
+                       class="rounded-none rounded-l-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-pristine ng-invalid ng-touched">
+                <span
+                  class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"> FCFA </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="flex justify-end pt-5">
+        <button class="btn btn-primary">Enregistre</button>
+      </div>
+    </form>
   </div>
 </div>
