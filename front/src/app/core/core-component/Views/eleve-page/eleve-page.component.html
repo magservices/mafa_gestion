@@ -23,8 +23,8 @@
         </tr>
         </thead>
         <tbody>
-          @if (students && students.length !== 0) {
-            @for (student of students; track student; let i = $index) {
+          @if (filteredStudents && filteredStudents.length !== 0) {
+            @for (student of filteredStudents; track student; let i = $index) {
               <tr>
                 <th scope="row">{{ i + 1 }}</th>
                 <td>
@@ -50,7 +50,7 @@
               </tr>
             }
           } @else {
-            slmqlmqsl
+            Il y a pas d'élève !
           }
         </tbody>
       </table>
@@ -59,22 +59,33 @@
 
     <!-- Section Filtre des étudiants -->
     <div class="col-md-3">
-      <h4>Filtre les eveles par établissements</h4>
+      <h4>Chercher un élève</h4>
       <form>
         <div class="form-group">
           <label for="studentName">Nom étudiants</label>
-          <input type="text" class="form-control" id="studentName" placeholder="Nom étudiants">
+          <input type="text" class="form-control" id="studentName" placeholder="Nom étudiants" [(ngModel)]="searchName" name="studentName">
         </div>
         <div class="form-group">
-          <label for="school">Établissements</label>
-          <input type="text" class="form-control" id="school" placeholder="Établissements">
+          <label for="niveau" class="form-label">Niveau</label>
+          <select class="form-select" id="niveau" [(ngModel)]="searchNiveau" name="niveau">
+            <option value="1er cycle">1er cycle</option>
+            <option value="2e cycle">2e cycle</option>
+            <option value="Lycée">Lycée</option>
+            <option value="Professoinel">Professoinel</option>
+            <option value="École de santé">École de santé</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="class">Classe</label>
-          <input type="text" class="form-control" id="class" placeholder="Classe">
+          <input type="text" class="form-control" id="class" placeholder="Classe" [(ngModel)]="searchClass" name="class">
         </div>
-        <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+        @if (filteredStudents && filteredStudents.length === taile) {
+          <button (click)="onSearch()"  class="btn btn-primary w-100">Rechercher</button>
+        }@else{
+          <button (click)="initEleve()"  class="btn btn-primary w-100">Réinitialiser la recheche</button>
+        }
       </form>
     </div>
+    
   </div>
 </div>

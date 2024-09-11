@@ -53,6 +53,11 @@ export class RegisterEleveComponent {
       this.selectedFile = file;
     }
   }
+  removeImage(){
+    this.selectedFile= null;
+    this.previewUrl=null;
+  }
+
 
   // Trigger file upload when "Mettre une photo" is clicked
   triggerFileUpload(): void {
