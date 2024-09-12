@@ -73,6 +73,9 @@ class Eleve
     #[ORM\OneToMany(targetEntity: StudentPayment::class, mappedBy: 'registerStudent')]
     private Collection $registerPaymentStudent;
 
+    #[ORM\Column(length: 255)]
+    private ?string $studentID = null;
+
     public function __construct()
     {
         $this->registerPaymentStudent = new ArrayCollection();
@@ -303,6 +306,18 @@ class Eleve
                 $registerPaymentStudent->setRegisterStudent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStudentID(): ?string
+    {
+        return $this->studentID;
+    }
+
+    public function setStudentID(string $studentID): static
+    {
+        $this->studentID = $studentID;
 
         return $this;
     }
