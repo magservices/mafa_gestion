@@ -42,6 +42,7 @@ class EleveController extends AbstractController
         $eleve->setPrenomPere($data['prenomPere']);
         $eleve->setNomPere($data['nomPere']);
         $eleve->setPrenomMere($data['prenomMere']);
+        $eleve->setStudentID($data['studentID']);
         $eleve->setNomMere($data['nomMere']);
         $eleve->setTel1($data['tel1']);
         $eleve->setTel2($data['tel2']);
@@ -176,6 +177,7 @@ class EleveController extends AbstractController
             'tel2' => $eleve->getTel2(),
             'photoPath' => $eleve->getPhotoPath(),
             'photoName' => $eleve->getPhotoName(),
+            'studentID' => $eleve->getStudentID(),
             'registerPaymentStudent' => $paymentsData,
         ];
 
@@ -233,6 +235,7 @@ class EleveController extends AbstractController
                 'tel2' => $eleve->getTel2(),
                 'photoPath' => $eleve->getPhotoPath(),
                 'photoName' => $eleve->getPhotoName(),
+                'studentID' => $eleve->getStudentID(),
                 'registerPaymentStudent' => $paymentsData,
             ];
         }
