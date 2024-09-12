@@ -7,12 +7,15 @@ import {PayementPageComponent} from './core-component/Views/payement-page/payeme
 import {RegisterEleveComponent} from './core-component/Views/register-eleve/register-eleve.component';
 import {DashComponent} from "./core-component/Views/dash/dash.component";
 import {DetailEleveComponent} from "./core-component/Views/detail-eleve/detail-eleve.component";
+import { AuthGuard } from './core-component/shared/res/guard/authGuard';
+import { UserFormComponent } from './core-component/Views/user-form/user-form.component';
 
 const routes: Routes = [
   {path: '', component: AuthComponent},
+  {path: 'user-form', component: UserFormComponent},
   {
     path: 'dash',
-    component: DashPageComponent,
+    component: DashPageComponent, canActivate: [AuthGuard],
     children: [
       {path: '', component: DashComponent},
       {path: 'student', component: ElevePageComponent},

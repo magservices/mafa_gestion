@@ -5,7 +5,8 @@ export const routes: Routes = [
     {
         path: "",
         loadChildren: () => import('./core/core.module').then(m =>
-          m.CoreModule)
+          m.CoreModule),
+         
       },
       {path: '**', component: Error404PageComponent}
 ];
