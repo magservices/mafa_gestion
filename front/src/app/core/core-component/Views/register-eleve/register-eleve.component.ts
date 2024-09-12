@@ -75,7 +75,7 @@ export class RegisterEleveComponent {
   onSubmit(): void {
     if (this.studentForm.valid && this.selectedFile) {
       this.studentService.createStudent(this.studentForm.value, this.selectedFile).subscribe(
-        (student) => {
+        () => {
           this.router.navigateByUrl("/dash/student");
         }
       )

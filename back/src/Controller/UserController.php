@@ -33,19 +33,18 @@ class UserController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $user = new User();
-        $user->setLogin($data['login']);
         $hashedPassword = $this->passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
-        $user->setRoles($data['roles'] ?? ['ROLE_USER']);
+        $user->setRoles($data['roles']);
         $user->setNom($data['nom']);
         $user->setPrenom($data['prenom']);
         $user->setTel($data['tel']);
-        $user->setEmail($data['mail']);
+        $user->setEmail($data['email']);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        return new JsonResponse(['status' => 'User created!'], Response::HTTP_CREATED);
+        return new JsonResponse(['user' => $user], Response::HTTP_CREATED);
     }
 
     // Update an existing user
@@ -60,7 +59,6 @@ class UserController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        $user->setLogin($data['login'] ?? $user->getLogin());
         if (isset($data['password'])) {
             $hashedPassword = $this->passwordHasher->hashPassword($user, $data['password']);
             $user->setPassword($hashedPassword);
@@ -104,7 +102,6 @@ class UserController extends AbstractController
 
         $data = [
             'id' => $user->getId(),
-            'login' => $user->getLogin(),
             'roles' => $user->getRoles(),
             'nom' => $user->getNom(),
             'prenom' => $user->getPrenom(),
