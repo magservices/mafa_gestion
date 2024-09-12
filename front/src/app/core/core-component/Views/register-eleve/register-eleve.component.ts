@@ -9,10 +9,10 @@ import {Router} from "@angular/router";
   styleUrl: './register-eleve.component.scss'
 })
 export class RegisterEleveComponent {
+
   studentForm: FormGroup;
   selectedFile: File | null = null;
   previewUrl: any = null;
-  imagePreview: string | ArrayBuffer | null = null;
 
   constructor(private fb: FormBuilder,
               private studentService: StudentService, private router: Router) {
@@ -53,17 +53,13 @@ export class RegisterEleveComponent {
       this.selectedFile = file;
     }
   }
-  removeImage(){
-    this.selectedFile= null;
-    this.previewUrl=null;
-  }
-
 
   // Trigger file upload when "Mettre une photo" is clicked
   triggerFileUpload(): void {
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
     fileInput.click();
   }
+
 
   // Remove image preview and reset file input
   removeImage(): void {

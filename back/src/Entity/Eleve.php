@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EleveRepository::class)]
 class Eleve
@@ -64,12 +65,17 @@ class Eleve
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photoName = null;
 
-    #[ORM\OneToMany(targetEntity: Payement::class, mappedBy: 'eleve')]
-    private Collection $paiements;
+
+
+    /**
+     * @var Collection<int, StudentPayment>
+     */
+    #[ORM\OneToMany(targetEntity: StudentPayment::class, mappedBy: 'registerStudent')]
+    private Collection $registerPaymentStudent;
 
     public function __construct()
     {
-        $this->paiements = new ArrayCollection();
+        $this->registerPaymentStudent = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -270,8 +276,34 @@ class Eleve
         return $this;
     }
 
-    public function getPaiements(): Collection
+
+    /**
+     * @return Collection<int, StudentPayment>
+     */
+    public function getRegisterPaymentStudent(): Collection
     {
-        return $this->paiements;
+        return $this->registerPaymentStudent;
+    }
+
+    public function addRegisterPaymentStudent(StudentPayment $registerPaymentStudent): static
+    {
+        if (!$this->registerPaymentStudent->contains($registerPaymentStudent)) {
+            $this->registerPaymentStudent->add($registerPaymentStudent);
+            $registerPaymentStudent->setRegisterStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegisterPaymentStudent(StudentPayment $registerPaymentStudent): static
+    {
+        if ($this->registerPaymentStudent->removeElement($registerPaymentStudent)) {
+            // set the owning side to null (unless already changed)
+            if ($registerPaymentStudent->getRegisterStudent() === $this) {
+                $registerPaymentStudent->setRegisterStudent(null);
+            }
+        }
+
+        return $this;
     }
 }

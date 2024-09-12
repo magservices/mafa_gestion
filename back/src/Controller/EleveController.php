@@ -65,7 +65,7 @@ class EleveController extends AbstractController
 
     // Update an existing Eleve
     #[Route('/{id}', name: 'update_eleve', methods: ['POST'])]
-    public function updateEleve(Request $request, int $id,#[Autowire('%photo_dir%')] string $photoDir): JsonResponse
+    public function updateEleve(Request $request, int $id, #[Autowire('%photo_dir%')] string $photoDir): JsonResponse
     {
         $eleve = $this->eleveRepository->find($id);
 
@@ -92,14 +92,14 @@ class EleveController extends AbstractController
 
 
         $file = $request->files->get('photo');
-        if($file){
+        if ($file) {
             if ($eleve->getPhotoPath()) {
                 unlink($eleve->getPhotoPath());
             }
 
-            $photoName = uniqid().'.'.$file->guessExtension();
+            $photoName = uniqid() . '.' . $file->guessExtension();
             $file->move($photoDir, $photoName);
-            $eleve->setPhotoPath($photoDir.$photoName);
+            $eleve->setPhotoPath($photoDir . $photoName);
             $eleve->setPhotoName($photoName);
         }
 
@@ -130,6 +130,7 @@ class EleveController extends AbstractController
         return new JsonResponse(['status' => 'Eleve deleted!'], Response::HTTP_OK);
     }
 
+
     #[Route('/{id}', name: 'get_eleve', methods: ['GET'])]
     public function getEleve(int $id): JsonResponse
     {
@@ -137,6 +138,24 @@ class EleveController extends AbstractController
 
         if (!$eleve) {
             return new JsonResponse(['status' => 'Eleve not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Récupérer les paiements et les trier par ID en ordre décroissant
+        $payments = $eleve->getRegisterPaymentStudent()->toArray();
+        usort($payments, function ($a, $b) {
+            return $b->getId() <=> $a->getId(); // Tri décroissant par ID
+        });
+
+        $paymentsData = [];
+        foreach ($payments as $payment) {
+            $paymentsData[] = [
+                'id' => $payment->getId(),
+                'totalAnnualCosts' => $payment->getTotalAnnualCosts(),
+                'paymentReason' => $payment->getPaymentReason(),
+                'paymentStatus' => $payment->getPaymentStatus(),
+                'amount' => $payment->getAmount(),
+                'month' => $payment->getMonth(),
+            ];
         }
 
         $data = [
@@ -157,10 +176,12 @@ class EleveController extends AbstractController
             'tel2' => $eleve->getTel2(),
             'photoPath' => $eleve->getPhotoPath(),
             'photoName' => $eleve->getPhotoName(),
+            'registerPaymentStudent' => $paymentsData,
         ];
 
         return new JsonResponse($data, Response::HTTP_OK);
     }
+
 
     #[Route('/', name: 'get_all_eleves', methods: ['GET'])]
     public function getAllEleves(): JsonResponse
@@ -174,6 +195,26 @@ class EleveController extends AbstractController
 
         $data = [];
         foreach ($eleves as $eleve) {
+            // Récupérer les paiements pour chaque élève
+            $payments = $eleve->getRegisterPaymentStudent()->toArray();
+            usort($payments, function ($a, $b) {
+                return $b->getId() <=> $a->getId(); // Tri décroissant par ID
+            });
+
+            // Préparer les données de paiement
+            $paymentsData = [];
+            foreach ($payments as $payment) {
+                $paymentsData[] = [
+                    'id' => $payment->getId(),
+                    'totalAnnualCosts' => $payment->getTotalAnnualCosts(),
+                    'paymentReason' => $payment->getPaymentReason(),
+                    'paymentStatus' => $payment->getPaymentStatus(),
+                    'amount' => $payment->getAmount(),
+                    'month' => $payment->getMonth(),
+                ];
+            }
+
+            // Préparer les données de l'élève
             $data[] = [
                 'id' => $eleve->getId(),
                 'nom' => $eleve->getNom(),
@@ -192,6 +233,7 @@ class EleveController extends AbstractController
                 'tel2' => $eleve->getTel2(),
                 'photoPath' => $eleve->getPhotoPath(),
                 'photoName' => $eleve->getPhotoName(),
+                'registerPaymentStudent' => $paymentsData,
             ];
         }
 
