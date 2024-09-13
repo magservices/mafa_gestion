@@ -60,12 +60,37 @@ class EleveController extends AbstractController
         $this->entityManager->persist($eleve);
         $this->entityManager->flush();
 
-        return new JsonResponse(['status' => 'Eleve created!'], Response::HTTP_CREATED);
+        // Préparer les données de l'élève
+        $data[] = [
+            'id' => $eleve->getId(),
+            'nom' => $eleve->getNom(),
+            'prenom' => $eleve->getPrenom(),
+            'dateNaissance' => $eleve->getDateNaissance()->format('Y-m-d'),
+            'niveau' => $eleve->getNiveau(),
+            'classe' => $eleve->getClasse(),
+            'prive' => $eleve->isPrive(),
+            'transfere' => $eleve->getTransfere(),
+            'matricule' => $eleve->getMatricule(),
+            'prenomPere' => $eleve->getPrenomPere(),
+            'nomPere' => $eleve->getNomPere(),
+            'prenomMere' => $eleve->getPrenomMere(),
+            'nomMere' => $eleve->getNomMere(),
+            'tel1' => $eleve->getTel1(),
+            'tel2' => $eleve->getTel2(),
+            'photoPath' => $eleve->getPhotoPath(),
+            'photoName' => $eleve->getPhotoName(),
+            'studentID' => $eleve->getStudentID(),
+            'registerPaymentStudent' => [],
+        ];
+
+        return new JsonResponse($data, Response::HTTP_OK);
+
     }
 
 
-    // Update an existing Eleve
-    #[Route('/{id}', name: 'update_eleve', methods: ['POST'])]
+// Update an existing Eleve
+    #[
+        Route('/{id}', name: 'update_eleve', methods: ['POST'])]
     public function updateEleve(Request $request, int $id, #[Autowire('%photo_dir%')] string $photoDir): JsonResponse
     {
         $eleve = $this->eleveRepository->find($id);

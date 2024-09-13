@@ -1,22 +1,28 @@
-import {Component} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {StudentService} from "../../shared/services/student.service";
 import {Router} from "@angular/router";
 import {generateStudentId} from "../../shared/utilis/studentID";
+import {PayEleveComponent} from "../pay-eleve/pay-eleve.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-register-eleve',
   templateUrl: './register-eleve.component.html',
   styleUrl: './register-eleve.component.scss'
 })
-export class RegisterEleveComponent {
+export class RegisterEleveComponent implements OnInit{
 
-  studentForm: FormGroup;
+  studentForm!: FormGroup;
   selectedFile: File | null = null;
   previewUrl: any = null;
+  private modalService = inject(NgbModal);
 
   constructor(private fb: FormBuilder,
               private studentService: StudentService, private router: Router) {
+  }
+
+  ngOnInit(): void {
     this.studentForm = this.fb.group({
       prenom: ['', Validators.required],
       nom: ['', Validators.required],
@@ -35,9 +41,6 @@ export class RegisterEleveComponent {
       matricule: [''],
 
     });
-  }
-
-  ngOnInit(): void {
   }
 
 
@@ -75,7 +78,10 @@ export class RegisterEleveComponent {
       this.studentForm.value.studentID = generateStudentId();
       this.studentService.createStudent(this.studentForm.value, this.selectedFile).subscribe(
         () => {
-          this.router.navigateByUrl("/dash/student");
+          const modalRef = this.modalService.open(PayEleveComponent,
+            {size: "lg", animation: true, centered: true, backdrop: 'static'});
+          modalRef.componentInstance.componentName = 'first payment';
+          modalRef.componentInstance.student = this.studentForm.value;
         }
       )
     } else {

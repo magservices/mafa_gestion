@@ -10,7 +10,7 @@
                    alt="{{ student.photoName }}" class="card-img-top w-25 h-25">
             } @else {
               <img src="images/no-profile.png"
-                   alt="photo étudiant" class="card-img-top">
+                   alt="photo étudiant" class="card-img-top w-25 h-25">
 
             }
             <div>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="flex justify-end gap-5 py-2.5">
-          <button (click)="newPay()" class="btn btn-secondary">Nouveau paiement</button>
+          <button (click)="newPay('monthly payment', student)" class="btn btn-secondary">Nouveau paiement</button>
         </div>
       </div>
     </div>

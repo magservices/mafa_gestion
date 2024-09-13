@@ -60,8 +60,10 @@ export class DetailEleveComponent implements OnInit {
     }
   }
 
-  newPay() {
+  newPay(component: string, student: Eleve) {
     const modalRef = this.modalService.open(PayEleveComponent,
       {size:"lg" , animation: true, centered: true });
+    modalRef.componentInstance.componentName = component;
+    modalRef.componentInstance.student = student;
   }
 }
