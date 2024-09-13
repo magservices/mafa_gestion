@@ -31,7 +31,6 @@ class EleveController extends AbstractController
         $data = json_decode($request->request->get('eleveData'), true);
 
         $eleve = new Eleve();
-        $eleve->setNom($data['id']);
         $eleve->setNom($data['nom']);
         $eleve->setPrenom($data['prenom']);
         $eleve->setDateNaissance(new \DateTime($data['dateNaissance']));
@@ -62,7 +61,7 @@ class EleveController extends AbstractController
         $this->entityManager->flush();
 
         // Préparer les données de l'élève
-        $data[] = [
+        $data = [
             'id' => $eleve->getId(),
             'nom' => $eleve->getNom(),
             'prenom' => $eleve->getPrenom(),
