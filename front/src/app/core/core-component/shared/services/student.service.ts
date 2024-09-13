@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Eleve} from "../model/Eleve";
 import {environment} from "../../../../../environments/environment";
+import {StudentPayment} from "../model/StudentPayment";
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,18 @@ export class StudentService {
 
   getStudentByID(id: number): Observable<Eleve> {
     return this.http.get<Eleve>(`${environment.apiUrl}/eleve/${id}`);
+  }
+
+  // Ajouter un paiement
+  createPayment(payment: StudentPayment, registerStudentId: number): Observable<StudentPayment> {
+    return this.http.post<StudentPayment>(`${environment.apiUrl}/create`, {
+      ...payment,
+      register_student_id: registerStudentId
+    });
+  }
+
+  // Récupérer tous les paiements
+  getAllPayments(): Observable<StudentPayment[]> {
+    return this.http.get<StudentPayment[]>(`${environment.apiUrl}`);
   }
 }

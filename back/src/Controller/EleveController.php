@@ -31,6 +31,7 @@ class EleveController extends AbstractController
         $data = json_decode($request->request->get('eleveData'), true);
 
         $eleve = new Eleve();
+        $eleve->setNom($data['id']);
         $eleve->setNom($data['nom']);
         $eleve->setPrenom($data['prenom']);
         $eleve->setDateNaissance(new \DateTime($data['dateNaissance']));

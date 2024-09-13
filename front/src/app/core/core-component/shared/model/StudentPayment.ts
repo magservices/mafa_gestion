@@ -5,5 +5,4 @@ export class StudentPayment {
   paymentStatus!: string;
   amount!: number;
   month!: string;
-  register_student_id! : number;
 }

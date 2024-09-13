@@ -77,11 +77,13 @@ export class RegisterEleveComponent implements OnInit{
     if (this.studentForm.valid && this.selectedFile) {
       this.studentForm.value.studentID = generateStudentId();
       this.studentService.createStudent(this.studentForm.value, this.selectedFile).subscribe(
-        () => {
+        (student) => {
+          console.log(student)
           const modalRef = this.modalService.open(PayEleveComponent,
             {size: "lg", animation: true, centered: true, backdrop: 'static'});
           modalRef.componentInstance.componentName = 'first payment';
-          modalRef.componentInstance.student = this.studentForm.value;
+          modalRef.componentInstance.student = student;
+
         }
       )
     } else {
