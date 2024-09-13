@@ -37,6 +37,9 @@ class StudentPayment
     #[ORM\ManyToOne(inversedBy: 'registerPaymentStudent')]
     private ?Eleve $registerStudent = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -111,6 +114,18 @@ class StudentPayment
     public function setRegisterStudent(?Eleve $registerStudent): static
     {
         $this->registerStudent = $registerStudent;
+
+        return $this;
+    }
+
+    public function getCreateAt(): ?\DateTimeImmutable
+    {
+        return $this->createAt;
+    }
+
+    public function setCreateAt(\DateTimeImmutable $createAt): static
+    {
+        $this->createAt = $createAt;
 
         return $this;
     }

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {StudentService} from "../../shared/services/student.service";
 import {Router} from "@angular/router";
+import {generateStudentId} from "../../shared/utilis/studentID";
 
 @Component({
   selector: 'app-register-eleve',
@@ -25,6 +26,7 @@ export class RegisterEleveComponent {
       tel1: ['', Validators.required],
       prenomMere: [''],
       nomMere: [''],
+      studentID: [''],
       tel2: [''],
       niveau: ['', Validators.required],
       classe: ['', Validators.required],
@@ -70,6 +72,7 @@ export class RegisterEleveComponent {
 
   onSubmit(): void {
     if (this.studentForm.valid && this.selectedFile) {
+      this.studentForm.value.studentID = generateStudentId();
       this.studentService.createStudent(this.studentForm.value, this.selectedFile).subscribe(
         () => {
           this.router.navigateByUrl("/dash/student");

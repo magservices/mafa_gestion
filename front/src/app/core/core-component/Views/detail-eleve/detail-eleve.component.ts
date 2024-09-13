@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {StudentService} from "../../shared/services/student.service";
 import {Eleve} from "../../shared/model/Eleve";
 import {DatePipe, NgOptimizedImage} from "@angular/common";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {PayEleveComponent} from "../pay-eleve/pay-eleve.component";
 
 @Component({
   selector: 'app-detail-eleve',
@@ -39,6 +41,8 @@ export class DetailEleveComponent implements OnInit {
 
   student!: Eleve;
 
+  private modalService = inject(NgbModal);
+
   constructor(
     private route: ActivatedRoute,
     private studentService: StudentService
@@ -54,5 +58,10 @@ export class DetailEleveComponent implements OnInit {
         console.log(this.student)
       });
     }
+  }
+
+  newPay() {
+    const modalRef = this.modalService.open(PayEleveComponent,
+      {size:"lg" , animation: true, centered: true });
   }
 }

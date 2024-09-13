@@ -1,1 +1,85 @@
-<p>pay-eleve works!</p>
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="mb-2 fw-semibold">Nouveau paiement
+    </h3>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <div class="card p-2.5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="card-title">Collect Fees</h5>
+          <span class="badge bg-primary">AD124556</span>
+        </div>
+
+        <div class="student-info d-flex align-items-center mb-3">
+          <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="Student Photo">
+          <div>
+            <h6>Janet</h6>
+            <p>Class: III, Section: A</p>
+          </div>
+          <div class="ms-auto">
+            <p>Total Outstanding: <strong>2000</strong></p>
+            <p>Last Date: 25 May 2024</p>
+          </div>
+          <span class="badge bg-danger ms-3">Unpaid</span>
+        </div>
+
+        <form>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="feesGroup" class="form-label">Fees Group</label>
+              <select class="form-select" id="feesGroup">
+                <option selected>Select</option>
+                <option value="1">Group 1</option>
+                <option value="2">Group 2</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="feesType" class="form-label">Fees Type</label>
+              <select class="form-select" id="feesType">
+                <option selected>Select</option>
+                <option value="1">Type 1</option>
+                <option value="2">Type 2</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="amount" class="form-label">Amount</label>
+              <input type="number" class="form-control" id="amount" placeholder="Enter Amount">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="collectionDate" class="form-label">Collection Date</label>
+              <input type="date" class="form-control" id="collectionDate">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="paymentType" class="form-label">Payment Type</label>
+              <select class="form-select" id="paymentType">
+                <option selected>Select</option>
+                <option value="1">Cash</option>
+                <option value="2">Card</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="paymentReference" class="form-label">Payment Reference No</label>
+              <input type="text" class="form-control" id="paymentReference" placeholder="Enter Payment Reference No">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="notes" class="form-label">Notes</label>
+            <textarea class="form-control" id="notes" rows="3" placeholder="Add Notes"></textarea>
+          </div>
+
+          <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" id="statusToggle">
+            <label class="form-check-label" for="statusToggle">Change the Status by toggle</label>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary me-2">Cancel</button>
+            <button type="submit" class="btn btn-primary">Pay Fees</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

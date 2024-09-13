@@ -15,7 +15,7 @@
             }
             <div>
               <h5 class="card-title">{{ student.prenom + ' ' + student.nom }}</h5>
-              <p class="card-text">AD1256589</p>
+              <p class="card-text">{{ student.studentID }}</p>
               <span class="badge bg-success">Active</span>
             </div>
           </div>
@@ -24,8 +24,9 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><strong>Date de Naissance:</strong> {{ student.dateNaissance | date }}</li>
               <li class="list-group-item"><strong>Pere:</strong> {{ student.prenomPere + ' ' + student.nomPere }}</li>
-              <li class="list-group-item"><strong>Mere:</strong> {{ student.prenomMere + ' ' + student.prenomMere }}</li>
-              <li class="list-group-item"><strong>Téléphone 1:</strong> {{ student.tel1 }}</li>
+              <li class="list-group-item"><strong>Mere:</strong> {{ student.prenomMere + ' ' + student.nomMere }}</li>
+              <li class="list-group-item"><strong>Numero de Téléphone:</strong> {{ student.tel1 }}</li>
+              <li class="list-group-item"><strong>Second numero de telephone:</strong> {{ student.tel2 }}</li>
               <li class="list-group-item"><strong>Niveau:</strong> {{ student.niveau }}</li>
               <li class="list-group-item"><strong>Classe:</strong> {{ student.classe }}</li>
               @if (student.matricule != null) {
@@ -83,6 +84,10 @@
               </table>
             </div>
           </div>
+        </div>
+
+        <div class="flex justify-end gap-5 py-2.5">
+          <button (click)="newPay()" class="btn btn-secondary">Nouveau paiement</button>
         </div>
       </div>
     </div>

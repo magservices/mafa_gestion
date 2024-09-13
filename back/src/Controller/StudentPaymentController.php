@@ -85,6 +85,7 @@ class StudentPaymentController extends AbstractController
         $payment->setPaymentStatus($data['paymentStatus']);
         $payment->setAmount($data['amount']);
         $payment->setMonth($data['month']);
+        $payment->setCreateAt($data['create_at']);
 
         // Lier le paiement à l'élève
         $payment->setRegisterStudent($eleve);
@@ -101,6 +102,7 @@ class StudentPaymentController extends AbstractController
             'paymentStatus' => $payment->getPaymentStatus(),
             'amount' => $payment->getAmount(),
             'month' => $payment->getMonth(),
+            'create_at' => $payment->getCreateAt(),
             'register_student_id' => $payment->getRegisterStudent()->getId() // ID de l'élève lié
         ], Response::HTTP_CREATED);
     }
@@ -121,6 +123,7 @@ class StudentPaymentController extends AbstractController
         $payment->setPaymentStatus($data['paymentStatus'] ?? $payment->getPaymentStatus());
         $payment->setAmount($data['amount'] ?? $payment->getAmount());
         $payment->setMonth($data['month'] ?? $payment->getMonth());
+        $payment->setCreateAt($data['create_at'] ?? $payment->getCreateAt());
 
         $this->entityManager->flush();
 
