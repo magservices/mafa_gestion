@@ -85,7 +85,20 @@ class StudentPaymentController extends AbstractController
         $payment->setPaymentStatus($data['paymentStatus']);
         $payment->setAmount($data['amount']);
         $payment->setMonth($data['month']);
-        $payment->setCreateAt($data['create_at']);
+
+        // Gérer le champ 'create_at'
+        if (isset($data['create_at'])) {
+            try {
+                // Convertir en DateTimeImmutable
+                $createAt = new \DateTimeImmutable($data['create_at']);
+                $payment->setCreateAt($createAt);
+            } catch (\Exception $e) {
+                return new JsonResponse(['error' => 'Invalid date format for create_at'], Response::HTTP_BAD_REQUEST);
+            }
+        } else {
+            // Si create_at n'est pas fourni, définir la date actuelle
+            $payment->setCreateAt(new \DateTimeImmutable());
+        }
 
         // Lier le paiement à l'élève
         $payment->setRegisterStudent($eleve);
@@ -102,7 +115,7 @@ class StudentPaymentController extends AbstractController
             'paymentStatus' => $payment->getPaymentStatus(),
             'amount' => $payment->getAmount(),
             'month' => $payment->getMonth(),
-            'create_at' => $payment->getCreateAt(),
+            'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
             'register_student_id' => $payment->getRegisterStudent()->getId() // ID de l'élève lié
         ], Response::HTTP_CREATED);
     }

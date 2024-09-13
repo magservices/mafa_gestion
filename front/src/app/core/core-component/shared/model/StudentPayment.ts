@@ -5,4 +5,5 @@ export class StudentPayment {
   paymentStatus!: string;
   amount!: number;
   month!: string;
+  create_at!: number
 }

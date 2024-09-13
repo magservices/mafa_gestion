@@ -34,7 +34,7 @@ export class StudentService {
 
   // Ajouter un paiement
   createPayment(payment: StudentPayment, registerStudentId: number): Observable<StudentPayment> {
-    return this.http.post<StudentPayment>(`${environment.apiUrl}/create`, {
+    return this.http.post<StudentPayment>(`${environment.apiUrl}/student_payment/create`, {
       ...payment,
       register_student_id: registerStudentId
     });

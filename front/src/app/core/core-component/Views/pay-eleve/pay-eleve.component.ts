@@ -4,6 +4,8 @@ import {Eleve} from "../../shared/model/Eleve";
 import {DecimalPipe, NgOptimizedImage} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {StudentService} from "../../shared/services/student.service";
+import {Router} from "@angular/router";
+import {StudentPayment} from "../../shared/model/StudentPayment";
 
 @Component({
   selector: 'app-pay-eleve',
@@ -22,7 +24,9 @@ export class PayEleveComponent implements OnInit {
   @Input() student!: Eleve;
   paymentForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private paymentService: StudentService) {
+  constructor(private fb: FormBuilder,
+              private paymentService: StudentService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -35,15 +39,32 @@ export class PayEleveComponent implements OnInit {
     });
   }
 
-  onSubmit(student: Eleve): void {
-    if (this.paymentForm.valid) {
-      // this.paymentService.createPayment(this.paymentForm.value, student.id)
-      //   .subscribe(response => {
-      //     console.log('Paiement créé avec succès', response);
-      //   });
+  cancel() {
+    this.activeModal.close();
+  }
 
-      console.log(student.id)
-      console.log(this.paymentForm.value)
+  onSubmit(student: Eleve): void {
+
+    if (this.paymentForm.valid) {
+
+      let studentPayment: StudentPayment = {
+        id: 0,
+        totalAnnualCosts: 0,
+        amount: this.paymentForm.value.amount,
+        month: this.paymentForm.value.month,
+        paymentReason: this.paymentForm.value.paymentReason,
+        paymentStatus: this.paymentForm.value.paymentStatus = this.paymentForm.value.paymentStatus ? "avance" : "retard",
+        create_at: Date.now()
+      }
+
+      this.paymentService.createPayment(studentPayment, student.id)
+        .subscribe(response => {
+          if (this.componentName === "monthly payment") {
+            this.activeModal.close()
+          } else {
+            this.router.navigateByUrl("/dash/detail-student/" + student.id);
+          }
+        });
     }
   }
 }
