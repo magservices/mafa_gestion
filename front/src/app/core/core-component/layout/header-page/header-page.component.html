@@ -24,18 +24,20 @@
       paiements, et les transferts d'élèves."
     </div>
 
-    <div class="row text-center mb-4">
-      <div class="col-md-3 mb-3">
-        <button class="btn btn-light w-100"><span>👨‍🎓</span> Les eleves</button>
+    <div class="row justify-between text-center mb-4">
+      <div class="col-md-9 flex gap-5">
+        <div class="col-md-3 mb-3">
+          <button routerLink="student" class="btn btn-light w-100"><span><i class="fas fa-graduation-cap"></i></span> Les eleves</button>
+        </div>
+        <div class="col-md-3 mb-3">
+          <button routerLink="pay" class="btn btn-light w-100"><span><i class="fas fa-money-bill-1-wave"></i></span> Paiement</button>
+        </div>
       </div>
       <div class="col-md-3 mb-3">
-        <button class="btn btn-light w-100"><span>📝</span> Paiement</button>
-      </div>
-      <div class="col-md-3 mb-3">
-        <button class="btn btn-light w-100"><span>🏫</span> Etablissements</button>
-      </div>
-      <div class="col-md-3 mb-3">
-        <button class="btn btn-light w-100"><span>➕</span> Ajouter un utilisateur</button>
+        <button routerLink="register-student" class="btn btn-light w-100">
+          <span><i class="fas fa-circle-plus"></i>
+          </span> Ajouter un élève
+        </button>
       </div>
     </div>
   </div>

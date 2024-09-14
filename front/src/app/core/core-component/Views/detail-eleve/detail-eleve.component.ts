@@ -40,7 +40,7 @@ import {PayEleveComponent} from "../pay-eleve/pay-eleve.component";
 })
 export class DetailEleveComponent implements OnInit {
 
-  student!: Eleve;
+  student!: any;
 
   private modalService = inject(NgbModal);
 

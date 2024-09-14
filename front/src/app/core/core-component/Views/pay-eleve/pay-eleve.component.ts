@@ -1,7 +1,7 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {Eleve} from "../../shared/model/Eleve";
-import {DecimalPipe, NgOptimizedImage, UpperCasePipe} from "@angular/common";
+import {DecimalPipe, NgOptimizedImage, TitleCasePipe, UpperCasePipe} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {StudentService} from "../../shared/services/student.service";
 import {Router} from "@angular/router";
@@ -14,7 +14,8 @@ import {StudentPayment} from "../../shared/model/StudentPayment";
     NgOptimizedImage,
     DecimalPipe,
     ReactiveFormsModule,
-    UpperCasePipe
+    UpperCasePipe,
+    TitleCasePipe
   ],
   templateUrl: './pay-eleve.component.html',
   styleUrl: './pay-eleve.component.scss'
@@ -25,8 +26,8 @@ export class PayEleveComponent implements OnInit {
   @Input() student!: Eleve;
   paymentForm!: FormGroup;
   allMonths: string[] = ['octobre', 'novembre', 'decembre', 'janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin'];
-  paidMonths: string[] = []; // Remplir cette liste avec les mois déjà payés
-  remainingMonths: string[] = [];
+  paidMonths: Map<string, number> = new Map(); // Correction ici
+  remainingMonths: { month: string, amountRemaining: number }[] = []; // Changement ici
 
   remainingTotal!: number;
 
@@ -41,25 +42,64 @@ export class PayEleveComponent implements OnInit {
       paymentReason: ['', Validators.required],
       paymentStatus: [''],
       amount: [null, Validators.required],
-      month: ['Selectionnez le mois à payer', Validators.required],
+      month: [null, Validators.required],
     });
     this.remainingMonthsToPay();
+    if (this.remainingMonths.length > 0) {
+      // Sélectionner le premier mois restant comme valeur par défaut
+      this.paymentForm.get('month')?.setValue(this.remainingMonths[0].month);
+    }
   }
 
   private remainingMonthsToPay() {
+    // Initialiser le coût mensuel à 0
+    let monthlyCost: number = 0;
 
-    // on recupere les mois deja paye
+    // Récupérer les mois déjà payés et les montants correspondants
     if (this.student !== undefined && this.student.registerPaymentStudent.length !== 0) {
-      this.student.registerPaymentStudent.forEach(
-        (resPayment)=> {
-          this.paidMonths.push(resPayment.month);
-        }
-      )
+      // Récupérer le premier paiement d'élève pour obtenir le montant total annuel
+      let firstPayment = this.student.registerPaymentStudent[this.student.registerPaymentStudent.length - 1];
+
+      if (firstPayment) {
+        // Calculer le montant mensuel
+        monthlyCost = firstPayment.totalAnnualCosts / 9; // Assurez-vous que le nombre de mois est correct (ici 9 mois)
+      }
+
+      // Réinitialiser la Map paidMonths
+      this.paidMonths.clear();
+
+      // Calculer les paiements déjà effectués
+      this.student.registerPaymentStudent.forEach((resPayment) => {
+        // Ajouter ou mettre à jour le montant payé pour chaque mois
+        this.paidMonths.set(resPayment.month, (this.paidMonths.get(resPayment.month) || 0) + resPayment.amount);
+      });
     }
 
-    // Calcul des mois restants
-    this.remainingMonths = this.allMonths.filter(month => !this.paidMonths.includes(month));
+    // Variables pour gérer les paiements supplémentaires
+    let extraPayment = 0;
+
+    // Calcul des mois restants avec les montants dus
+    this.remainingMonths = this.allMonths.map(month => {
+      // Calculer le montant payé pour le mois
+      const amountPaid = (this.paidMonths.get(month) || 0) + extraPayment;
+
+      // Si le paiement pour le mois dépasse le montant mensuel, masquer le mois et déduire l'excès
+      if (amountPaid >= monthlyCost) {
+        extraPayment = amountPaid - monthlyCost; // Stocker l'excédent pour le mois suivant
+        return null; // Masquer ce mois car il est totalement payé
+      } else {
+        // Calculer le montant restant à payer pour le mois
+        const amountRemaining = monthlyCost - amountPaid;
+        extraPayment = 0; // Réinitialiser car il n'y a plus d'excédent
+        return {
+          month,
+          amountRemaining
+        };
+      }
+    }).filter(item => item !== null); // Filtrer les mois totalement payés (retirer les null)
+
   }
+
 
   cancel() {
     this.activeModal.close();
@@ -69,7 +109,7 @@ export class PayEleveComponent implements OnInit {
     // Vérifier si le tableau contient au moins un élément
     if (student.registerPaymentStudent && student.registerPaymentStudent.length > 0) {
       // Récupérer le dernier paiement dans le tableau
-      const lastPayment = student.registerPaymentStudent[student.registerPaymentStudent.length - 1];
+      const lastPayment = student.registerPaymentStudent[0];
 
       // Calculer le montant restant par rapport au nouveau montant payé
       this.remainingTotal = lastPayment.totalAnnualCosts - newAmount;
@@ -145,22 +185,21 @@ export class PayEleveComponent implements OnInit {
         month: this.paymentForm.value.month,
         fees: this.componentName === "first payment",
         paymentReason: this.paymentForm.value.paymentReason,
+        create_at: 0,
+        register_student_id: 0,
         paymentStatus: this.componentName === "first payment" ? "normal" : this.updatePaymentStatus(student, this.paymentForm.value.month, this.paymentForm.value.amount)
       }
 
-      console.log(studentPayment)
-
-
-      // this.paymentService.createPayment(studentPayment, student.id)
-      //   .subscribe(response => {
-      //     if (this.componentName === "monthly payment") {
-      //       this.activeModal.close()
-      //       window.location.reload()
-      //     } else {
-      //       this.activeModal.close()
-      //       this.router.navigateByUrl("/dash/detail-student/" + student.id);
-      //     }
-      //   });
+      this.paymentService.createPayment(studentPayment, student.id)
+        .subscribe(response => {
+          if (this.componentName === "monthly payment") {
+            this.activeModal.close()
+            window.location.reload()
+          } else {
+            this.activeModal.close()
+            this.router.navigateByUrl("/dash/detail-student/" + student.id);
+          }
+        });
     }
   }
 }

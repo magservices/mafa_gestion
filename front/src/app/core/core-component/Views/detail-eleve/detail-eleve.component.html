@@ -69,7 +69,7 @@
                         }
                         <td>{{ register.amount | number:'1.0-0' }} FCFA</td>
                         <td>{{ register.totalAnnualCosts | number:'1.0-0' }} FCFA</td>
-                        <td>05 Jan 2024</td>
+                        <td> {{ register.create_at | date }}</td>
                       </tr>
                     }
                   }
@@ -80,7 +80,9 @@
         </div>
 
         <div class="flex justify-end gap-5 py-2.5">
-          <button (click)="newPay('monthly payment', student)" class="btn btn-secondary">Nouveau paiement</button>
+          @if (student.registerPaymentStudent[0].totalAnnualCosts !== 0 ) {
+            <button (click)="newPay('monthly payment', student)" class="btn btn-secondary">Nouveau paiement</button>
+          }
         </div>
       </div>
     </div>

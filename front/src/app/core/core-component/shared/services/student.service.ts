@@ -42,6 +42,6 @@ export class StudentService {
 
   // Récupérer tous les paiements
   getAllPayments(): Observable<StudentPayment[]> {
-    return this.http.get<StudentPayment[]>(`${environment.apiUrl}`);
+    return this.http.get<StudentPayment[]>(`${environment.apiUrl}/student_payment`);
   }
 }

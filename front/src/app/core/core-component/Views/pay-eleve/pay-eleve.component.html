@@ -46,9 +46,8 @@
                 <div class="col-md-6 mb-3">
                   <label for="feesGroup" class="form-label">Mois à payer</label>
                   <select formControlName="month" class="form-select" id="feesGroup">
-                    <option selected>Selectionnez le mois à payer</option>
-                    @for (month of remainingMonths; track month) {
-                      <option [value]="month">{{ month | uppercase }}</option>
+                    @for (item of remainingMonths; track item; let i = $index) {
+                      <option  [value]="item.month">{{ item.month | titlecase }} - reste : {{ item.amountRemaining | number:"1.0-0" }} FCFA</option>
                     }
                   </select>
                 </div>

@@ -181,6 +181,8 @@ class EleveController extends AbstractController
                 'paymentStatus' => $payment->getPaymentStatus(),
                 'amount' => $payment->getAmount(),
                 'month' => $payment->getMonth(),
+                'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
+                'register_student_id' => $payment->getRegisterStudent()->getId() // ID de l'élève lié
             ];
         }
 
