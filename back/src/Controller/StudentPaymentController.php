@@ -38,9 +38,11 @@ class StudentPaymentController extends AbstractController
                 'totalAnnualCosts' => $payment->getTotalAnnualCosts(),
                 'paymentReason' => $payment->getPaymentReason(),
                 'paymentStatus' => $payment->getPaymentStatus(),
+                'fees' => $payment->isFees(),
                 'amount' => $payment->getAmount(),
                 'month' => $payment->getMonth(),
-                'registerStudentId' => $payment->getRegisterStudent()?->getId(),
+                'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
+                'register_student_id' => $payment->getRegisterStudent()->getId()
             ];
         }
 
@@ -57,7 +59,17 @@ class StudentPaymentController extends AbstractController
             return $this->json(['message' => 'Payment not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return $this->json($payment);
+        return new JsonResponse([
+            'id' => $payment->getId(),
+            'totalAnnualCosts' => $payment->getTotalAnnualCosts(),
+            'paymentReason' => $payment->getPaymentReason(),
+            'paymentStatus' => $payment->getPaymentStatus(),
+            'fees' => $payment->isFees(),
+            'amount' => $payment->getAmount(),
+            'month' => $payment->getMonth(),
+            'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
+            'register_student_id' => $payment->getRegisterStudent()->getId() // ID de l'élève lié
+        ], Response::HTTP_CREATED);
     }
 
     #[Route('/create', name: 'student_payment_create', methods: ['POST'])]
@@ -84,6 +96,7 @@ class StudentPaymentController extends AbstractController
         $payment->setPaymentReason($data['paymentReason']);
         $payment->setPaymentStatus($data['paymentStatus']);
         $payment->setAmount($data['amount']);
+        $payment->setFees($data['fees']);
         $payment->setMonth($data['month']);
 
         // Gérer le champ 'create_at'
@@ -113,6 +126,7 @@ class StudentPaymentController extends AbstractController
             'totalAnnualCosts' => $payment->getTotalAnnualCosts(),
             'paymentReason' => $payment->getPaymentReason(),
             'paymentStatus' => $payment->getPaymentStatus(),
+            'fees' => $payment->isFees(),
             'amount' => $payment->getAmount(),
             'month' => $payment->getMonth(),
             'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
@@ -136,6 +150,7 @@ class StudentPaymentController extends AbstractController
         $payment->setPaymentStatus($data['paymentStatus'] ?? $payment->getPaymentStatus());
         $payment->setAmount($data['amount'] ?? $payment->getAmount());
         $payment->setMonth($data['month'] ?? $payment->getMonth());
+        $payment->setFees($data['fees'] ?? $payment->isFees());
         $payment->setCreateAt($data['create_at'] ?? $payment->getCreateAt());
 
         $this->entityManager->flush();

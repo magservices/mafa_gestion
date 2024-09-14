@@ -40,6 +40,9 @@ class StudentPayment
     #[ORM\Column]
     private ?\DateTimeImmutable $createAt = null;
 
+    #[ORM\Column]
+    private ?bool $fees = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -126,6 +129,18 @@ class StudentPayment
     public function setCreateAt(\DateTimeImmutable $createAt): static
     {
         $this->createAt = $createAt;
+
+        return $this;
+    }
+
+    public function isFees(): ?bool
+    {
+        return $this->fees;
+    }
+
+    public function setFees(bool $fees): static
+    {
+        $this->fees = $fees;
 
         return $this;
     }

@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {StudentService} from "../../shared/services/student.service";
 import {Eleve} from "../../shared/model/Eleve";
-import {DatePipe, NgOptimizedImage} from "@angular/common";
+import {DatePipe, DecimalPipe, NgOptimizedImage} from "@angular/common";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {PayEleveComponent} from "../pay-eleve/pay-eleve.component";
@@ -13,7 +13,8 @@ import {PayEleveComponent} from "../pay-eleve/pay-eleve.component";
   imports: [
     NgOptimizedImage,
     DatePipe,
-    RouterLink
+    RouterLink,
+    DecimalPipe
   ],
   templateUrl: './detail-eleve.component.html',
   styleUrl: './detail-eleve.component.scss',

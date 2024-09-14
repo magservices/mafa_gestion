@@ -48,38 +48,31 @@
               <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th>Fees Group</th>
-                  <th>Fees Code</th>
-                  <th>Due Date</th>
-                  <th>Amount $</th>
+                  <th>Motif de paiement</th>
+                  <th>Mois</th>
                   <th>Status</th>
-                  <th>Ref ID</th>
-                  <th>Mode</th>
-                  <th>Date Paid</th>
+                  <th>Montant</th>
+                  <th>Montant Restant</th>
+                  <th>Date du paiement</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Class 1 General (Dec month Fees)</td>
-                  <td>dec-month-fees</td>
-                  <td>10 Jan 2024</td>
-                  <td>2500</td>
-                  <td><span class="badge bg-success">Paid</span></td>
-                  <td>#435443</td>
-                  <td>Cash</td>
-                  <td>05 Jan 2024</td>
-                </tr>
-                <tr>
-                  <td>Class 1 General (Jan month Fees)</td>
-                  <td>jan-month-fees</td>
-                  <td>10 Feb 2024</td>
-                  <td>2000</td>
-                  <td><span class="badge bg-success">Paid</span></td>
-                  <td>#435444</td>
-                  <td>Cash</td>
-                  <td>01 Feb 2024</td>
-                </tr>
-                <!-- Add more rows as needed -->
+                  @if (student.registerPaymentStudent.length !== 0) {
+                    @for (register of student.registerPaymentStudent; track register) {
+                      <tr>
+                        <td>{{ register.paymentReason }}</td>
+                        <td>{{ register.month }}</td>
+                        @if (register.paymentStatus === 'avance') {
+                          <td><span class="badge bg-success">Avance</span></td>
+                        }@else {
+                          <td><span class="badge bg-danger">Retard</span></td>
+                        }
+                        <td>{{ register.amount | number:'1.0-0' }} FCFA</td>
+                        <td>{{ register.totalAnnualCosts | number:'1.0-0' }} FCFA</td>
+                        <td>05 Jan 2024</td>
+                      </tr>
+                    }
+                  }
                 </tbody>
               </table>
             </div>

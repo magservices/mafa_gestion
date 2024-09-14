@@ -47,15 +47,9 @@
                   <label for="feesGroup" class="form-label">Mois à payer</label>
                   <select formControlName="month" class="form-select" id="feesGroup">
                     <option selected>Selectionnez le mois à payer</option>
-                    <option value="octobre">Octobre</option>
-                    <option value="novembre">Novembre</option>
-                    <option value="decembre">Décembre</option>
-                    <option value="janvier">Janvier</option>
-                    <option value="fevrier">Février</option>
-                    <option value="mars">Mars</option>
-                    <option value="avril">Avril</option>
-                    <option value="mai">Mai</option>
-                    <option value="juin">Juin</option>
+                    @for (month of remainingMonths; track month) {
+                      <option [value]="month">{{ month | uppercase }}</option>
+                    }
                   </select>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -68,11 +62,6 @@
                 <label for="notes" class="form-label">Motif de paiement</label>
                 <textarea formControlName="paymentReason" class="form-control" id="notes" rows="3"
                           placeholder="Ajouter un motif de paiement"></textarea>
-              </div>
-
-              <div class="form-check form-switch mb-3">
-                <input formControlName="paymentStatus" value="avance" class="form-check-input" type="checkbox" id="statusToggle">
-                <label class="form-check-label" for="statusToggle">Indiquez si l'élève est en avance ou en retard.</label>
               </div>
 
               <div class="d-flex justify-content-end">
@@ -115,18 +104,10 @@
                 <input formControlName="totalAnnualCosts" type="number" class="form-control" id="totalCost" placeholder="Entrez le montant payé">
               </div>
               <div class="col-md-6 mb-3">
-                <label for="feesGroup" class="form-label">Mois à payer</label>
+                <label for="feesGroup" class="form-label">Frais</label>
                 <select formControlName="month" class="form-select" id="fees">
                   <option selected>Selectionnez le mois à payer</option>
-                  <option value="octobre">Octobre</option>
-                  <option value="novembre">Novembre</option>
-                  <option value="decembre">Décembre</option>
-                  <option value="janvier">Janvier</option>
-                  <option value="fevrier">Février</option>
-                  <option value="mars">Mars</option>
-                  <option value="avril">Avril</option>
-                  <option value="mai">Mai</option>
-                  <option value="juin">Juin</option>
+                  <option value="frais d'inscription">Frais d'inscription</option>
                 </select>
               </div>
               <div class="col-md-6 mb-3">
