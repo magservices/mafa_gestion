@@ -14,6 +14,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 export class RegisterEleveComponent implements OnInit{
 
   studentForm!: FormGroup;
+  loading = false;  // Variable pour suivre l'état du chargement
   selectedFile: File | null = null;
   previewUrl: any = null;
   private modalService = inject(NgbModal);
@@ -74,11 +75,12 @@ export class RegisterEleveComponent implements OnInit{
   }
 
   onSubmit(): void {
+    this.loading = false;  // Variable pour suivre l'état du chargement
     if (this.studentForm.valid && this.selectedFile) {
       this.studentForm.value.studentID = generateStudentId();
       this.studentService.createStudent(this.studentForm.value, this.selectedFile).subscribe(
         (student) => {
-          console.log(student)
+          this.loading = true;  // Variable pour suivre l'état du chargement
           const modalRef = this.modalService.open(PayEleveComponent,
             {size: "lg", animation: true, centered: true, backdrop: 'static'});
           modalRef.componentInstance.componentName = 'first payment';

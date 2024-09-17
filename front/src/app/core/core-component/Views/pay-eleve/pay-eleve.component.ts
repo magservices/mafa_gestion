@@ -178,15 +178,13 @@ export class PayEleveComponent implements OnInit {
     this.remainingToBePaid(student, this.paymentForm.value.amount);
     this.updatePaymentStatus(student, this.paymentForm.value.month, this.paymentForm.value.amount);
     if (this.paymentForm.valid) {
-      let studentPayment: StudentPayment = {
+      let studentPayment: any = {
         id: 0,
         totalAnnualCosts: this.paymentForm.value.totalAnnualCosts !== null ? this.paymentForm.value.totalAnnualCosts : this.remainingTotal,
         amount: this.paymentForm.value.amount,
         month: this.paymentForm.value.month,
         fees: this.componentName === "first payment",
         paymentReason: this.paymentForm.value.paymentReason,
-        create_at: 0,
-        register_student_id: 0,
         paymentStatus: this.componentName === "first payment" ? "normal" : this.updatePaymentStatus(student, this.paymentForm.value.month, this.paymentForm.value.amount)
       }
 

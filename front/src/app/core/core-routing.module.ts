@@ -12,7 +12,7 @@ import { UserFormComponent } from './core-component/Views/user-form/user-form.co
 
 const routes: Routes = [
   {path: '', component: AuthComponent},
-  {path: 'user-form', component: UserFormComponent},
+  {path: 'register-user', component: UserFormComponent},
   {
     path: 'dash',
     component: DashPageComponent, canActivate: [AuthGuard],

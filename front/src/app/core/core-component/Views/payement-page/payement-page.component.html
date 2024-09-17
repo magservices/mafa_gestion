@@ -6,7 +6,7 @@
       <div class="d-flex justify-content-between align-items-center p-4 bg-light rounded shadow-sm mb-3">
         <h5 class="mb-0">Liste des paiements</h5>
         <div class="search-container">
-          <input type="text" class="form-control" placeholder="Rechercher...">
+          <input type="text" [formControl]="searchControl" class="form-control" placeholder="Rechercher...">
         </div>
       </div>
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -48,7 +48,7 @@
           </thead>
           <tbody>
             @if (payments.length !== 0) {
-              @for (payment of payments; track payment; let i = $index) {
+              @for (payment of payments | slice: (paymentPage - 1) * pageSize : paymentPage * pageSize;; track payment; let i = $index) {
                 <tr
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -90,6 +90,9 @@
             }
           </tbody>
         </table>
+        <ngb-pagination class="d-flex justify-content-end mt-5 px-2" [(page)]="paymentPage"
+                        [pageSize]="pageSize" [maxSize]="5" [boundaryLinks]="true"
+                        [collectionSize]="payments.length"/>
       </div>
     </div>
   </div>

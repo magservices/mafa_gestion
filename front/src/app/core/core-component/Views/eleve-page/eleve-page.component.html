@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container">
   <div class="row">
     <!-- Section Listes des étudiants -->
     <div class="col-md-9">
@@ -24,7 +24,7 @@
         </thead>
         <tbody>
           @if (filteredStudents && filteredStudents.length !== 0) {
-            @for (student of filteredStudents; track student; let i = $index) {
+            @for (student of filteredStudents | slice: (studentPage - 1) * pageSize : studentPage * pageSize; ; track student; let i = $index) {
               <tr>
                 <th scope="row">{{ i + 1 }}</th>
                 <td>
@@ -49,11 +49,13 @@
                 </td>
               </tr>
             }
-          } @else {
-            Il y a pas d'élève !
           }
         </tbody>
       </table>
+
+      <ngb-pagination class="d-flex justify-content-end mt-5 px-2" [(page)]="studentPage"
+                      [pageSize]="6" [maxSize]="5" [boundaryLinks]="true"
+                      [collectionSize]="filteredStudents.length"/>
 
     </div>
 
@@ -86,6 +88,6 @@
         }
       </form>
     </div>
-    
+
   </div>
 </div>

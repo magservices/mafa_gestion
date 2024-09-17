@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {Eleve} from "../../shared/model/Eleve";
 import {StudentService} from "../../shared/services/student.service";
-import {NgOptimizedImage} from "@angular/common";
+import {NgOptimizedImage, SlicePipe} from "@angular/common";
 import { FormsModule } from '@angular/forms';
+import {NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-eleve-page',
@@ -11,16 +12,19 @@ import { FormsModule } from '@angular/forms';
   imports: [
     RouterLink,
     NgOptimizedImage,
-    FormsModule
+    FormsModule,
+    NgbPaginationModule,
+    SlicePipe
   ],
   templateUrl: './eleve-page.component.html',
   styleUrl: './eleve-page.component.scss'
 })
 export class ElevePageComponent implements OnInit{
   students! : Eleve[];
-  filteredStudents!: Eleve[]; 
+  filteredStudents!: Eleve[];
   taile!:number;
-
+  studentPage: number = 5;
+  pageSize = 5;
   searchName: string = '';
   searchNiveau: string = '';
   searchClass: string = '';

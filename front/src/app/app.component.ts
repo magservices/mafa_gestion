@@ -1,8 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {SocketService} from "./core/core-component/shared/services/socket";
 import {FormsModule} from "@angular/forms";
+import {WebhookService} from "./core/core-component/shared/services/webhook.service";
 
 @Component({
   selector: 'app-root',
@@ -11,12 +11,17 @@ import {FormsModule} from "@angular/forms";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'mafa-gestion';
 
-  messages: string[] = [];
 
+  constructor(private webhookService: WebhookService) {}
 
   ngOnInit() {
+    this.webhookService.onNotification().subscribe(notification => {
+      console.log('Notification received:', notification);
+      // Traitez les notifications ici
+    });
   }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Eleve;
+use App\Service\WebhookService;
 use App\Repository\EleveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 #[Route('/api/eleve')]
 class EleveController extends AbstractController
@@ -18,13 +20,21 @@ class EleveController extends AbstractController
     private $entityManager;
     private $eleveRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, EleveRepository $eleveRepository)
+    private $webhookService;
+
+    public function __construct(EntityManagerInterface $entityManager,
+                                EleveRepository $eleveRepository,
+                                WebhookService $webhookService)
     {
         $this->entityManager = $entityManager;
         $this->eleveRepository = $eleveRepository;
+        $this->webhookService = $webhookService;
     }
 
 
+    /**
+     * @throws TransportExceptionInterface
+     */
     #[Route('/create', name: 'create_student', methods: ['POST'])]
     public function createEleve(Request $request, #[Autowire('%photo_dir%')] string $photoDir): JsonResponse
     {
@@ -83,12 +93,22 @@ class EleveController extends AbstractController
             'registerPaymentStudent' => [],
         ];
 
+        // Envoyer une notification via webhook
+        $this->webhookService->sendWebhookNotification('https://mafa.magservices-mali.org/api/webhook/notify', [
+            'message' => "Inscription d'un nouveau élève " . $eleve->getPrenom() . ' ' . $eleve->getNom(),
+            'data' => $data
+        ]);
+
         return new JsonResponse($data, Response::HTTP_OK);
 
     }
 
 
 // Update an existing Eleve
+
+    /**
+     * @throws TransportExceptionInterface
+     */
     #[
         Route('/{id}', name: 'update_eleve', methods: ['POST'])]
     public function updateEleve(Request $request, int $id, #[Autowire('%photo_dir%')] string $photoDir): JsonResponse
@@ -129,8 +149,15 @@ class EleveController extends AbstractController
             $eleve->setPhotoName($photoName);
         }
 
+
         $this->entityManager->persist($eleve);
         $this->entityManager->flush();
+
+        // Envoyer une notification via webhook
+        $this->webhookService->sendWebhookNotification('https://mafa.magservices-mali.org/api/webhook/notify', [
+            'message' => "Mise à jour élève " . $eleve->getPrenom() . ' ' . $eleve->getNom(),
+            'data' => $eleve
+        ]);
 
         return new JsonResponse(['status' => 'Eleve updated!'], Response::HTTP_OK);
     }

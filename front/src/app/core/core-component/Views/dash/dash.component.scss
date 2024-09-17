@@ -1,0 +1,91 @@
+// Variables de style
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$bg-color: #f8f9fa;
+$text-color: #343a40;
+$border-color: #dee2e6;
+$hover-color: #f1f3f5;
+
+// Mixins pour les ombres
+@mixin box-shadow($shadow-color) {
+  box-shadow: 0 4px 6px rgba($shadow-color, 0.1), 0 2px 4px rgba($shadow-color, 0.06);
+}
+
+// Styles pour la table
+.custom-table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: $bg-color;
+
+  thead {
+    background-color: $primary-color;
+    color: #fff;
+
+    th {
+      padding: 10px;
+      text-align: center;
+    }
+  }
+
+  tbody {
+    tr {
+      &:nth-child(odd) {
+        background-color: $hover-color;
+      }
+
+      &:hover {
+        background-color: lighten($hover-color, 10%);
+      }
+
+      td {
+        padding: 10px;
+        vertical-align: middle;
+        text-align: center;
+      }
+    }
+  }
+
+  // Style pour la photo
+  .student-photo {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    @include box-shadow($border-color);
+  }
+
+  // Style pour l'icône "Voir"
+  .view-icon {
+    color: $primary-color;
+    font-size: 1.2rem;
+
+    &:hover {
+      color: darken($primary-color, 10%);
+    }
+  }
+}
+
+// Pagination personnalisée
+.pagination-custom {
+  .page-link {
+    color: $primary-color;
+
+    &:hover {
+      background-color: $hover-color;
+      border-color: $primary-color;
+    }
+
+    &.active {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      color: #fff;
+    }
+  }
+}
+
+// Style global
+body {
+  font-family: 'Roboto', sans-serif;
+  color: $text-color;
+  background-color: $bg-color;
+}

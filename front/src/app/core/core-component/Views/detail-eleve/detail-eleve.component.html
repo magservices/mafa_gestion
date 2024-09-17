@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container">
   <!-- Student Details -->
   @if (student) {
     <div class="row">
@@ -64,7 +64,9 @@
                         <td>{{ register.month }}</td>
                         @if (register.paymentStatus === 'avance') {
                           <td><span class="badge bg-success">Avance</span></td>
-                        }@else {
+                        }@else if (register.paymentStatus === 'normal'){
+                          <td><span class="badge bg-primary">Normal</span></td>
+                        } @else {
                           <td><span class="badge bg-danger">Retard</span></td>
                         }
                         <td>{{ register.amount | number:'1.0-0' }} FCFA</td>

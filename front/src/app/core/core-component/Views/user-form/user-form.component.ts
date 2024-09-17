@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../shared/services/user.service';
-import { User } from '../../shared/model/User';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UserService} from '../../shared/services/user.service';
+import {User} from '../../shared/model/User';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-form',
@@ -11,8 +11,12 @@ import { Router } from '@angular/router';
 })
 export class UserFormComponent implements OnInit {
   userForm!: FormGroup;
-  user:User=new User();
-  constructor(private fb: FormBuilder, private userService: UserService,private router: Router) { }
+  user: User = new User();
+  loading = false;  // Variable pour suivre l'état du chargement
+
+  constructor(private fb: FormBuilder,
+              private userService: UserService,
+              private router: Router) {}
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
@@ -27,18 +31,20 @@ export class UserFormComponent implements OnInit {
 
   onSubmit() {
     if (this.userForm.valid) {
-     this.user.nom=this.userForm.value.nom;
-      this.user.prenom=this.userForm.value.prenom;
-      this.user.tel=this.userForm.value.tel;
-      this.user.email=this.userForm.value.email;
-      this.user.password=this.userForm.value.password;
+      this.loading = true;  // Active l'indicateur de chargement
+      this.user.nom = this.userForm.value.nom;
+      this.user.prenom = this.userForm.value.prenom;
+      this.user.tel = this.userForm.value.tel;
+      this.user.email = this.userForm.value.email;
+      this.user.password = this.userForm.value.password;
       if (!this.user.roles) {
-        this.user.roles = []; 
+        this.user.roles = [];
       }
       this.user.roles.push(this.userForm.value.role);
       this.userService.createUser(this.user).subscribe(
-        (user:User)=>{
-            this.router.navigateByUrl("/");
+        (user: User) => {
+          this.loading = false;  // Désactive l'indicateur de chargement après traitement
+          this.router.navigateByUrl("/");
         }
       );
       //console.info(this.userForm.value);

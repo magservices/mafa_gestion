@@ -16,7 +16,11 @@
       <div class="mb-3 text-end">
         <a href="#" class="text-danger">Mot de passe oublié ?</a>
       </div>
-      <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary w-75">Connexion</button>
-    </form>
+
+      @if (!loading) {
+        <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary w-75">Connexion</button>
+      }@else {
+        <i class="spinner-border"></i>
+      }</form>
   </div>
 </div>

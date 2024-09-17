@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-  
+
       <div class="row">
         <div class="col-md-6 mb-3">
             <label for="email">Email</label>
@@ -30,7 +30,7 @@
           <input type="text" class="form-control" id="tel" formControlName="tel" placeholder="Enter téléphone" required>
         </div>
       </div>
-  
+
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="password">Mot de passe</label>
@@ -44,8 +44,10 @@
                 </select>
             </div>
       </div>
-  
-      <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Submit</button>
+      @if (!loading) {
+        <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Submit</button>
+      }@else {
+        <i class="bi bi-hourglass-split spinner-border spinner-border-sm"></i> Loading...
+      }
     </form>
   </div>
-  
