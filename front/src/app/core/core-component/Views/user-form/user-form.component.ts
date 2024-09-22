@@ -41,13 +41,14 @@ export class UserFormComponent implements OnInit {
         this.user.roles = [];
       }
       this.user.roles.push(this.userForm.value.role);
+
+      console.log(this.user)
       this.userService.createUser(this.user).subscribe(
         (user: User) => {
           this.loading = false;  // Désactive l'indicateur de chargement après traitement
           this.router.navigateByUrl("/");
         }
       );
-      //console.info(this.userForm.value);
     }
   }
 }

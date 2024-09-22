@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {FormsModule} from "@angular/forms";
-import {WebhookService} from "./core/core-component/shared/services/webhook.service";
+import {NotificationService} from "./core/core-component/shared/services/notification.service";
 
 @Component({
   selector: 'app-root',
@@ -15,10 +15,10 @@ export class AppComponent implements OnInit {
   title = 'mafa-gestion';
 
 
-  constructor(private webhookService: WebhookService) {}
+  constructor(private notificationService : NotificationService) {}
 
   ngOnInit() {
-    this.webhookService.onNotification().subscribe(notification => {
+    this.notificationService.pollNotifications().subscribe(notification => {
       console.log('Notification received:', notification);
       // Traitez les notifications ici
     });

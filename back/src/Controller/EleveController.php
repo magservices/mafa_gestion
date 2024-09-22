@@ -94,7 +94,7 @@ class EleveController extends AbstractController
         ];
 
         // Envoyer une notification via webhook
-        $this->webhookService->sendWebhookNotification('https://mafa.magservices-mali.org/api/webhook/notify', [
+        $this->webhookService->sendWebhookNotification('https://socket.magservices-mali.org/api/webhook/notify', [
             'message' => "Inscription d'un nouveau élève " . $eleve->getPrenom() . ' ' . $eleve->getNom(),
             'data' => $data
         ]);

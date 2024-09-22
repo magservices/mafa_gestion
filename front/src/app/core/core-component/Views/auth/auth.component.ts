@@ -33,16 +33,17 @@ export class AuthComponent {
 
 
   onSubmit() {
+    this.loading = true;  // Variable pour suivre l'état du chargement
     if (this.loginForm.valid) {
-      this.loading = false;  // Variable pour suivre l'état du chargement
       const data = { username: this.loginForm.value.email, password: this.loginForm.value.password };
       this.userService.login(data).subscribe(
         (token : string)=>{
-          this.loading = true;  // Variable pour suivre l'état du chargement
+          this.loading = false;  // Variable pour suivre l'état du chargement
           localStorage.setItem('USER-TOKEN-MAFA', token);
           this.router.navigateByUrl("/dash");
         },
         (error) => {
+          this.loading = false;  // Variable pour suivre l'état du chargement
           alert("Le mot de passe ou l'adresse e-mail que vous avez saisis est incorrect.");
 
         }
