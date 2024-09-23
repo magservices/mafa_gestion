@@ -6,6 +6,7 @@ use App\Entity\Eleve;
 use App\Entity\StudentPayment;
 use App\Repository\EleveRepository;
 use App\Repository\StudentPaymentRepository;
+use App\Service\WebhookService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,10 +20,15 @@ class StudentPaymentController extends AbstractController
     private $entityManager;
     private $repository;
 
-    public function __construct(EntityManagerInterface $entityManager, StudentPaymentRepository $repository)
+    private $webhookService;
+
+    public function __construct(EntityManagerInterface $entityManager,
+                                StudentPaymentRepository $repository,
+                                WebhookService $webhookService)
     {
         $this->entityManager = $entityManager;
         $this->repository = $repository;
+        $this->webhookService = $webhookService;
     }
 
     #[Route('', name: 'student_payment_index', methods: ['GET'])]
@@ -119,6 +125,12 @@ class StudentPaymentController extends AbstractController
         // Sauvegarder le paiement dans la base de données
         $this->entityManager->persist($payment);
         $this->entityManager->flush();
+
+        // Envoyer une notification via webhook
+        $this->webhookService->sendWebhookNotification('https://socket.magservices-mali.org/api/webhook/notify', [
+            'message' => "Paiement mensuel de l'élève : " . $eleve->getPrenom() . ' ' . $eleve->getNom(),
+            'data' => $data
+        ]);
 
         // Retourner une réponse simplifiée sans sérialisation des entités liées
         return new JsonResponse([

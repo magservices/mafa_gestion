@@ -5,6 +5,7 @@ import {Eleve} from "../../shared/model/Eleve";
 import {DatePipe, DecimalPipe, NgOptimizedImage, SlicePipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
+import {SidebarComponent} from "../../basic-component/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-dash',
@@ -15,7 +16,8 @@ import {NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
     RouterLink,
     SlicePipe,
     NgbPaginationModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    SidebarComponent
   ],
   templateUrl: './dash.component.html',
   styleUrl: './dash.component.scss'

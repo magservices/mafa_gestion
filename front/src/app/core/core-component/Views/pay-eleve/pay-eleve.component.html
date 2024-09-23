@@ -122,7 +122,13 @@
 
             <div class="d-flex justify-content-end">
               <button (click)="cancel()" type="button" class="btn btn-secondary me-2">Annulez</button>
-              <button (click)="onSubmit(student)" type="submit" class="btn btn-primary">Appliquez le paiement</button>
+              <button (click)="onSubmit(student)" type="submit" class="btn btn-primary">
+                <ng-container *ngIf="!loading">Appliquez le paiement</ng-container>
+                <ng-container *ngIf="loading">
+                  <i class="bi bi-hourglass-split spinner-border spinner-border-sm"></i> Chargement...
+                </ng-container>
+              </button>
+
             </div>
           </form>
         </div>

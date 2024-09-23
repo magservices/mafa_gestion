@@ -1,7 +1,7 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {Eleve} from "../../shared/model/Eleve";
-import {DecimalPipe, NgOptimizedImage, TitleCasePipe, UpperCasePipe} from "@angular/common";
+import {DecimalPipe, NgIf, NgOptimizedImage, TitleCasePipe, UpperCasePipe} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {StudentService} from "../../shared/services/student.service";
 import {Router} from "@angular/router";
@@ -10,13 +10,14 @@ import {StudentPayment} from "../../shared/model/StudentPayment";
 @Component({
   selector: 'app-pay-eleve',
   standalone: true,
-  imports: [
-    NgOptimizedImage,
-    DecimalPipe,
-    ReactiveFormsModule,
-    UpperCasePipe,
-    TitleCasePipe
-  ],
+    imports: [
+        NgOptimizedImage,
+        DecimalPipe,
+        ReactiveFormsModule,
+        UpperCasePipe,
+        TitleCasePipe,
+        NgIf
+    ],
   templateUrl: './pay-eleve.component.html',
   styleUrl: './pay-eleve.component.scss'
 })
@@ -28,6 +29,8 @@ export class PayEleveComponent implements OnInit {
   allMonths: string[] = ['octobre', 'novembre', 'decembre', 'janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin'];
   paidMonths: Map<string, number> = new Map(); // Correction ici
   remainingMonths: { month: string, amountRemaining: number }[] = []; // Changement ici
+  loading = false;  // Variable pour suivre l'état du chargement
+
 
   remainingTotal!: number;
 
@@ -175,6 +178,8 @@ export class PayEleveComponent implements OnInit {
 
 
   onSubmit(student: Eleve): void {
+    this.loading = true;  // Variable pour suivre l'état du chargement
+
     this.remainingToBePaid(student, this.paymentForm.value.amount);
     this.updatePaymentStatus(student, this.paymentForm.value.month, this.paymentForm.value.amount);
     if (this.paymentForm.valid) {
@@ -190,6 +195,7 @@ export class PayEleveComponent implements OnInit {
 
       this.paymentService.createPayment(studentPayment, student.id)
         .subscribe(response => {
+          this.loading = false;  // Variable pour suivre l'état du chargement
           if (this.componentName === "monthly payment") {
             this.activeModal.close()
             window.location.reload()
