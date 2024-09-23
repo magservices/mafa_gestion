@@ -146,6 +146,7 @@ class StudentPaymentController extends AbstractController
         ], Response::HTTP_CREATED);
     }
 
+
     #[Route('/{id}', name: 'student_payment_update', methods: ['PUT'])]
     public function update(Request $request, int $id): JsonResponse
     {
