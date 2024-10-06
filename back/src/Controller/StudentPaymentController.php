@@ -163,7 +163,8 @@ class StudentPaymentController extends AbstractController
         // Envoyer une notification via webhook
         $this->webhookService->sendWebhookNotification('https://socket.magservices-mali.org/api/webhook/notify', [
             'message' => "Paiement mensuel de l'élève : " . $eleve->getPrenom() . ' ' . $eleve->getNom(),
-            'data' => $data
+            'data' => $data,
+            'establishmentId' => $eleve->getEstablishment()
         ]);
 
         // Retourner une réponse simplifiée sans sérialisation des entités liées
