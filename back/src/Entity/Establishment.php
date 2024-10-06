@@ -40,6 +40,9 @@ class Establishment
     #[ORM\Column(length: 255)]
     private ?string $modalType = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $accessKey = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -149,6 +152,18 @@ class Establishment
     public function setModalType(string $modalType): static
     {
         $this->modalType = $modalType;
+
+        return $this;
+    }
+
+    public function getAccessKey(): ?string
+    {
+        return $this->accessKey;
+    }
+
+    public function setAccessKey(string $accessKey): static
+    {
+        $this->accessKey = $accessKey;
 
         return $this;
     }

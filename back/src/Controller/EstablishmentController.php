@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,11 +30,11 @@ class EstablishmentController extends AbstractController
         return $this->json($establishment, Response::HTTP_OK);
     }
 
-    #[Route('/name/{name}', name: 'establishment_get_by_name', methods: ['GET'])]
-    public function getByName(string $name, EstablishmentRepository $establishmentRepository): JsonResponse
+    #[Route('/name/{accessKey}', name: 'establishment_get_by_key_access', methods: ['GET'])]
+    public function getByName(string $accessKey, EstablishmentRepository $establishmentRepository): JsonResponse
     {
         // Recherche de l'établissement par son nom
-        $establishment = $establishmentRepository->findOneBy(['name' => $name]);
+        $establishment = $establishmentRepository->findOneBy(['accessKey' => $accessKey]);
 
         // Si l'établissement n'existe pas, renvoyer une réponse 404
         if (!$establishment) {
@@ -44,6 +45,9 @@ class EstablishmentController extends AbstractController
         return $this->json($establishment, Response::HTTP_OK);
     }
 
+    /**
+     * @throws RandomException
+     */
     #[Route('/new', name: 'establishment_create', methods: ['POST'])]
     public function create(
         Request $request,
@@ -57,6 +61,9 @@ class EstablishmentController extends AbstractController
             return $this->json(['error' => 'Invalid or missing data'], Response::HTTP_BAD_REQUEST);
         }
 
+        // Générer une clé d'accès unique
+        $accessKey = $this->generateUniqueAccessKey($entityManager);
+
         $establishment = new Establishment();
         $establishment->setName($data['name']);
         $establishment->setAddress($data['address']);
@@ -65,6 +72,7 @@ class EstablishmentController extends AbstractController
         $establishment->setModalType($data['modalType']);
         $establishment->setPrice($data['price']);
         $establishment->setMonth($data['month']);
+        $establishment->setAccessKey($accessKey); // Utiliser la clé générée
         $establishment->setCreateAt(new \DateTimeImmutable());
         $establishment->setExpiryDate(new \DateTimeImmutable($data['expiryDate']));
 
@@ -79,6 +87,25 @@ class EstablishmentController extends AbstractController
 
         return $this->json($establishment, Response::HTTP_CREATED);
     }
+
+    /**
+     * Génère une clé d'accès unique de 20 caractères.
+     * @throws RandomException
+     */
+    private function generateUniqueAccessKey(EntityManagerInterface $entityManager): string
+    {
+        do {
+            // Générer une chaîne aléatoire de 20 caractères
+            $key = bin2hex(random_bytes(10));  // 10 bytes * 2 = 20 caractères hexadécimaux
+
+            // Vérifier si la clé existe déjà dans la base de données
+            $existingKey = $entityManager->getRepository(Establishment::class)
+                ->findOneBy(['accessKey' => $key]);
+        } while ($existingKey);  // Recommencer tant que la clé n'est pas unique
+
+        return $key;
+    }
+
 
     #[Route('/{id}/edit', name: 'establishment_update', methods: ['PUT'])]
     public function update(
