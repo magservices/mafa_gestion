@@ -43,6 +43,12 @@ class StudentPayment
     #[ORM\Column]
     private ?bool $fees = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $month_total = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $establishment = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -141,6 +147,30 @@ class StudentPayment
     public function setFees(bool $fees): static
     {
         $this->fees = $fees;
+
+        return $this;
+    }
+
+    public function getMonthTotal(): ?int
+    {
+        return $this->month_total;
+    }
+
+    public function setMonthTotal(?int $month_total): static
+    {
+        $this->month_total = $month_total;
+
+        return $this;
+    }
+
+    public function getEstablishment(): ?string
+    {
+        return $this->establishment;
+    }
+
+    public function setEstablishment(string $establishment): static
+    {
+        $this->establishment = $establishment;
 
         return $this;
     }

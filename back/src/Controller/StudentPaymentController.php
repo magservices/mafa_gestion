@@ -22,9 +22,9 @@ class StudentPaymentController extends AbstractController
 
     private $webhookService;
 
-    public function __construct(EntityManagerInterface $entityManager,
+    public function __construct(EntityManagerInterface   $entityManager,
                                 StudentPaymentRepository $repository,
-                                WebhookService $webhookService)
+                                WebhookService           $webhookService)
     {
         $this->entityManager = $entityManager;
         $this->repository = $repository;
@@ -47,8 +47,37 @@ class StudentPaymentController extends AbstractController
                 'fees' => $payment->isFees(),
                 'amount' => $payment->getAmount(),
                 'month' => $payment->getMonth(),
+                'month_total' => $payment->getMonthTotal(),
                 'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
-                'register_student_id' => $payment->getRegisterStudent()->getId()
+                'register_student_id' => $payment->getRegisterStudent()->getId(),
+                'establishment' => $payment->getEstablishment() // Ajouter l'établissement au retour
+            ];
+        }
+
+        return $this->json($data);
+    }
+
+    #[Route('/establishment/{establishment}', name: 'student_payment_by_establishment', methods: ['GET'])]
+    public function getPaymentsByEstablishment(string $establishment): JsonResponse
+    {
+        // Rechercher les paiements filtrés par l'établissement
+        $payments = $this->repository->findBy(['establishment' => $establishment]);
+
+        // Transformer les paiements en tableaux simples
+        $data = [];
+        foreach ($payments as $payment) {
+            $data[] = [
+                'id' => $payment->getId(),
+                'totalAnnualCosts' => $payment->getTotalAnnualCosts(),
+                'paymentReason' => $payment->getPaymentReason(),
+                'paymentStatus' => $payment->getPaymentStatus(),
+                'fees' => $payment->isFees(),
+                'amount' => $payment->getAmount(),
+                'month' => $payment->getMonth(),
+                'month_total' => $payment->getMonthTotal(),
+                'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
+                'register_student_id' => $payment->getRegisterStudent()->getId(),
+                'establishment' => $payment->getEstablishment() // Ajouter l'établissement au retour
             ];
         }
 
@@ -73,8 +102,11 @@ class StudentPaymentController extends AbstractController
             'fees' => $payment->isFees(),
             'amount' => $payment->getAmount(),
             'month' => $payment->getMonth(),
+            'month_total' => $payment->getMonthTotal(),
             'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
-            'register_student_id' => $payment->getRegisterStudent()->getId() // ID de l'élève lié
+            'register_student_id' => $payment->getRegisterStudent()->getId(), // ID de l'élève lié
+            'establishment' => $payment->getEstablishment() // Ajouter l'établissement au retour
+
         ], Response::HTTP_CREATED);
     }
 
@@ -104,6 +136,8 @@ class StudentPaymentController extends AbstractController
         $payment->setAmount($data['amount']);
         $payment->setFees($data['fees']);
         $payment->setMonth($data['month']);
+        $payment->setMonthTotal($data['month_total']);
+        $payment->setEstablishment($data['establishment']);
 
         // Gérer le champ 'create_at'
         if (isset($data['create_at'])) {
@@ -141,8 +175,11 @@ class StudentPaymentController extends AbstractController
             'fees' => $payment->isFees(),
             'amount' => $payment->getAmount(),
             'month' => $payment->getMonth(),
+            'month_total' => $payment->getMonthTotal(),
             'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
-            'register_student_id' => $payment->getRegisterStudent()->getId() // ID de l'élève lié
+            'register_student_id' => $payment->getRegisterStudent()->getId(), // ID de l'élève lié
+            'establishment' => $payment->getEstablishment() // Ajouter l'établissement au retour
+
         ], Response::HTTP_CREATED);
     }
 
@@ -163,6 +200,7 @@ class StudentPaymentController extends AbstractController
         $payment->setPaymentStatus($data['paymentStatus'] ?? $payment->getPaymentStatus());
         $payment->setAmount($data['amount'] ?? $payment->getAmount());
         $payment->setMonth($data['month'] ?? $payment->getMonth());
+        $payment->setMonthTotal($data['month_total'] ?? $payment->getMonthTotal());
         $payment->setFees($data['fees'] ?? $payment->isFees());
         $payment->setCreateAt($data['create_at'] ?? $payment->getCreateAt());
 

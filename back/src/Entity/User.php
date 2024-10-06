@@ -40,6 +40,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $login_establishment = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -81,9 +84,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
  public function getLogin(): ?string
-    {
-        return $this->login;
-    }
+             {
+                 return $this->login;
+             }
 
     public function setLogin(string $login): static
     {
@@ -162,5 +165,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
     public function getUsername(): string {
         return $this->getUserIdentifier();
+    }
+
+    public function getLoginEstablishment(): ?string
+    {
+        return $this->login_establishment;
+    }
+
+    public function setLoginEstablishment(string $login_establishment): static
+    {
+        $this->login_establishment = $login_establishment;
+
+        return $this;
     }
 }

@@ -23,8 +23,8 @@ class EleveController extends AbstractController
     private $webhookService;
 
     public function __construct(EntityManagerInterface $entityManager,
-                                EleveRepository $eleveRepository,
-                                WebhookService $webhookService)
+                                EleveRepository        $eleveRepository,
+                                WebhookService         $webhookService)
     {
         $this->entityManager = $entityManager;
         $this->eleveRepository = $eleveRepository;
@@ -56,6 +56,7 @@ class EleveController extends AbstractController
         $eleve->setNomMere($data['nomMere']);
         $eleve->setTel1($data['tel1']);
         $eleve->setTel2($data['tel2']);
+        $eleve->setEstablishment($data['establishment']);
 
         $file = $request->files->get('photo');
         if ($file) {
@@ -90,6 +91,7 @@ class EleveController extends AbstractController
             'photoPath' => $eleve->getPhotoPath(),
             'photoName' => $eleve->getPhotoName(),
             'studentID' => $eleve->getStudentID(),
+            'establishment' => $eleve->getEstablishment(),
             'registerPaymentStudent' => [],
         ];
 
@@ -109,8 +111,7 @@ class EleveController extends AbstractController
     /**
      * @throws TransportExceptionInterface
      */
-    #[
-        Route('/{id}', name: 'update_eleve', methods: ['POST'])]
+    #[Route('/{id}', name: 'update_eleve', methods: ['POST'])]
     public function updateEleve(Request $request, int $id, #[Autowire('%photo_dir%')] string $photoDir): JsonResponse
     {
         $eleve = $this->eleveRepository->find($id);
@@ -208,6 +209,7 @@ class EleveController extends AbstractController
                 'paymentStatus' => $payment->getPaymentStatus(),
                 'amount' => $payment->getAmount(),
                 'month' => $payment->getMonth(),
+                'month_total' => $payment->getMonthTotal(),
                 'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
                 'register_student_id' => $payment->getRegisterStudent()->getId() // ID de l'élève lié
             ];
@@ -267,6 +269,7 @@ class EleveController extends AbstractController
                     'paymentStatus' => $payment->getPaymentStatus(),
                     'amount' => $payment->getAmount(),
                     'month' => $payment->getMonth(),
+                    'month_total' => $payment->getMonthTotal(),
                 ];
             }
 
@@ -290,6 +293,72 @@ class EleveController extends AbstractController
                 'photoPath' => $eleve->getPhotoPath(),
                 'photoName' => $eleve->getPhotoName(),
                 'studentID' => $eleve->getStudentID(),
+                'establishment' => $eleve->getEstablishment(),
+                'registerPaymentStudent' => $paymentsData,
+            ];
+        }
+
+        return new JsonResponse($data, Response::HTTP_OK);
+    }
+
+    #[Route('/establishment/{establishment}', name: 'get_establishment_all_student', methods: ['GET'])]
+    public function getEstablishmentAllStudent(string $establishment): JsonResponse
+    {
+        // Si un établissement est fourni, filtrer les élèves par cet établissement
+        if ($establishment) {
+            $eleves = $this->eleveRepository->findBy(['establishment' => $establishment], ['id' => 'DESC']);
+        } else {
+            // Sinon, récupérer tous les élèves triés par ID de manière décroissante
+            $eleves = $this->eleveRepository->findBy([], ['id' => 'DESC']);
+        }
+
+        if (!$eleves) {
+            return new JsonResponse(['status' => 'No students found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = [];
+        foreach ($eleves as $eleve) {
+            // Récupérer les paiements pour chaque élève
+            $payments = $eleve->getRegisterPaymentStudent()->toArray();
+            usort($payments, function ($a, $b) {
+                return $b->getId() <=> $a->getId(); // Tri décroissant par ID
+            });
+
+            // Préparer les données de paiement
+            $paymentsData = [];
+            foreach ($payments as $payment) {
+                $paymentsData[] = [
+                    'id' => $payment->getId(),
+                    'totalAnnualCosts' => $payment->getTotalAnnualCosts(),
+                    'paymentReason' => $payment->getPaymentReason(),
+                    'paymentStatus' => $payment->getPaymentStatus(),
+                    'amount' => $payment->getAmount(),
+                    'month' => $payment->getMonth(),
+                    'month_total' => $payment->getMonthTotal(),
+                ];
+            }
+
+            // Préparer les données de l'élève
+            $data[] = [
+                'id' => $eleve->getId(),
+                'nom' => $eleve->getNom(),
+                'prenom' => $eleve->getPrenom(),
+                'dateNaissance' => $eleve->getDateNaissance()->format('Y-m-d'),
+                'niveau' => $eleve->getNiveau(),
+                'classe' => $eleve->getClasse(),
+                'prive' => $eleve->isPrive(),
+                'transfere' => $eleve->getTransfere(),
+                'matricule' => $eleve->getMatricule(),
+                'prenomPere' => $eleve->getPrenomPere(),
+                'nomPere' => $eleve->getNomPere(),
+                'prenomMere' => $eleve->getPrenomMere(),
+                'nomMere' => $eleve->getNomMere(),
+                'tel1' => $eleve->getTel1(),
+                'tel2' => $eleve->getTel2(),
+                'photoPath' => $eleve->getPhotoPath(),
+                'photoName' => $eleve->getPhotoName(),
+                'studentID' => $eleve->getStudentID(),
+                'establishment' => $eleve->getEstablishment(),
                 'registerPaymentStudent' => $paymentsData,
             ];
         }

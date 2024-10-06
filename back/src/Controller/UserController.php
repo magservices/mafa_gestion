@@ -40,6 +40,7 @@ class UserController extends AbstractController
         $user->setPrenom($data['prenom']);
         $user->setTel($data['tel']);
         $user->setEmail($data['email']);
+        $user->setLoginEstablishment($data['login_establishment']);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -68,6 +69,7 @@ class UserController extends AbstractController
         $user->setPrenom($data['prenom'] ?? $user->getPrenom());
         $user->setTel($data['tel'] ?? $user->getTel());
         $user->setEmail($data['mail'] ?? $user->getEmail());
+        $user->setLoginEstablishment($data['login_establishment'] ?? $user->getLoginEstablishment());
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
@@ -107,6 +109,7 @@ class UserController extends AbstractController
             'prenom' => $user->getPrenom(),
             'tel' => $user->getTel(),
             'mail' => $user->getEmail(),
+            'loginEstablishment' => $user->getLoginEstablishment(),
         ];
 
         return new JsonResponse($data, Response::HTTP_OK);

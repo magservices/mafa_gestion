@@ -76,6 +76,10 @@ class Eleve
     #[ORM\Column(length: 255)]
     private ?string $studentID = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $establishment = null;
+
+
     public function __construct()
     {
         $this->registerPaymentStudent = new ArrayCollection();
@@ -321,4 +325,17 @@ class Eleve
 
         return $this;
     }
+
+    public function getEstablishment(): ?string
+    {
+        return $this->establishment;
+    }
+
+    public function setEstablishment(string $establishment): static
+    {
+        $this->establishment = $establishment;
+
+        return $this;
+    }
+
 }
