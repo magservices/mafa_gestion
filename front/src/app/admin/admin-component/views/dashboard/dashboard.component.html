@@ -1,0 +1,132 @@
+<!-- Grid Content -->
+<div class="row">
+  <div class="col-md-3 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h2>Achat de basique</h2>
+        <div class="amount">$64,522.24</div>
+        <div class="chart">
+          <!-- Chart goes here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h2>Achat premium</h2>
+        <div class="amount">$60,522.24</div>
+        <div class="chart">
+          <!-- Chart goes here -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h2>Abonnement Mensuel</h2>
+        <div class="amount">$60,522.24</div>
+        <div class="chart">
+          <!-- Chart goes here -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h2>Abonnemement Annuel</h2>
+        <div class="amount">$60,522.24</div>
+        <div class="chart">
+          <!-- Chart goes here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="">
+
+
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="bg-gray-50">
+      <tr>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          ID
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Name
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Address
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Phone
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Subscription Type
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Price
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Month
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Created At
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Expiry Date
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Action
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+        @if (establishments.length !== 0) {
+          @for (establishment of establishments; track establishment; let i = $index) {
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <td class="px-6 py-4 text-gray-900 dark:text-white">
+                {{ i + 1 }}
+              </td>
+              <td class="px-6 py-4">
+                {{ establishment.name }}
+              </td>
+              <td class="px-6 py-4">
+                {{ establishment.address }}
+              </td>
+              <td class="px-6 py-4">
+                {{ establishment.phone }}
+              </td>
+              <td class="px-6 py-4">
+                {{ establishment.subscriptionType }} - {{ establishment.modalType }}
+              </td>
+              <td class="px-6 py-4">
+                {{ establishment.price | number:"1.0-0"}} FCFA
+              </td>
+              <td class="px-6 py-4">
+                {{ establishment.month }}
+              </td>
+              <td class="px-6 py-4">
+                {{ establishment.createAt | date }}
+              </td>
+              <td class="px-6 py-4">
+                {{ establishment.expiryDate | date }}
+              </td>
+              <td class="px-6 py-4 text-right">
+                <a routerLink="detail-school/{{establishment.id}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                  voir
+                </a>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+</div>

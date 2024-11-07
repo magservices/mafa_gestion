@@ -1,0 +1,100 @@
+<div class="container mt-4">
+  <h2 class="mb-4 text-start text-primary">Détails de l'établissement</h2>
+  <div class="row">
+    <div class="col mx-auto">
+      @if (establishment !== undefined) {
+        <div class="card shadow-lg border-0 rounded">
+          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">{{ establishment.name }} : {{ establishment.accessKey }}</h5>
+            <button (click)="deleteEstablishment(establishment.id)" class="btn btn-danger btn-sm">
+              Supprimez
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <div class="w-[70%]">
+                <h3 class="mb-4">Informations</h3>
+                <div class="row mb-3">
+                  <div class="col-sm-6">
+                    <h6 class="text-muted">Adresse</h6>
+                    <p class="text-dark">{{ establishment.address }}</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <h6 class="text-muted">Téléphone</h6>
+                    <p class="text-dark">{{ establishment.phone }}</p>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-6">
+                    <h6 class="text-muted">Type d'abonnement</h6>
+                    <p class="text-dark">{{ establishment.subscriptionType }} - {{ establishment.modalType }}</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <h6 class="text-muted">Prix</h6>
+                    <p class="text-dark">{{ establishment.price | number:"1.0-0" }} FCFA</p>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-6">
+                    <h6 class="text-muted">Durée</h6>
+                    <p class="text-dark">{{ establishment.month }} mois</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <h6 class="text-muted">Date de création</h6>
+                    <p class="text-dark">{{ establishment.createAt | date }}</p>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-6">
+                    <h6 class="text-muted">Date d'expiration</h6>
+                    <p class="text-dark">{{ establishment.expiryDate | date }}</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <h6 class="text-muted">Nombre d'étudiants</h6>
+                    <p class="text-dark">{{ studentTotal }}</p>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-6">
+                    <h6 class="text-muted">Total des paiements</h6>
+                    <p class="text-dark">{{ paymentTotal | number:"1.0-0" }} FCFA</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <h6 class="text-muted">Accès au logiciel</h6>
+                    <p class="fw-bold" [ngClass]="{
+                      'text-danger': !access,
+                      'text-success': access
+                    }">
+                      {{ access ? 'Actif' : 'Expiré' }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="mb-4">Utilisateurs</h3>
+                <ul class="list-group">
+                  @if (users.length !== 0) {
+                    @for (user of users; track user) {
+                      <li (click)="showInfoUser(user)" class="list-group-item d-flex justify-content-between align-items-center">
+                        <p class="text-primary">{{ user.prenom }} {{ user.nom }} - {{ user.roles }}</p>
+                      </li>
+                    }
+                  } @else {
+                    <li class="list-group-item text-muted">Aucun utilisateur enregistré.</li>
+                  }
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-footer d-flex justify-content-end gap-3">
+            <button class="btn btn-warning" (click)="editEstablishment(establishment.id)">Modifier l'établissement
+            </button>
+            <button class="btn btn-primary" (click)="userEstablishment()">Ajouter des utilisateurs</button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="late-payment-container">
+  <h2 class="title">Étudiants avec Paiements en Retard</h2>
+
+  <table class="student-table" *ngIf="paginatedStudents.length > 0; else noData">
+    <thead>
+    <tr>
+      <th>Prénom</th>
+      <th>Nom</th>
+      <th>Niveau</th>
+      <th>Classe</th>
+      <th>Parents</th>
+      <th>Contact</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let student of paginatedStudents" [routerLink]="['/dash/detail-student', student.id]"  class="student-row">
+      <td>{{ student.prenom }}</td>
+      <td>{{ student.nom }}</td>
+      <td>{{ student.niveau }}</td>
+      <td>{{ student.classe }}</td>
+      <td>Père: {{ student.nomPere }} {{ student.prenomPere }}</td>
+      <td>{{ student.tel1 }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button class="pagination-btn" (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
+    <span>Page {{ currentPage }} / {{ totalPages }}</span>
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Suivant</button>
+  </div>
+
+  <ng-template #noData>
+    <p class="no-data-message">Aucun élève n’a de paiements en retard.</p>
+  </ng-template>
+</div>

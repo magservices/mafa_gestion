@@ -1,0 +1,48 @@
+<!-- Sidebar for Mobile (Offcanvas) -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Menu</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link" href="#">Classes</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Class Room</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Class Routine</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Section</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Subject</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Time Table</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Home Work</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Examinations</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Sidebar for Desktop -->
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebar" class="col-md-3 col-lg-2 d-none d-md-block bg-light sidebar">
+      <div class="logo">
+        <h4>MAG GESTION</h4>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" routerLink="/admin">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="school">Etablissements</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Logiciel de commerce</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Logiciel de pharmacie</a></li>
+<!--        <li class="nav-item"><a class="nav-link" href="#">Services</a></li>-->
+<!--        <li class="nav-item"><a class="nav-link" href="#">Syllabus</a></li>-->
+<!--        <li class="nav-item"><a class="nav-link" href="#">Time Table</a></li>-->
+<!--        <li class="nav-item"><a class="nav-link" href="#">Home Work</a></li>-->
+<!--        <li class="nav-item"><a class="nav-link" href="#">Examinations</a></li>-->
+      </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <app-header></app-header>
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

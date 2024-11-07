@@ -1,0 +1,33 @@
+<div class="modal-content">
+
+  <div class="modal-body">
+    <div>
+      @if (componentName === 'forget password') {
+        <h1>Vous avez oublié votre Mot de passe ?</h1>
+        <p class="success-msg">
+          Si vous avez oublié votre mot de passe, veuillez contacter l'équipe technique de <br> <strong>MAG
+          SERVICES</strong> pour récupérer
+          votre compte, car la fonctionnalité de réinitialisation de mot de passe n'est pas encore disponible dans cette
+          version.
+        </p>
+        <ul class="pb-4 text-sm">
+          <h3 class="mb-3">Contacter l'equipe technique via : </h3>
+          <li>Whatsapp au numero : +223 74 95 43 52</li>
+          <li>Email : support{{ '@' }}magservices-mali.org</li>
+        </ul>
+        <button (click)="closeModal()" class="done-btn">OK</button>
+      } @else {
+        <h1>Êtes-vous sûr de vouloir vous déconnecter ?</h1>
+        <p class="success-msg">
+          Vous perdrez l'accès à votre compte et à vos données jusqu'à ce que vous vous reconnectiez. Assurez-vous
+          d'avoir terminé toutes vos actions avant de continuer.
+        </p>
+        <div class="button-group">
+          <button (click)="closeModal()" class="cancel-btn">Annuler</button>
+          <button (click)="logout()" class="logout-btn">Se déconnecter</button>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+$primary-color: #1c2b5a;
+
+header {
+  .logo img {
+    max-height: 50px;
+  }
+
+  nav .nav-link {
+    color: $primary-color;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .d-flex img {
+    max-height: 40px;
+  }
+}
+

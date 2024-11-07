@@ -1,0 +1,19 @@
+#sidebar {
+  background-color: #343a40;
+  min-height: 100vh;
+
+  .logo {
+    text-align: center;
+    padding: 20px;
+    color: #000;
+  }
+
+  .nav-link {
+    color: #000;
+    padding: 15px;
+
+    &:hover {
+      background-color: #495057;
+    }
+  }
+}

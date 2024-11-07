@@ -1,0 +1,39 @@
+body {
+  background-color: #f8f9fa;
+}
+
+
+
+.card {
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .amount {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #28a745;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    li {
+      padding: 5px 0;
+    }
+  }
+
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  #sidebar {
+    display: none;
+  }
+}

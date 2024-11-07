@@ -1,0 +1,20 @@
+@if (access) {
+  <app-header-page></app-header-page>
+  <router-outlet></router-outlet>
+  <app-footer-page></app-footer-page>
+} @else {
+  <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card text-center p-4 shadow-lg subscription-ended">
+      <div class="card-body">
+        <h1 class="card-title mb-4">Abonnement Terminé</h1>
+        <p class="card-text mb-4">Votre abonnement a expiré depuis <strong>{{ expiryDate | date:"dd-MM-YYYY" }}</strong>.
+          <br> Pour continuer à utiliser nos services, veuillez vous
+          réabonner.</p>
+        <p class="card-text mb-4"><strong>Contactez-nous au :</strong></p>
+        <div class="phone-number">
+          <i class="fas fa-phone"></i> +227 73 64 42 41
+        </div>
+      </div>
+    </div>
+  </div>
+}

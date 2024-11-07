@@ -1,0 +1,36 @@
+body {
+  background-color: #e9ecef; // Light background color
+}
+
+.card {
+  border-radius: 0.5rem; // Rounded corners
+  margin-bottom: 20px; // Space between cards
+
+  .card-header {
+    border-top-left-radius: 0.5rem; // Rounded top corners
+    border-top-right-radius: 0.5rem; // Rounded top corners
+  }
+
+  .card-body {
+    background-color: #ffffff; // White background for card body
+    padding: 2rem; // Padding for card body
+  }
+
+  .text-muted {
+    font-weight: 600; // Make muted text bold
+  }
+
+  .text-success {
+    font-weight: bold; // Bold for active status
+  }
+
+  .text-danger {
+    font-weight: bold; // Bold for expiration status
+  }
+
+  .card-footer {
+    background-color: #f8f9fa; // Light gray for footer
+    border-bottom-left-radius: 0.5rem; // Rounded bottom corners
+    border-bottom-right-radius: 0.5rem; // Rounded bottom corners
+  }
+}

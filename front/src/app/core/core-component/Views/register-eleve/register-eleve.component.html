@@ -1,0 +1,192 @@
+@if (user != undefined) {
+  <div class="container">
+    <h3>Add Student</h3>
+    <nav aria-label="breadcrumb" class="flex justify-between">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/dash">Dashboard</a></li>
+        <li class="breadcrumb-item"><a routerLink="/dash/student">Students</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Student</li>
+      </ol>
+
+      <div>
+        <a
+          class="text-sm bg-blue-500 cursor-pointer text-decoration-none hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+          Importation Excel
+        </a>
+      </div>
+    </nav>
+
+    <div class="card p-4">
+      <h5 class="card-title">Personal Information</h5>
+
+      <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+        <div class="row pb-5">
+          <div class="col-md-6">
+            <div class="upload-container d-flex gap-2">
+              <div class="upload-box">
+                <label for="fileUpload" class="upload-label">
+                  <i class="bi bi-image"></i>
+                  <span>Images</span>
+                </label>
+                <input (change)="onFileChange($event)" type="file" id="fileUpload" class="d-none" accept="image/*"/>
+              </div>
+
+              <div class="preview-box" *ngIf="previewUrl">
+                <img [src]="previewUrl" alt="Image Preview" class="img-thumbnail" style="width: 100px; height: 100px;"/>
+              </div>
+
+              <div class="d-flex flex-column gap-2">
+                <button class="btn btn-secondary mt-2" (click)="triggerFileUpload()">Mettre une photo</button>
+                <button class="btn btn-danger mt-2" (click)="removeImage()">Supprimer</button>
+              </div>
+            </div>
+
+            <small class="text-muted">Upload image size 4MB, Format JPG, PNG, SVG</small>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-3">
+                <label for="lastName" class="form-label">Prenom d'élève *</label>
+                <input type="text" class="form-control" id="lastName" formControlName="prenom"
+                       placeholder="Entrez le prénom d'élève">
+              </div>
+              <div class="col-md-3">
+                <label for="nom" class="form-label">Nom d'élève *</label>
+                <input type="text" class="form-control" id="nom" formControlName="nom"
+                       placeholder="Entrez le nom d'élève">
+              </div>
+
+              <div class="col-md-3">
+                <label for="niveau" class="form-label">Niveau *</label>
+                <select class="form-select" id="niveau" formControlName="niveau">
+                  @if (user.roles[0] === 'ROLE_DIRECTOR') {
+                    <option selected>Selectionnez le niveau</option>
+                    <option value="cycle1">1er cycle</option>
+                    <option value="cycle2">2e cycle</option>
+                  }
+
+                  @if (user.roles[0] === 'ROLE_CENSOR') {
+                    <option selected>Selectionnez le niveau</option>
+                    <option value="Lycee">Lycée</option>
+                    <option value="Professoinel">Professoinel</option>
+                    <option value="sante">École de santé</option>
+                  }
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label for="class" class="form-label">Classe *</label>
+                <select class="form-select" id="class" formControlName="classe">
+                  @if (user.roles[0] === 'ROLE_DIRECTOR') {
+                    <option selected>Selectionnez la classe</option>
+                    <option value="1A" >1é A</option>
+                    <option value="1B" >1é B</option>
+                    <option value="2A" >2é A</option>
+                    <option value="2B" >2é B</option>
+                  }
+
+                  @if (user.roles[0] === 'ROLE_CENSOR') {
+                    <option selected>Selectionnez la classe</option>
+                    <option value="10é CG">10é CG</option>
+                    <option value="11é L">11é L</option>
+                    <option value="11é Sc">11é Sc</option>
+                  }
+                </select>
+              </div>
+
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-3">
+                <label for="admissionDate" class="form-label">Date de naissance</label>
+                <input type="date" class="form-control" id="admissionDate" formControlName="dateNaissance">
+              </div>
+              <div class="col-md-3">
+                <label for="firstName" class="form-label">Prenom Pere</label>
+                <input type="text" class="form-control" id="firstName" formControlName="prenomPere"
+                       placeholder="Entrez le prénom du père">
+              </div>
+              <div class="col-md-3">
+                <label for="lastName" class="form-label">Nom du Pere</label>
+                <input type="text" class="form-control" id="pere" formControlName="nomPere"
+                       placeholder="Entrez le nom du père">
+              </div>
+              <div class="col-md-3">
+                <label for="rollNumber" class="form-label">Numéro du titulaire *</label>
+                <input type="text" class="form-control" id="rollNumber" formControlName="tel1"
+                       placeholder="Numéro de téléphone" (input)="onPhoneNumberInput($event)">
+              </div>
+            </div>
+            @if (user.roles[0] === "ROLE_CENSOR") {
+              <div>
+                <div class="row mt-3">
+                  <div class="col-md-4">
+                    <label for="mereName" class="form-label">Prenom de la Mere</label>
+                    <input type="text" class="form-control" id="mereName" formControlName="prenomMere"
+                           placeholder="Entrez le prénom de la mere">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="lastName" class="form-label">Nom de la mère</label>
+                    <input type="text" class="form-control" id="mere" formControlName="nomMere"
+                           placeholder="Entrez le nom de la mère">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="rollNumber" class="form-label">Numéro Tel d'eleve</label>
+                    <input (input)="onPhoneNumberInput($event)" type="text" class="form-control" id="tel2" formControlName="tel2"
+                           placeholder="Veuillez entrer le numéro de téléphone de l'élève.">
+                  </div>
+                </div>
+
+                <div class="row mt-3">
+                  <div class="col-md-4">
+                    <label for="prive" class="form-label">Privé</label>
+                    <select class="form-select" id="prive" formControlName="prive">
+                      <option value="oui">Oui</option>
+                      <option value="non">Non</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="transfere" class="form-label">Statut</label>
+                    <select class="form-select" id="transfere" formControlName="transfere"
+                            (change)="onStatutChange($event)">
+                      <option value="Étatique">Étatique</option>
+                      <option value="Privé">Privé</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-4" *ngIf="showMatricule">
+                    <label for="matricule" class="form-label">Matricule</label>
+                    <input type="text" class="form-control" id="matricule" formControlName="matricule"
+                           placeholder="Entrez le matricule">
+                  </div>
+
+                </div>
+              </div>
+            }
+
+          </div>
+        </div>
+        <div class="flex justify-end pt-5">
+          @if (!loading) {
+            <button
+              [disabled]="studentForm.invalid"
+              class="btn"
+              [ngClass]="{ 'btn-danger': studentForm.invalid, 'btn-primary': studentForm.valid }">
+              Enregistre
+            </button>
+
+          } @else {
+            <i class="spinner-border"></i>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+} @else {
+  <p class="text-center accent-red-900 text-2xl">
+    Impossible de récupérer les données de l'utilisateur en session. Veuillez vérifier votre connexion et réessayer. Si
+    le problème persiste, contactez le support technique.
+  </p>
+}

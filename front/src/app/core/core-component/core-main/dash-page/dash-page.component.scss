@@ -1,0 +1,38 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.subscription-ended {
+  background-color: #fff;
+  border-radius: 10px;
+  max-width: 610px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+  .card-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #d9534f; // Couleur du titre (rouge pour indiquer l'alerte)
+  }
+
+  .card-text {
+    font-size: 1.2rem;
+    color: #6c757d;
+  }
+
+  .phone-number {
+    font-size: 1.5rem;
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  .btn-primary {
+    background-color: #5cb85c;
+    border: none;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+
+    &:hover {
+      background-color: #4cae4c;
+    }
+  }
+}

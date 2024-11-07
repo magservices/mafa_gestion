@@ -1,0 +1,108 @@
+<div class="container">
+  <!-- Student Details -->
+  @if (student) {
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="flex gap-4 p-4 pb-0">
+            @if (student.photoPath != undefined) {
+              <img src="{{ student.photoPath }}"
+                   alt="{{ student.photoName }}" class="card-img-top w-25 h-25">
+            } @else {
+              <img src="images/no-profile.png"
+                   alt="photo étudiant" class="card-img-top w-25 h-25">
+
+            }
+            <div>
+              <h5 class="card-title">{{ student.prenom + ' ' + student.nom }}</h5>
+              <p class="card-text">{{ student.studentID }}</p>
+              <span class="badge bg-success">Active</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <hr>
+            <ul class="list-group list-group-flush">
+              @if (student.userKey == "primary school") {
+                <li class="list-group-item"><strong>Date de Naissance:</strong> {{ student.dateNaissance | date }}</li>
+              }
+              @if (student.userKey !== "primary school") {
+                <li class="list-group-item"><strong>Pere:</strong> {{ student.prenomPere + ' ' + student.nomPere }}</li>
+              } @else {
+                <li class="list-group-item"><strong>Titulaire:</strong> <br>{{ student.prenomPere + ' ' + student.nomPere }}</li>
+              }
+              @if (student.userKey !== "primary school") {
+                <li class="list-group-item"><strong>Mere:</strong> {{ student.prenomMere + ' ' + student.nomMere }}</li>
+              }
+              <li class="list-group-item"><strong>Numero de Téléphone:</strong> {{ student.tel1 }}</li>
+              @if (student.userKey !== "primary school") {
+                <li class="list-group-item"><strong> Numero Tel d'élève:</strong> <br> {{ student.tel2 }}</li>
+              }
+              <li class="list-group-item"><strong>Niveau:</strong> {{ student.niveau }}</li>
+              <li class="list-group-item"><strong>Classe:</strong> {{ student.classe }}</li>
+              @if (student.userKey !== "primary school") {
+                @if (student.matricule != null) {
+                  <li class="list-group-item"><strong>matricule:</strong> {{ student.matricule }}</li>
+                }
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fees Details -->
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-header">
+            Frais Mensuel
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>Motif de paiement</th>
+                  <th>Mois</th>
+                  <th>Status</th>
+                  <th>Montant</th>
+                  <th>Montant Restant</th>
+                  <th>Date du paiement</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @if (student.registerPaymentStudent.length !== 0) {
+                    @for (register of student.registerPaymentStudent; track register) {
+                      <tr>
+                        <td>{{ register.paymentReason }}</td>
+                        <td>{{ register.month }}</td>
+                        @if (register.paymentStatus === 'avance') {
+                          <td><span class="badge bg-success">Avance</span></td>
+                        }@else if (register.paymentStatus === 'normal'){
+                          <td><span class="badge bg-primary">Normal</span></td>
+                        } @else {
+                          <td><span class="badge bg-danger">Retard</span></td>
+                        }
+                        <td>{{ register.amount | number:'1.0-0' }} FCFA</td>
+                        <td>{{ register.totalAnnualCosts | number:'1.0-0' }} FCFA</td>
+                        <td> {{ register.create_at | date }}</td>
+                      </tr>
+                    }
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-5 py-2.5">
+          @if (student.registerPaymentStudent.length !== 0) {
+            @if (student.registerPaymentStudent[0]!.totalAnnualCosts !== 0 ) {
+              <button (click)="newPay('monthly payment', student)" class="btn btn-secondary">Nouveau paiement</button>
+            }
+          } @else {
+            <button (click)="newPay('first payment', student)" class="btn btn-secondary">Nouveau paiement</button>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

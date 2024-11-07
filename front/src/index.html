@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base href="./index.html"/>
+  <meta charset="utf-8">
+  <title>MafaGestion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link rel="icon" type="image/x-icon" href="images/logo.png">
+  <style>
+    body {
+      margin: 0;
+    }
+
+    #title-bar {
+      background-color: #3961e0;
+      color: white;
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background-color 0.3s ease;
+      -webkit-user-select: none;
+    }
+
+    #title-bar:hover {
+      background-color: #2f4bbd;
+    }
+
+    .title-bar-btn {
+      cursor: pointer;
+      padding: 8px 12px;
+      margin-right: 10px;
+      font-size: 16px;
+      border-radius: 4px;
+      transition: background-color 0.3s, transform 0.2s ease-in-out;
+    }
+
+    .title-bar-btn:hover {
+      background-color: #2f4bbd;
+      transform: scale(1.1);
+    }
+
+    .title-bar-btn:active {
+      transform: scale(0.9);
+    }
+
+    .title-bar-btn.close-btn {
+      background-color: #e04f39;
+    }
+
+    .title-bar-btn.close-btn:hover {
+      background-color: #d43b26;
+    }
+
+    .app-title {
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    /* Animations for window closing and minimizing */
+    .fade-out {
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.5s ease;
+    }
+
+    .fade-in {
+      opacity: 1;
+      transform: scale(1);
+      transition: all 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+<div id="title-bar">
+  <span class="app-title">MAFA GESTION</span>
+  <div>
+    <span class="title-bar-btn" onclick="minimizeWindow()">_</span>
+    <span class="title-bar-btn close-btn" onclick="closeWindow()">X</span>
+  </div>
+</div>
+<app-root></app-root>
+
+<script>
+  // Minimize the window
+  function minimizeWindow() {
+    window.electron.minimize();
+  }
+
+  // Close the window
+  function closeWindow() {
+    window.electron.close();
+  }
+</script>
+</body>
+</html>

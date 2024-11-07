@@ -1,0 +1,97 @@
+{
+  "name": "mafa-gestion",
+  "version": "1.5.4",
+  "main": "main.js",
+  "description": "Une application de gestion innovante pour la mafa.",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "electron": "ng build && electron --trace-warnings .",
+    "electron-dev": "wait-on http://localhost:4200 && electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "@angular/animations": "^18.1.0",
+    "@angular/common": "^18.1.0",
+    "@angular/compiler": "^18.1.0",
+    "@angular/core": "^18.1.0",
+    "@angular/forms": "^18.1.0",
+    "@angular/platform-browser": "^18.1.0",
+    "@angular/platform-browser-dynamic": "^18.1.0",
+    "@angular/router": "^18.1.0",
+    "@auth0/angular-jwt": "^5.2.0",
+    "@ng-bootstrap/ng-bootstrap": "^17.0.1",
+    "@ngx-pwa/offline": "^13.0.3",
+    "@popperjs/core": "^2.11.8",
+    "body-parser": "^1.20.3",
+    "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
+    "electron-reload": "^2.0.0-alpha.1",
+    "express": "^4.21.0",
+    "flowbite": "^2.5.1",
+    "jwt-decode": "^4.0.0",
+    "ngx-socket-io": "^4.7.0",
+    "rxjs": "~7.8.0",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
+    "tslib": "^2.3.0",
+    "websockets": "^0.2.0",
+    "zone.js": "~0.14.3"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^18.1.4",
+    "@angular/cli": "^18.1.4",
+    "@angular/compiler-cli": "^18.1.0",
+    "@angular/localize": "^18.1.0",
+    "@types/jasmine": "~5.1.0",
+    "autoprefixer": "^10.4.20",
+    "electron": "^32.0.2",
+    "electron-builder": "^25.0.5",
+    "jasmine-core": "~5.1.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "postcss": "^8.4.45",
+    "tailwindcss": "^3.4.10",
+    "typescript": "~5.5.2",
+    "wait-on": "^8.0.0"
+  },
+  "build": {
+    "appId": "com.magservices.mafa_gestion",
+    "productName": "Mafa Gestion",
+    "files": [
+      "dist/**/*",
+      "preload.js",
+      "main.js"
+    ],
+    "directories": {
+      "output": "release-builds"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "public/images/icon-mafa.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "public/images/icon-mafa.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "public/images/icon-mafa.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

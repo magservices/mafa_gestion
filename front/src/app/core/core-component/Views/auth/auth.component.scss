@@ -1,0 +1,71 @@
+$primary-color: #1c2b5a;
+$secondary-color: #fff;
+$bg-color: #f5f7fa;
+$accent-color: #d9534f;
+
+
+.bg-custom {
+  background-color: $bg-color;
+  background-image: url("../../../../../assets/images/bg-1.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.login-card {
+  background-color: $secondary-color;
+  max-width: 560px;
+  padding: 4rem !important;
+  border-radius: 4rem !important;
+  text-align: center;
+
+  h4 {
+    color: $primary-color;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: $primary-color;
+    margin-bottom: 2rem;
+  }
+
+  .form-control {
+    border-radius: 0.5rem;
+    border: 1px solid $primary-color;
+
+    &:focus {
+      box-shadow: 0 0 10px rgba(28, 43, 90, 0.1);
+    }
+  }
+
+  .btn-primary {
+    background-color: $primary-color;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 14px;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  a {
+    color: $accent-color;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .login-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .login-card {
+    max-width: 100%;
+    padding: 1rem;
+  }
+}

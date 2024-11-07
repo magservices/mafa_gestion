@@ -1,0 +1,96 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h3>Créer un nouvel établissement</h3>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="establishmentForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">Nom de l'établissement</label>
+          <input type="text" id="name" class="form-control" formControlName="name">
+          <div *ngIf="establishmentForm.controls['name'].invalid && establishmentForm.controls['name']"
+               class="text-danger">
+            Le nom de l'établissement est requis.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Adresse</label>
+          <input type="text" id="address" class="form-control" formControlName="address">
+          <div *ngIf="establishmentForm.controls['address'].invalid && establishmentForm.controls['address']"
+               class="text-danger">
+            L'adresse est requise.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Téléphone</label>
+          <input type="text" id="phone" class="form-control" formControlName="phone">
+          <div *ngIf="establishmentForm.controls['phone'].invalid && establishmentForm.controls['phone']"
+               class="text-danger">
+            Le numéro de téléphone doit comporter 8 chiffres.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="subscriptionType">Type d'abonnement</label>
+          <select id="subscriptionType" class="form-control" formControlName="subscriptionType">
+            <option value="" disabled>Sélectionnez un type</option>
+            <option value="test">Teste</option>
+            <option value="essentiel">Essentiel</option>
+            <option value="premium">Premium</option>
+          </select>
+          <div
+            *ngIf="establishmentForm.controls['subscriptionType'].invalid && establishmentForm.controls['subscriptionType']"
+            class="text-danger">
+            Le type d'abonnement est requis.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="subscriptionType">Type modele</label>
+          <select id="modaleType" class="form-control" formControlName="modalType">
+            <option value="" disabled>Sélectionnez un type</option>
+            <option value="locale">Locale</option>
+            <option value="distant">Distant</option>
+
+          </select>
+          <div
+            *ngIf="establishmentForm.controls['modalType'].invalid && establishmentForm.controls['modalType']"
+            class="text-danger">
+            Le type de modele est requis.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Prix (FCFA)</label>
+          <input type="number" id="price" class="form-control" formControlName="price">
+        </div>
+
+        <div class="form-group">
+          <label for="month">Nombre de mois</label>
+          <input type="number" id="month" class="form-control" formControlName="month">
+          <div *ngIf="establishmentForm.controls['month'].invalid && establishmentForm.controls['month']"
+               class="text-danger">
+            Le nombre de mois doit être au moins 1.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="expiryDate">Date d'expiration</label>
+          <input type="date" id="expiryDate" class="form-control" formControlName="expiryDate">
+          <div *ngIf="establishmentForm.controls['expiryDate'].invalid && establishmentForm.controls['expiryDate']"
+               class="text-danger">
+            La date d'expiration est requise.
+          </div>
+        </div>
+        <ng-container *ngIf="!loading">
+          <button type="submit" class="btn btn-primary" [disabled]="establishmentForm.invalid">Créer</button>
+        </ng-container>
+        <ng-container *ngIf="loading">
+          <i class="bi bi-hourglass-split spinner-border spinner-border-sm"></i> Chargement...
+        </ng-container>
+      </form>
+    </div>
+  </div>
+</div>

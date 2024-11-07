@@ -1,0 +1,99 @@
+<div class="container">
+  <!-- Payment List and Form -->
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <!-- Payment List Table -->
+      <div class="d-flex justify-content-between align-items-center p-4 bg-light rounded shadow-sm mb-3">
+        <h5 class="mb-0">Liste des paiements</h5>
+        <div class="search-container">
+          <input type="text" [formControl]="searchControl" class="form-control" placeholder="Rechercher...">
+        </div>
+      </div>
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">
+              N°
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Nom d'eleve
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Classe
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Motif de paiement
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Mois
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Status
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Montant
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Montant Restant
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Date du paiement
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Voir
+            </th>
+
+          </tr>
+          </thead>
+          <tbody>
+            @if (payments.length !== 0) {
+              @for (payment of payments | slice: (paymentPage - 1) * pageSize : paymentPage * pageSize;; track payment; let i = $index) {
+                <tr
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ i + 1 }}
+                  </th>
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ payment.student.prenom + ' ' + payment.student.nom }}
+                  </th>
+                  <td class="px-6 py-4">
+                    {{ payment.student.classe }}
+                  </td>
+                  <td class="px-6 py-4">
+                    {{ payment.paymentReason }}
+                  </td>
+                  <td class="px-6 py-4">
+                    {{ payment.month }}
+                  </td>
+                  @if (payment.paymentStatus === 'avance') {
+                    <td><span class="badge bg-success">Avance</span></td>
+                  }@else if (payment.paymentStatus === 'normal') {
+                    <td><span class="badge bg-primary">Normal</span></td>
+                  } @else {
+                    <td><span class="badge bg-danger">Retard</span></td>
+                  }
+                  <td class="px-6 py-4">
+                    {{ payment.amount | number:"1.0-0" }} FCFA
+                  </td>
+                  <td class="px-6 py-4">
+                    {{ payment.totalAnnualCosts | number:"1.0-0" }} FCFA
+                  </td>
+                  <td class="px-6 py-4">
+                    {{ payment.create_at | date }}
+                  </td>
+                  <td class="text-red-400">
+                    <a routerLink="/dash/detail-student/{{payment.register_student_id}}" ><i class="fas fa-eye text-red-400"></i></a>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+        <ngb-pagination class="d-flex justify-content-end mt-5 px-2" [(page)]="paymentPage"
+                        [pageSize]="pageSize" [maxSize]="5" [boundaryLinks]="true"
+                        [collectionSize]="payments.length"/>
+      </div>
+    </div>
+  </div>
+</div>

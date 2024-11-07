@@ -1,0 +1,31 @@
+<div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 bg-custom">
+  <div class="login-card shadow p-4 rounded">
+    <div class="text-center mb-4">
+      <img src="images/logo.png" alt="MAFA GESTION Logo"
+           class="mb-3 mx-auto" style="max-width: 150px;">
+      <h4>Bienvenue dans MAFA-GESTION</h4>
+      <p>Veuillez entrer vos informations de connexion pour accéder à votre compte.</p>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <input type="text" formControlName="login" class="form-control" placeholder="Entrez le login de l'etablissement">
+      </div>
+      <div class="mb-3">
+        <input type="password" formControlName="password" class="form-control" placeholder="Entrez votre mot de passe">
+      </div>
+      <div class="mb-3 text-end">
+        <a (click)="forgetPassword()" href="#" class="text-danger">Mot de passe oublié ?</a>
+      </div>
+      @if (errorMessage != undefined) {
+        <div class="mb-3 text-start">
+          <p class="text-danger">{{ errorMessage }}</p>
+        </div>
+      }
+
+      @if (!loading) {
+        <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary w-75">Connexion</button>
+      }@else {
+        <i class="spinner-border"></i>
+      }</form>
+  </div>
+</div>

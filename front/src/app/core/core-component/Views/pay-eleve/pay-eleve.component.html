@@ -1,0 +1,153 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="mb-2 fw-semibold">Nouveau paiement
+    </h3>
+  </div>
+  <div class="modal-body">
+    @if (componentName === 'monthly payment') {
+      @if (student != undefined) {
+        <div class="container">
+          <div class="card p-2.5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title">Paiement</h5>
+
+            </div>
+
+            <div class="student-info d-flex align-items-center mb-3">
+              @if (student.photoPath != undefined) {
+                <img src="{{ student.photoPath }}"
+                     alt="{{ student.photoName }}" class="rounded-circle me-3 ">
+              } @else {
+                <img src="images/no-profile.png"
+                     alt="photo étudiant" class="rounded-circle me-3">
+
+              }
+
+              <div>
+                <h6>{{ student.prenom + ' ' + student.nom }}</h6>
+                <p>Class: {{ student.classe }}, Niveau: {{ student.niveau }}</p>
+                <p class="font-bold">Identifiant : {{ student.studentID }}</p>
+              </div>
+              <div class="ms-auto">
+                @if (student.registerPaymentStudent.length !== 0) {
+                  <p>Montant Restant:
+                    <strong>{{ student.registerPaymentStudent.slice(-1)[0].totalAnnualCosts | number:"1.0-0" }}
+                      FCFA</strong></p>
+                  <p>Dernier Date de paiement: 25 May 2024</p>
+                } @else {
+                  <p>Montant Restant: <strong>0 FCFA</strong></p>
+                  <p>Dernier Date de paiement: non defini</p>
+                }
+              </div>
+            </div>
+
+            <form [formGroup]="paymentForm">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="feesGroup" class="form-label">Mois à payer</label>
+                  <select formControlName="month" class="form-select" id="feesGroup">
+                    @for (item of remainingMonths; track item; let i = $index) {
+                      <option [value]="item.month">{{ item.month | titlecase }} -
+                        : {{ item.amountRemaining | number:"1.0-0" }} FCFA
+                      </option>
+                    }
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="amount" class="form-label">Montant à payer</label>
+                  <input formControlName="amount" type="text" class="form-control" id="amount"
+                         placeholder="Entrez le montant payé"
+                         appThousandSeparatorDirective>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="notes" class="form-label">Motif de paiement</label>
+                <textarea formControlName="paymentReason" class="form-control" id="notes" rows="3"
+                          placeholder="Ajouter un motif de paiement"></textarea>
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <button (click)="cancel()" type="button" class="btn btn-secondary me-2">Annulez</button>
+                <button (click)="onSubmit(student)" type="submit" class="btn btn-primary">
+                  <ng-container *ngIf="!loading">Appliquez le paiement</ng-container>
+                  <ng-container *ngIf="loading">
+                    <i class="bi bi-hourglass-split spinner-border spinner-border-sm"></i> Chargement...
+                  </ng-container>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      }
+    } @else if (componentName === 'first payment') {
+      <div class="container">
+        <div class="card p-2.5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title">Frais d'inscription</h5>
+
+          </div>
+
+          <div class="student-info d-flex align-items-center mb-3">
+            @if (student.photoPath != undefined) {
+              <img src="{{ student.photoPath }}"
+                   alt="{{ student.photoName }}" class="rounded-circle me-3 ">
+            } @else {
+              <img src="images/no-profile.png"
+                   alt="photo étudiant" class="rounded-circle me-3">
+
+            }
+
+            <div>
+              <h6>{{ student.prenom + ' ' + student.nom }}</h6>
+              <p>Class: {{ student.classe }}, Niveau: {{ student.niveau }}</p>
+              <p class="font-bold">Identifiant : {{ student.studentID }}</p>
+            </div>
+          </div>
+
+          <form [formGroup]="paymentForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="amount" class="form-label">Montant total à payer</label>
+                <input formControlName="totalAnnualCosts" type="text" class="form-control" id="totalCost"
+                       placeholder="Entrez le montant payé"
+                       appThousandSeparatorDirective
+                >
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="amount" class="form-label">Frais d'inscription</label>
+                <input formControlName="amount" type="text" class="form-control" id="feesAmount"
+                       placeholder="Entrez le montant payé"
+                       appThousandSeparatorDirective
+                >
+              </div>
+              <!--              <div class="col-md-6 mb-3">-->
+              <!--                <label for="feesGroup" class="form-label">Début de l'année</label>-->
+              <!--                <select formControlName="month" class="form-select" id="fees">-->
+              <!--                  <option selected value="october">Octobre</option>-->
+              <!--                </select>-->
+              <!--              </div>-->
+            </div>
+
+            <div class="mb-3">
+              <label for="notes" class="form-label">Motif de paiement</label>
+              <textarea formControlName="paymentReason" class="form-control" id="note" rows="3"
+                        placeholder="Ajouter un motif de paiement"></textarea>
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button (click)="cancel()" type="button" class="btn btn-secondary me-2">Annulez</button>
+              <button (click)="onSubmit(student)" type="submit" class="btn btn-primary">
+                <ng-container *ngIf="!loading">Appliquez le paiement</ng-container>
+                <ng-container *ngIf="loading">
+                  <i class="bi bi-hourglass-split spinner-border spinner-border-sm"></i> Chargement...
+                </ng-container>
+              </button>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+  </div>
+</div>

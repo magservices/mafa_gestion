@@ -1,0 +1,60 @@
+<header class="mb-4 border-bottom">
+  <div class="container d-flex justify-content-between align-items-center">
+    <div class="logo flex gap-4">
+      <img src="images/logo.png" alt="Logo MAFA GESTION" style="max-height: 50px;">
+
+      <nav>
+        <ul class="nav">
+          <li class="nav-item"><a routerLink="/dash" class="nav-link">Dashboard</a></li>
+          <li class="nav-item"><a href="javascript:window.history.back();" class="nav-link text-red-500">Retour</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="d-flex align-items-center">
+      <p class="mb-0 me-3">{{ today | date: 'EEEE, dd MMM yyyy, HH:mm' }}</p>
+      <div (click)="logout()" class="d-flex align-items-center cursor-pointer">
+        <i class="fas fa-arrow-right-from-bracket text-red-700 text-2xl" title="Déconnectez-vous"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    @if (user.roles[0] === 'ROLE_ADMIN') {
+      @if (notification !== undefined) {
+        <div class="alert alert-danger">
+          <strong>Notification</strong> : "{{ notification.message }}."
+        </div>
+      }
+    }
+
+    <div class="row justify-between text-center mb-4">
+      <div class="col-md-9 flex gap-5">
+        <div class="col-md-3 mb-3">
+          <button routerLink="student" class="btn btn-light w-100">
+            <span><i class="fas fa-graduation-cap"></i></span> Les élèves
+          </button>
+        </div>
+        <div class="col-md-3 mb-3">
+          <button routerLink="pay" class="btn btn-light w-100">
+            <span><i class="fas fa-money-bill-1-wave"></i></span> Paiement
+          </button>
+        </div>
+      </div>
+
+      @if (user.roles[0] !== "ROLE_ADMIN") {
+        <div class="col-md-3 mb-3">
+          <button routerLink="register-student" class="btn btn-light w-100">
+            <span><i class="fas fa-circle-plus"></i></span> Ajouter un élève
+          </button>
+        </div>
+      }@else {
+        <div class="col-md-3 mb-3">
+          <button routerLink="late-payment" class="btn btn-danger w-100">
+            <span><i class="far fa-clock"></i></span> Paiement en retart
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>
+
