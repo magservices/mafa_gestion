@@ -23,7 +23,7 @@
             <hr>
             <ul class="list-group list-group-flush">
               @if (student.userKey == "primary school") {
-                <li class="list-group-item"><strong>Date de Naissance:</strong> {{ student.dateNaissance | date }}</li>
+                <li class="list-group-item"><strong>Date de Naissance:</strong> {{ student.dateNaissance }}</li>
               }
               @if (student.userKey !== "primary school") {
                 <li class="list-group-item"><strong>Pere:</strong> {{ student.prenomPere + ' ' + student.nomPere }}</li>

@@ -24,6 +24,36 @@ export class RegisterEleveComponent implements OnInit {
   showMatricule: boolean = false;
   private modalService = inject(NgbModal);
 
+  filteredClasses: string[] = [];
+  cycle1Classes = ['1ère A','1ère B', '2ème A','2ème B', '3ème A','3ème B','4ème A','4ème B','5ème A', '5ème B', '6ème A', '6ème B'];
+  cycle2Classes = ['7ème A','7ème B','8ème A', '8ème B', '9ème A','9ème B','9ème C'];
+  santeClasses=[]
+
+  lyceeClasses = ['10è CG', '11è L', '11è Sc', '11è SES','TSS', 'TSECO', 'TSEXP','TSE', 'TLL', 'TAL'];
+  professionalClasses = ['1ère TC', '2è TC', '3è TCA', '4è TCA', '1ère SD', '2è SD', '3è SD', '4è SD', '1ère EM', '2è EM', '3è EM', '4è EM'];
+
+  onLevelChange(): void {
+    const selectedLevel = this.studentForm.get('niveau')?.value;
+    if (selectedLevel === 'cycle1') {
+      this.filteredClasses = this.cycle1Classes;
+    } else if (selectedLevel === 'cycle2') {
+      this.filteredClasses = this.cycle2Classes;
+    } else if (selectedLevel === 'Lycee') {
+      this.filteredClasses = this.lyceeClasses;
+    } else if (selectedLevel === 'Professionnel') {
+      this.filteredClasses = this.professionalClasses;
+    } else if (selectedLevel === 'sante') {
+      this.filteredClasses = this.santeClasses;
+    } else {
+      this.filteredClasses = [];
+    }
+  }
+  
+
+
+
+
+
   constructor(private fb: FormBuilder,
               private studentService: StudentService,
               private userService: UserService,
@@ -45,7 +75,7 @@ export class RegisterEleveComponent implements OnInit {
       niveau: ['', Validators.required],
       classe: ['', Validators.required],
       prive: [''],
-      transfere: [''],
+      transfere: [''], 
       matricule: [''],
       establishment: [establishment.key],
       userKey: ['']
@@ -53,6 +83,7 @@ export class RegisterEleveComponent implements OnInit {
     });
 
     this.randingStudentByLevel();
+    this.onLevelChange();
   }
 
   // Une méthode pratique pour accéder facilement aux contrôles
@@ -119,6 +150,8 @@ export class RegisterEleveComponent implements OnInit {
       }
     )
   }
+
+  
 
   onSubmit(): void {
     this.loading = false;  // Variable pour suivre l'état du chargement

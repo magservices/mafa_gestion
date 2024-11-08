@@ -55,7 +55,7 @@
                 <td>{{ student.classe }}</td>
                 <td>{{ student.prenomPere + ' ' + student.nomPere }}</td>
                 <td>{{ student.tel1 }}</td>
-                <td>01 oct 2024</td>
+                <td>{{ student.dateNaissance }}</td>
                 @if (student.transfere !== 'Étatique') {
                   <td class="text-red-400">
                     <a routerLink="/dash/detail-student/{{student.id}}"><i class="fas fa-eye text-red-400"></i></a>
@@ -66,7 +66,7 @@
           }
         </tbody>
       </table>
-      @if (filteredStudents.length != undefined) {
+      @if (filteredStudents!= undefined && filteredStudents.length != undefined) {
         <ngb-pagination class="d-flex justify-content-end mt-5 px-2" [(page)]="studentPage"
                         [pageSize]="6" [maxSize]="5" [boundaryLinks]="true"
                         [collectionSize]="filteredStudents.length"/>
@@ -79,29 +79,45 @@
       <h4>Chercher un élève</h4>
       <form>
         <div class="form-group">
-          <label for="studentName">Nom d'élève</label>
-          <input type="text" class="form-control" id="studentName" placeholder="Nom d'élève" [(ngModel)]="searchName"
-                 name="studentName">
+          <label for="studentName">Prenom Nom</label>
+          <input type="text" class="form-control" id="studentName" placeholder="Nom d'élève" [(ngModel)]="searchName" name="studentName">
         </div>
         <div class="form-group">
           <label for="niveau" class="form-label">Niveau</label>
-          <select class="form-select" id="niveau" [(ngModel)]="searchNiveau" name="niveau">
-            <option value="cycle1">1er cycle</option>
-            <option value="cycle2">2e cycle</option>
-            <option value="Lycee">Lycée</option>
-            <option value="Professoinel">Professoinel</option>
-            <option value="sante">École de santé</option>
+          <select class="form-select" id="niveau" [(ngModel)]="searchNiveau" name="niveau" (change)="onLevelChange()">
+            <option selected>Selectionnez le niveau</option>
+            @if (user.roles[0] === 'ROLE_DIRECTOR' ) {
+              <option value="cycle1">1er cycle</option>
+              <option value="cycle2">2e cycle</option>
+            }
+
+            @if (user.roles[0] === 'ROLE_CENSOR') {
+              <option value="Lycee">Lycée</option>
+              <option value="Professionnel">Professionnel</option>
+              <option value="sante">École de santé</option>
+            }
+            @if(user.roles[0] === 'ROLE_ADMIN'){
+              <option value="cycle1">1er cycle</option>
+              <option value="cycle2">2e cycle</option>
+              <option value="Lycee">Lycée</option>
+              <option value="Professionnel">Professionnel</option>
+              <option value="sante">École de santé</option>
+            }
           </select>
         </div>
         <div class="form-group">
           <label for="class">Classe</label>
-          <input type="text" class="form-control" id="class" placeholder="Classe" [(ngModel)]="searchClass"
-                 name="class">
+          <select class="form-select" id="class" [(ngModel)]="searchClass" name="classe">
+            <option  selected>Sélectionnez la classe</option>
+            <option *ngFor="let classe of filteredClasses" [value]="classe">{{ classe }}</option>      
+          </select>
         </div>
+
+
         @if (filteredStudents && filteredStudents.length === taile) {
           <button (click)="onSearch()" class="btn btn-primary w-100">Rechercher</button>
         } @else {
-          <button (click)="initEleve()" class="btn btn-primary w-100">Réinitialiser la recheche</button>
+          <button (click)="initEleve()" class="btn btn-primary w-100">Réinitialiser la recherche</button>
         }
       </form>
     </div>

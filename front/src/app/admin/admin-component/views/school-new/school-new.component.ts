@@ -32,7 +32,7 @@ export class SchoolNewComponent implements OnInit{
     this.establishmentForm = this.formBuilder.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern('^[0-8]{8}$')]], // Validation d'un numéro de téléphone à 10 chiffres
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]], // Validation d'un numéro de téléphone à 10 chiffres
       subscriptionType: ['', Validators.required],
       modalType: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]], // Le prix doit être supérieur à 0

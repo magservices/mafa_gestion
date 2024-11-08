@@ -61,17 +61,16 @@
 
               <div class="col-md-3">
                 <label for="niveau" class="form-label">Niveau *</label>
-                <select class="form-select" id="niveau" formControlName="niveau">
+                <select class="form-select" id="niveau" formControlName="niveau" (change)="onLevelChange()">
+                  <option selected>Selectionnez le niveau</option>
                   @if (user.roles[0] === 'ROLE_DIRECTOR') {
-                    <option selected>Selectionnez le niveau</option>
                     <option value="cycle1">1er cycle</option>
                     <option value="cycle2">2e cycle</option>
                   }
 
                   @if (user.roles[0] === 'ROLE_CENSOR') {
-                    <option selected>Selectionnez le niveau</option>
                     <option value="Lycee">Lycée</option>
-                    <option value="Professoinel">Professoinel</option>
+                    <option value="Professionnel">Professionnel</option>
                     <option value="sante">École de santé</option>
                   }
                 </select>
@@ -79,20 +78,7 @@
               <div class="col-md-3">
                 <label for="class" class="form-label">Classe *</label>
                 <select class="form-select" id="class" formControlName="classe">
-                  @if (user.roles[0] === 'ROLE_DIRECTOR') {
-                    <option selected>Selectionnez la classe</option>
-                    <option value="1A" >1é A</option>
-                    <option value="1B" >1é B</option>
-                    <option value="2A" >2é A</option>
-                    <option value="2B" >2é B</option>
-                  }
-
-                  @if (user.roles[0] === 'ROLE_CENSOR') {
-                    <option selected>Selectionnez la classe</option>
-                    <option value="10é CG">10é CG</option>
-                    <option value="11é L">11é L</option>
-                    <option value="11é Sc">11é Sc</option>
-                  }
+                    <option *ngFor="let classe of this.filteredClasses" [value]="classe">{{ classe }}</option>
                 </select>
               </div>
 
@@ -104,17 +90,17 @@
                 <input type="date" class="form-control" id="admissionDate" formControlName="dateNaissance">
               </div>
               <div class="col-md-3">
-                <label for="firstName" class="form-label">Prenom Pere</label>
+                <label for="firstName" class="form-label">Prénom du Père</label>
                 <input type="text" class="form-control" id="firstName" formControlName="prenomPere"
                        placeholder="Entrez le prénom du père">
               </div>
-              <div class="col-md-3">
-                <label for="lastName" class="form-label">Nom du Pere</label>
+              <div class="col-md-3"> 
+                <label for="lastName" class="form-label">Nom du Père</label>
                 <input type="text" class="form-control" id="pere" formControlName="nomPere"
                        placeholder="Entrez le nom du père">
               </div>
               <div class="col-md-3">
-                <label for="rollNumber" class="form-label">Numéro du titulaire *</label>
+                <label for="rollNumber" class="form-label">Numéro du père ou titulaire *</label>
                 <input type="text" class="form-control" id="rollNumber" formControlName="tel1"
                        placeholder="Numéro de téléphone" (input)="onPhoneNumberInput($event)">
               </div>
@@ -123,17 +109,17 @@
               <div>
                 <div class="row mt-3">
                   <div class="col-md-4">
-                    <label for="mereName" class="form-label">Prenom de la Mere</label>
+                    <label for="mereName" class="form-label">Prénom de la Mère</label>
                     <input type="text" class="form-control" id="mereName" formControlName="prenomMere"
                            placeholder="Entrez le prénom de la mere">
                   </div>
                   <div class="col-md-4">
-                    <label for="lastName" class="form-label">Nom de la mère</label>
+                    <label for="lastName" class="form-label">Nom de la Mère</label>
                     <input type="text" class="form-control" id="mere" formControlName="nomMere"
                            placeholder="Entrez le nom de la mère">
                   </div>
                   <div class="col-md-4">
-                    <label for="rollNumber" class="form-label">Numéro Tel d'eleve</label>
+                    <label for="rollNumber" class="form-label">Numéro de Tel de l'eleve</label>
                     <input (input)="onPhoneNumberInput($event)" type="text" class="form-control" id="tel2" formControlName="tel2"
                            placeholder="Veuillez entrer le numéro de téléphone de l'élève.">
                   </div>
