@@ -14,7 +14,7 @@ import {User} from "../../shared/model/User";
   standalone: true,
   imports: [
     DatePipe,
-    DecimalPipe,
+    DecimalPipe, 
     RouterLink,
     SlicePipe,
     NgbPaginationModule,
@@ -60,6 +60,8 @@ export class DashComponent implements OnInit {
         this.paymentPage = resPayment.length / this.pageSize;
         this.feesRegister(resPayment)
         this.amountAlreadyPaid(resPayment)
+        
+        
       }
     )
   }
@@ -71,7 +73,23 @@ export class DashComponent implements OnInit {
         this.studentService.getStudentByID(studentPayment.register_student_id).subscribe(
           (student) => {
             Object.assign(studentPayment, {student: student})
-            this.payments.push(studentPayment);
+            if(this.user.roles[0]==="ROLE_CENSOR"){
+              if(student.niveau==="Lycee" || student.niveau==="Professionnel" || student.niveau==="sante"){
+                this.payments.push(studentPayment);
+              }
+            }
+            if(this.user.roles[0]==="ROLE_DIRECTOR"){
+              if(student.niveau==="cycle1" || student.niveau==="cycle2"){
+                this.payments.push(studentPayment);
+              }
+              
+            }
+
+            if(this.user.roles[0]==="ROLE_ADMIN"){
+              this.payments.push(studentPayment);
+            }
+
+            
           }
         )
       }

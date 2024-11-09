@@ -16,7 +16,8 @@
             <div>
               <h5 class="card-title">{{ student.prenom + ' ' + student.nom }}</h5>
               <p class="card-text">{{ student.studentID }}</p>
-              <span class="badge bg-success">Active</span>
+              <button class="badge bg-success mr-2" routerLink="/dash/register-student/{{student.id}}">Editer</button>
+              <button class="badge bg-danger" (click)="supprimer(student.id)">Supprimer</button>
             </div>
           </div>
           <div class="card-body">
@@ -66,6 +67,7 @@
                   <th>Montant</th>
                   <th>Montant Restant</th>
                   <th>Date du paiement</th>
+                  <th>Editer</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -84,6 +86,9 @@
                         <td>{{ register.amount | number:'1.0-0' }} FCFA</td>
                         <td>{{ register.totalAnnualCosts | number:'1.0-0' }} FCFA</td>
                         <td> {{ register.create_at | date }}</td>
+                        <td> 
+                          <button (click)="editerPay(register.id)"><i class="fas fa-edit text-primary"></i></button>
+                        </td>
                       </tr>
                     }
                   }

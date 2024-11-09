@@ -94,7 +94,7 @@ class StudentPaymentController extends AbstractController
             return $this->json(['message' => 'Payment not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse([
+        return new JsonResponse([ 
             'id' => $payment->getId(),
             'totalAnnualCosts' => $payment->getTotalAnnualCosts(),
             'paymentReason' => $payment->getPaymentReason(),
@@ -185,7 +185,7 @@ class StudentPaymentController extends AbstractController
     }
 
 
-    #[Route('/{id}', name: 'student_payment_update', methods: ['PUT'])]
+    #[Route('/{id}', name: 'student_payment_update', methods: ['POST'])]
     public function update(Request $request, int $id): JsonResponse
     {
         $payment = $this->repository->find($id);
@@ -203,7 +203,7 @@ class StudentPaymentController extends AbstractController
         $payment->setMonth($data['month'] ?? $payment->getMonth());
         $payment->setMonthTotal($data['month_total'] ?? $payment->getMonthTotal());
         $payment->setFees($data['fees'] ?? $payment->isFees());
-        $payment->setCreateAt($data['create_at'] ?? $payment->getCreateAt());
+        $payment->setCreateAt(new \DateTimeImmutable($data['create_at']) ?? $payment->getCreateAt());
 
         $this->entityManager->flush();
 

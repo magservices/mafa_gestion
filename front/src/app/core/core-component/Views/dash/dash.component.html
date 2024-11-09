@@ -1,6 +1,6 @@
 <div class="container">
   <!-- Statistiques en haut -->
-  @if (user.roles[0] === 'ROLE_ADMIN') {
+  @if (user!=undefined && user.roles!=undefined && user.roles[0] === 'ROLE_ADMIN') {
     <div class="row text-center mb-4">
 
       <div class="col mb-3">
@@ -112,12 +112,11 @@
 
     <!-- Notifications -->
     <div class="col-md-4">
-      @if (user.roles[0] === "ROLE_ADMIN") {
+      @if (user!=undefined && user.roles!=undefined && user.roles[0] === "ROLE_ADMIN") {
         <h5 class="text-primary mb-3">Nouvelles Notifications</h5>
       }@else {
         <div class="flex justify-between">
           <h5 class="text-danger mb-3">Les élèves en retard</h5>
-
           <button routerLink="late-payment" class="text-white rounded-lg px-2 bg-blue-500 mb-2" href="">Voir plus</button>
         </div>
       }
@@ -167,7 +166,7 @@
           </tr>
           </thead>
           <tbody>
-            @if (payments.length !== 0) {
+            @if (payments.length !== 0) { 
               @for (payment of payments | slice: (paymentPage - 1) * pageSize : paymentPage * pageSize; track payment; let i = $index) {
                 <tr
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">

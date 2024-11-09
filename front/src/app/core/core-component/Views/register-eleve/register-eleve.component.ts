@@ -1,13 +1,14 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {StudentService} from "../../shared/services/student.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {generateStudentId} from "../../shared/utilis/studentID";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {establishment} from "../../../../../environments/environment";
 import {User} from "../../shared/model/User";
 import {UserService} from "../../shared/services/user.service";
 import {PayEleveComponent} from "../pay-eleve/pay-eleve.component";
+import { Eleve } from '../../shared/model/Eleve';
 
 @Component({
   selector: 'app-register-eleve',
@@ -21,6 +22,8 @@ export class RegisterEleveComponent implements OnInit {
   selectedFile: File = new File([''], '');
   previewUrl: any = null;
   user!: User;
+  studentA!:Eleve;
+  
   showMatricule: boolean = false;
   private modalService = inject(NgbModal);
 
@@ -57,10 +60,11 @@ export class RegisterEleveComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private studentService: StudentService,
               private userService: UserService,
-              private router: Router) {
+              private router: Router, private route: ActivatedRoute,) {
   }
 
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id'); // Récupérer l'ID à partir de l'URL
     this.studentForm = this.fb.group({
       prenom: ['', Validators.required],
       nom: ['', Validators.required],
@@ -82,6 +86,36 @@ export class RegisterEleveComponent implements OnInit {
 
     });
 
+    if (id) {
+      this.studentService.getStudentByID(+id).subscribe((data) => {
+        this.studentA = data; // Stocker les données de l'élève
+
+        this.studentForm = this.fb.group({
+          prenom: this.studentA.prenom,
+          nom: this.studentA.nom,
+          dateNaissance: this.studentA.dateNaissance,
+          prenomPere: this.studentA.prenomMere,
+          nomPere: this.studentA.nomPere,
+          tel1: this.studentA.tel1,
+          prenomMere: this.studentA.prenomMere,
+          nomMere: this.studentA.nomMere,
+          studentID: this.studentA.studentID,
+          tel2: this.studentA.tel2,
+          niveau: this.studentA.niveau,
+          classe: this.studentA.classe,
+          prive: this.studentA.prive,
+          transfere: this.studentA.transfere, 
+          matricule:this.studentA.matricule,
+          establishment: [establishment.key], 
+          userKey: this.studentA.userKey
+    
+        });
+    
+      });
+
+    }
+
+    
     this.randingStudentByLevel();
     this.onLevelChange();
   }
@@ -164,27 +198,46 @@ export class RegisterEleveComponent implements OnInit {
           ? "high school"
           : console.log("add");
 
-      console.log(this.studentForm.value);
-      this.studentService.createStudent(this.studentForm.value, this.selectedFile).subscribe(
-        (student) => {
-          this.loading = true;  // Variable pour suivre l'état du chargement
-
-          if (student.transfere !== "Étatique") {
-            const modalRef = this.modalService.open(PayEleveComponent,
-              {size: "lg", animation: true, centered: true, backdrop: 'static'});
-            modalRef.componentInstance.componentName = 'first payment';
-            modalRef.componentInstance.student = student;
-          } else {
-            this.router.navigateByUrl("dash/student").then(
-              () => {
-                window.location.reload()
-              }
-            )
+          const id = this.route.snapshot.paramMap.get('id');
+      if(id){
+        this.studentService.updateStudent(this.studentForm.value,this.studentA.id, this.selectedFile).subscribe(
+          () => this.router.navigateByUrl("dash/student").then(
+            () => {
+              window.location.reload()
+            }
+          )
+        );
+      }else{
+        this.studentService.createStudent(this.studentForm.value, this.selectedFile).subscribe(
+          (student) => {
+            this.loading = true;  // Variable pour suivre l'état du chargement
+  
+            if (student.transfere !== "Étatique") {
+              const modalRef = this.modalService.open(PayEleveComponent,
+                {size: "lg", animation: true, centered: true, backdrop: 'static'});
+              modalRef.componentInstance.componentName = 'first payment';
+              modalRef.componentInstance.student = student;
+            } else {
+              this.router.navigateByUrl("dash/student").then(
+                () => {
+                  window.location.reload()
+                }
+              )
+            }
           }
-        }
-      )
+        )
+      }
+
+
+     
+     
+      
+
+
+
+
     } else {
-      console.log('Form invalid');
+     // console.log('Form invalid');
     }
   }
 }

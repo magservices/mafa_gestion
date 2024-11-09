@@ -22,6 +22,7 @@ const routes: Routes = [
       {path: 'student', component: ElevePageComponent},
       {path: 'pay', component: PayementPageComponent},
       {path: 'register-student', component: RegisterEleveComponent},
+      {path: 'register-student/:id', component: RegisterEleveComponent},
       {path: 'late-payment', component: LatePaymentComponent},
       {path: 'detail-student/:id', component: DetailEleveComponent}, 
     ]

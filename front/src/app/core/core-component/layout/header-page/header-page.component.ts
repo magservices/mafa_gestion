@@ -23,7 +23,7 @@ export class HeaderPageComponent implements OnInit {
   private seenNotificationIds: Set<number> = new Set();
   private modalService = inject(NgbModal);
 
-  user! : User;
+  user : User=new User();
 
   constructor(private notificationService: NotificationService,
               private userService: UserService) {

@@ -8,6 +8,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {PayEleveComponent} from "../pay-eleve/pay-eleve.component";
 import {UserService} from "../../shared/services/user.service";
 import {User} from "../../shared/model/User";
+import { DeleteComponent } from '../../basic-component/delete/delete.component';
+import { EditPayComponent } from '../../basic-component/edit-pay/edit-pay.component';
 
 @Component({
   selector: 'app-detail-eleve',
@@ -79,4 +81,17 @@ export class DetailEleveComponent implements OnInit {
     modalRef.componentInstance.componentName = component;
     modalRef.componentInstance.student = student;
   }
+
+  supprimer(id:number){
+    const modalRef = this.modalService.open(DeleteComponent,
+      {centered: true, animation: true});
+       modalRef.componentInstance.id = id;
+  }
+
+  editerPay(id:number){
+    const modalRef = this.modalService.open(EditPayComponent,
+      {centered: true, animation: true});
+       modalRef.componentInstance.id = id;
+  }
+
 }

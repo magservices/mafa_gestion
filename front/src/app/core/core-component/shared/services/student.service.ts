@@ -27,6 +27,21 @@ export class StudentService {
     return this.http.post<Eleve>(`${environment.apiUrl}/eleve/create`, formData, {headers});
   }
 
+
+  updateStudent(eleveData: Eleve,id:number, photo: File): Observable<Eleve> {
+    const formData: FormData = new FormData();
+    formData.append('eleveData', JSON.stringify(eleveData));
+    formData.append('photo', photo);
+
+    const headers = new HttpHeaders({
+      // Add any custom headers here if needed
+    });
+
+    return this.http.post<Eleve>(`${environment.apiUrl}/eleve/${id}`, formData, {headers});
+  }
+// Ajouter un paiement
+
+
   getAllStudent(): Observable<Eleve[]> {
     return this.http.get<Eleve[]>(`${environment.apiUrl}/eleve/establishment/${establishment.key}`);
   }
@@ -35,7 +50,13 @@ export class StudentService {
   getStudentByID(id: number): Observable<Eleve> {
     return this.http.get<Eleve>(`${environment.apiUrl}/eleve/${id}`);
   }
+  getPayByID(id: number): Observable<StudentPayment> {
+    return this.http.get<StudentPayment>(`${environment.apiUrl}/student_payment/${id}`);
+  }
 
+  updatePayment(payment: StudentPayment, id: number): Observable<StudentPayment> {
+    return this.http.post<StudentPayment>(`${environment.apiUrl}/student_payment/${id}`,payment);
+  }
   // Ajouter un paiement
   createPayment(payment: StudentPayment, registerStudentId: number): Observable<StudentPayment> {
     return this.http.post<StudentPayment>(`${environment.apiUrl}/student_payment/create`, {
@@ -44,6 +65,8 @@ export class StudentService {
     });
   }
 
+  
+
   // Récupérer tous les paiements
   getAllPayments(): Observable<StudentPayment[]> {
     return this.http.get<StudentPayment[]>(`${environment.apiUrl}/student_payment/establishment/${establishment.key}`);
@@ -51,6 +74,14 @@ export class StudentService {
 
   // Méthode pour récupérer un établissement par ID
   getByName(name: string): Observable<Establishment> {
-    return this.http.get<Establishment>(`${environment.apiUrl}/establishment/name/${name}`)
+    return this.http.get<Establishment>(`${environment.apiUrl}/establishment/name/${name}`);
+  }
+  // Delete Eleve
+  deleteEleve(id:number): Observable<any>{
+    return this.http.delete<void>(`${environment.apiUrl}/eleve/${id}`);
+  }
+  // Delete Eleve Payement
+  deletePay(id:number): Observable<any>{
+    return this.http.delete<void>(`${environment.apiUrl}/student_payment/${id}`);
   }
 }
