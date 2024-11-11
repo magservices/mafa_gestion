@@ -47,7 +47,7 @@ export class DashPageComponent implements OnInit{
       (data) => {
         this.verifySoftwareAccess(data.expiryDate);
         this.expiryDate = data.expiryDate
-      }
+      } 
     );
   }
 

@@ -23,7 +23,7 @@ class Eleve
     #[ORM\Column(length: 50)]
     private ?string $prenom = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: "date", nullable: true)]
     private ?\DateTimeInterface $dateNaissance = null;
 
     #[ORM\Column(length: 50)]
@@ -32,8 +32,8 @@ class Eleve
     #[ORM\Column(length: 50)]
     private ?string $classe = null;
 
-    #[ORM\Column]
-    private ?bool $prive = null;
+   /* #[ORM\Column]
+    private ?bool $prive = null;*/
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $transfere = null;
@@ -154,7 +154,7 @@ class Eleve
         return $this;
     }
 
-    public function isPrive(): ?bool
+   /* public function isPrive(): ?bool
     {
         return $this->prive;
     }
@@ -164,7 +164,7 @@ class Eleve
         $this->prive = $prive;
 
         return $this;
-    }
+    }*/
 
     public function getTransfere(): ?string
     {

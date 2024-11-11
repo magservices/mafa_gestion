@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-
+use PhpOffice\PhpSpreadsheet\IOFactory;
 #[Route('/api/eleve')]
 class EleveController extends AbstractController
 {
@@ -46,7 +46,7 @@ class EleveController extends AbstractController
         $eleve->setDateNaissance(new \DateTime($data['dateNaissance']));
         $eleve->setNiveau($data['niveau']);
         $eleve->setClasse($data['classe']);
-        $eleve->setPrive($data['prive']);
+      //  $eleve->setPrive($data['prive']);
         $eleve->setTransfere($data['transfere']);
         $eleve->setMatricule($data['matricule']);
         $eleve->setPrenomPere($data['prenomPere']);
@@ -80,7 +80,7 @@ class EleveController extends AbstractController
             'dateNaissance' => $eleve->getDateNaissance()->format('Y-m-d'),
             'niveau' => $eleve->getNiveau(),
             'classe' => $eleve->getClasse(),
-            'prive' => $eleve->isPrive(),
+           // 'prive' => $eleve->isPrive(),
             'transfere' => $eleve->getTransfere(),
             'matricule' => $eleve->getMatricule(),
             'prenomPere' => $eleve->getPrenomPere(),
@@ -130,7 +130,7 @@ class EleveController extends AbstractController
         $eleve->setDateNaissance(isset($data['dateNaissance']) ? new \DateTime($data['dateNaissance']) : $eleve->getDateNaissance());
         $eleve->setNiveau($data['niveau'] ?? $eleve->getNiveau());
         $eleve->setClasse($data['classe'] ?? $eleve->getClasse());
-        $eleve->setPrive($data['prive'] ?? $eleve->isPrive());
+       // $eleve->setPrive($data['prive'] ?? $eleve->isPrive());
         $eleve->setTransfere($data['transfere'] ?? $eleve->getTransfere());
         $eleve->setMatricule($data['matricule'] ?? $eleve->getMatricule());
         $eleve->setPrenomPere($data['prenomPere'] ?? $eleve->getPrenomPere());
@@ -225,7 +225,7 @@ class EleveController extends AbstractController
             'dateNaissance' => $eleve->getDateNaissance()->format('Y-m-d'),
             'niveau' => $eleve->getNiveau(),
             'classe' => $eleve->getClasse(),
-            'prive' => $eleve->isPrive(),
+          //  'prive' => $eleve->isPrive(),
             'transfere' => $eleve->getTransfere(),
             'matricule' => $eleve->getMatricule(),
             'prenomPere' => $eleve->getPrenomPere(),
@@ -285,7 +285,7 @@ class EleveController extends AbstractController
                 'dateNaissance' => $eleve->getDateNaissance()->format('Y-m-d'),
                 'niveau' => $eleve->getNiveau(),
                 'classe' => $eleve->getClasse(),
-                'prive' => $eleve->isPrive(),
+              //  'prive' => $eleve->isPrive(),
                 'transfere' => $eleve->getTransfere(),
                 'matricule' => $eleve->getMatricule(),
                 'prenomPere' => $eleve->getPrenomPere(),
@@ -351,7 +351,7 @@ class EleveController extends AbstractController
                 'dateNaissance' => $eleve->getDateNaissance()->format('Y-m-d'),
                 'niveau' => $eleve->getNiveau(),
                 'classe' => $eleve->getClasse(),
-                'prive' => $eleve->isPrive(),
+               // 'prive' => $eleve->isPrive(),
                 'transfere' => $eleve->getTransfere(),
                 'matricule' => $eleve->getMatricule(),
                 'prenomPere' => $eleve->getPrenomPere(),
@@ -432,7 +432,7 @@ class EleveController extends AbstractController
                 'dateNaissance' => $eleve->getDateNaissance()->format('Y-m-d'),
                 'niveau' => $eleve->getNiveau(),
                 'classe' => $eleve->getClasse(),
-                'prive' => $eleve->isPrive(),
+               // 'prive' => $eleve->isPrive(),
                 'transfere' => $eleve->getTransfere(),
                 'matricule' => $eleve->getMatricule(),
                 'prenomPere' => $eleve->getPrenomPere(),
@@ -453,4 +453,5 @@ class EleveController extends AbstractController
     }
 
 
+  
 }

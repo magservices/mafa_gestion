@@ -7,7 +7,7 @@ export class Eleve {
   dateNaissance!: Date;
   niveau!: string;
   classe!: string;
-  prive!: boolean;
+  //prive!: boolean;
   transfere!: string;
   matricule!: string;
   prenomPere!: string;

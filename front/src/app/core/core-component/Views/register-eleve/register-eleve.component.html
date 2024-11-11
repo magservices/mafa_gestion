@@ -7,13 +7,15 @@
         <li class="breadcrumb-item"><a routerLink="/dash/student">Students</a></li>
         <li class="breadcrumb-item active" aria-current="page">Add Student</li>
       </ol>
-
-      <div>
-        <a
-          class="text-sm bg-blue-500 cursor-pointer text-decoration-none hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-          Importation Excel
-        </a>
-      </div>
+      @if(this.user.roles!=null && this.user.roles[0] === "ROLE_CENSOR"){
+        <div> 
+          <button (click)="Import()"
+            class="text-sm bg-blue-500 cursor-pointer text-decoration-none hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+            Importation Excel
+          </button>
+        </div>
+      }
+      
     </nav>
 
     <div class="card p-4">
@@ -62,17 +64,19 @@
               <div class="col-md-3">
                 <label for="niveau" class="form-label">Niveau *</label>
                 <select class="form-select" id="niveau" formControlName="niveau" (change)="onLevelChange()">
-                  <option selected>Selectionnez le niveau</option>
+                
                   @if (user.roles[0] === 'ROLE_DIRECTOR') {
+                    <option disabled selected>Selectionnez le niveau</option>
                     <option value="cycle1">1er cycle</option>
                     <option value="cycle2">2e cycle</option>
                   }
 
                   @if (user.roles[0] === 'ROLE_CENSOR') {
+                    <option disabled selected>Selectionnez le niveau</option>
                     <option value="Lycee">Lycée</option>
                     <option value="Professionnel">Professionnel</option>
                     <option value="sante">École de santé</option>
-                  }
+                  } 
                 </select>
               </div>
               <div class="col-md-3">
@@ -126,13 +130,13 @@
                 </div>
 
                 <div class="row mt-3">
-                  <div class="col-md-4">
+                  <!--<div class="col-md-4">
                     <label for="prive" class="form-label">Privé</label>
                     <select class="form-select" id="prive" formControlName="prive">
                       <option value="oui">Oui</option>
                       <option value="non">Non</option>
                     </select>
-                  </div>
+                  </div>-->
                   <div class="col-md-4">
                     <label for="transfere" class="form-label">Statut</label>
                     <select class="form-select" id="transfere" formControlName="transfere"

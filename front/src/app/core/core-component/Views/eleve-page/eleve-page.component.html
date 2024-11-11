@@ -7,14 +7,14 @@
 
 
         <div class="flex gap-4">
-          @if (user.roles[0] !== 'ROLE_ADMIN') {
+          @if (user!=undefined && user.roles!=undefined && user.roles[0] !== 'ROLE_ADMIN') {
             <a routerLink="/dash/register-student"
                class="text-sm bg-blue-500  text-decoration-none hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
               Ajouter un élève
             </a>
           }
 
-          <a
+          <a (click)="export()"
              class="text-sm bg-amber-500 cursor-pointer text-decoration-none hover:bg-amber-600 text-white font-bold py-2 px-4 rounded transition duration-300">
             Exportation en PDF
           </a>
@@ -56,11 +56,19 @@
                 <td>{{ student.prenomPere + ' ' + student.nomPere }}</td>
                 <td>{{ student.tel1 }}</td>
                 <td>{{ student.dateNaissance }}</td>
-                @if (student.transfere !== 'Étatique') {
+
+                <td class="text-red-400">
+                  <a routerLink="/dash/detail-student/{{student.id}}"><i class="fas fa-eye text-blue-400"></i></a>
+                </td>
+               <!-- @if (student.transfere !== 'Étatique') {
                   <td class="text-red-400">
-                    <a routerLink="/dash/detail-student/{{student.id}}"><i class="fas fa-eye text-red-400"></i></a>
+                    <a routerLink="/dash/detail-student/{{student.id}}"><i class="fas fa-eye text-blue-400"></i></a>
                   </td>
-                }
+              }  @else{
+                  <td class="text-red-400">
+                    <button  (click)="supprimer(student.id)" ><i class="fas fa-trash text-red-400"></i></button>
+                  </td>
+                }-->
               </tr>
             }
           }
@@ -86,17 +94,17 @@
           <label for="niveau" class="form-label">Niveau</label>
           <select class="form-select" id="niveau" [(ngModel)]="searchNiveau" name="niveau" (change)="onLevelChange()">
             <option selected>Selectionnez le niveau</option>
-            @if (user.roles[0] === 'ROLE_DIRECTOR' ) {
+            @if (user!=undefined && user.roles!=undefined && user.roles[0] === 'ROLE_DIRECTOR' ) {
               <option value="cycle1">1er cycle</option>
               <option value="cycle2">2e cycle</option>
             }
 
-            @if (user.roles[0] === 'ROLE_CENSOR') {
+            @if (user!=undefined && user.roles!=undefined && user.roles[0] === 'ROLE_CENSOR') {
               <option value="Lycee">Lycée</option>
               <option value="Professionnel">Professionnel</option>
               <option value="sante">École de santé</option>
             }
-            @if(user.roles[0] === 'ROLE_ADMIN'){
+            @if(user!=undefined && user.roles!=undefined && user.roles[0] === 'ROLE_ADMIN'){
               <option value="cycle1">1er cycle</option>
               <option value="cycle2">2e cycle</option>
               <option value="Lycee">Lycée</option>

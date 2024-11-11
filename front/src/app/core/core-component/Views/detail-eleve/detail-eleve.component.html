@@ -23,28 +23,32 @@
           <div class="card-body">
             <hr>
             <ul class="list-group list-group-flush">
-              @if (student.userKey == "primary school") {
-                <li class="list-group-item"><strong>Date de Naissance:</strong> {{ student.dateNaissance }}</li>
-              }
-              @if (student.userKey !== "primary school") {
-                <li class="list-group-item"><strong>Pere:</strong> {{ student.prenomPere + ' ' + student.nomPere }}</li>
-              } @else {
-                <li class="list-group-item"><strong>Titulaire:</strong> <br>{{ student.prenomPere + ' ' + student.nomPere }}</li>
-              }
-              @if (student.userKey !== "primary school") {
-                <li class="list-group-item"><strong>Mere:</strong> {{ student.prenomMere + ' ' + student.nomMere }}</li>
-              }
-              <li class="list-group-item"><strong>Numero de Téléphone:</strong> {{ student.tel1 }}</li>
-              @if (student.userKey !== "primary school") {
-                <li class="list-group-item"><strong> Numero Tel d'élève:</strong> <br> {{ student.tel2 }}</li>
-              }
               <li class="list-group-item"><strong>Niveau:</strong> {{ student.niveau }}</li>
               <li class="list-group-item"><strong>Classe:</strong> {{ student.classe }}</li>
               @if (student.userKey !== "primary school") {
-                @if (student.matricule != null) {
+                @if (student.matricule != null && student.matricule!='') {
                   <li class="list-group-item"><strong>matricule:</strong> {{ student.matricule }}</li>
                 }
               }
+              @if (student.userKey !== "primary school" && student.tel2!='') {
+                <li class="list-group-item"><strong>Tel d'élève:</strong> <br> {{ student.tel2 }}</li>
+              }
+
+              @if (student.userKey == "primary school" && student.dateNaissance!=null) {
+                <li class="list-group-item"><strong>Date de Naissance:</strong> {{ student.dateNaissance }}</li>
+              }
+              @if (student.userKey !== "primary school" && student.prenomPere!='' || student.nomPere!='') {
+                <li class="list-group-item"><strong>Pere:</strong> {{ student.prenomPere + ' ' + student.nomPere }}</li>
+              } @else {
+                @if(student.prenomPere!='' || student.nomPere!=''){
+                  <li class="list-group-item"><strong>Titulaire:</strong> <br>{{ student.prenomPere + ' ' + student.nomPere }}</li>
+                }
+                
+              }
+             
+              <li class="list-group-item"><strong>Tel Tutilaire:</strong> {{ student.tel1 }}</li>
+              
+              
             </ul>
           </div>
         </div>

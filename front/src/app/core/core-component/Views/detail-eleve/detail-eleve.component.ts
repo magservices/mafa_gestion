@@ -59,7 +59,7 @@ export class DetailEleveComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id'); // Récupérer l'ID à partir de l'URL
     if (id) {
-      console.log(id)
+      //console.log(id);
       this.studentService.getStudentByID(+id).subscribe((data) => {
         this.student = data; // Stocker les données de l'élève
         console.log(this.student)

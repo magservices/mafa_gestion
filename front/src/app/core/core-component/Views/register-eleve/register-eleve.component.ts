@@ -9,6 +9,7 @@ import {User} from "../../shared/model/User";
 import {UserService} from "../../shared/services/user.service";
 import {PayEleveComponent} from "../pay-eleve/pay-eleve.component";
 import { Eleve } from '../../shared/model/Eleve';
+import { FileComponent } from '../../basic-component/file/file.component';
 
 @Component({
   selector: 'app-register-eleve',
@@ -32,7 +33,7 @@ export class RegisterEleveComponent implements OnInit {
   cycle2Classes = ['7ème A','7ème B','8ème A', '8ème B', '9ème A','9ème B','9ème C'];
   santeClasses=[]
 
-  lyceeClasses = ['10è CG', '11è L', '11è Sc', '11è SES','TSS', 'TSECO', 'TSEXP','TSE', 'TLL', 'TAL'];
+  lyceeClasses = ['10èCG', '11èL', '11èSc', '11èSES','TSS', 'TSECO', 'TSEXP','TSE', 'TLL', 'TAL'];
   professionalClasses = ['1ère TC', '2è TC', '3è TCA', '4è TCA', '1ère SD', '2è SD', '3è SD', '4è SD', '1ère EM', '2è EM', '3è EM', '4è EM'];
 
   onLevelChange(): void {
@@ -78,7 +79,7 @@ export class RegisterEleveComponent implements OnInit {
       tel2: [''],
       niveau: ['', Validators.required],
       classe: ['', Validators.required],
-      prive: [''],
+    //  prive: [''],
       transfere: [''], 
       matricule: [''],
       establishment: [establishment.key],
@@ -103,7 +104,7 @@ export class RegisterEleveComponent implements OnInit {
           tel2: this.studentA.tel2,
           niveau: this.studentA.niveau,
           classe: this.studentA.classe,
-          prive: this.studentA.prive,
+         // prive: this.studentA.prive,
           transfere: this.studentA.transfere, 
           matricule:this.studentA.matricule,
           establishment: [establishment.key], 
@@ -186,6 +187,13 @@ export class RegisterEleveComponent implements OnInit {
   }
 
   
+  Import(){
+    const id=1;
+    const modalRef = this.modalService.open(FileComponent,
+      {centered: true, animation: true});
+       modalRef.componentInstance.id = id; 
+       modalRef.componentInstance.establishment=establishment.key
+  }
 
   onSubmit(): void {
     this.loading = false;  // Variable pour suivre l'état du chargement
@@ -227,14 +235,6 @@ export class RegisterEleveComponent implements OnInit {
           }
         )
       }
-
-
-     
-     
-      
-
-
-
 
     } else {
      // console.log('Form invalid');

@@ -44,7 +44,9 @@ export class EditPayComponent implements OnInit{
       this.studentService.updatePayment(this.eleveP,this.eleveP.id).subscribe(
         (pay)=>{
           this.activeModal.close();
-          this.route.navigateByUrl(`/dash/student/${this.eleveP.id}`);
+          this.route.navigateByUrl(`/dash/detail-student/${this.eleveP.id}`).then(() => {
+            window.location.reload();
+          });
 
         }
       );

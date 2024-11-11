@@ -1,12 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {Eleve} from "../../shared/model/Eleve";
 import {StudentService} from "../../shared/services/student.service";
 import {CommonModule, NgOptimizedImage, SlicePipe} from "@angular/common";
 import {FormsModule} from '@angular/forms';
-import {NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
 import {UserService} from "../../shared/services/user.service";
 import {User} from "../../shared/model/User";
+import { FileComponent } from '../../basic-component/file/file.component';
+import { DeleteComponent } from '../../basic-component/delete/delete.component';
 
 @Component({
   selector: 'app-eleve-page',
@@ -33,14 +35,14 @@ export class ElevePageComponent implements OnInit {
   searchClass: string = '';
   user! : User;
 
-
+  private modalService = inject(NgbModal);
 
 filteredClasses: string[] = [];
 cycle1Classes = ['1ère A','1ère B', '2ème A','2ème B', '3ème A','3ème B','4ème A','4ème B','5ème A', '5ème B', '6ème A', '6ème B'];
 cycle2Classes = ['7ème A','7ème B','8ème A', '8ème B', '9ème A','9ème B','9ème C'];
 santeClasses=[]
 
-lyceeClasses = ['10è CG', '11è L', '11è Sc', '11è SES','TSS', 'TSECO', 'TSEXP','TSE', 'TLL', 'TAL'];
+lyceeClasses = ['10èCG', '11èL', '11èSc', '11èSES','TSS', 'TSECO', 'TSEXP','TSE', 'TLL', 'TAL'];
 professionalClasses = ['1ère TC', '2è TC', '3è TCA', '4è TCA', '1ère SD', '2è SD', '3è SD', '4è SD', '1ère EM', '2è EM', '3è EM', '4è EM'];
 
 
@@ -114,5 +116,21 @@ onLevelChange(): void {
 
   initEleve() {
     this.filteredStudents = this.students;
+  }
+
+  export(){
+  //  if(this.filteredStudents!=null && this.filteredStudents.length>0){
+      const id=0;
+    const modalRef = this.modalService.open(FileComponent,
+      {centered: true, animation: true});
+       modalRef.componentInstance.id = id; 
+       modalRef.componentInstance.students = this.filteredStudents; 
+  //  }
+    
+  }
+  supprimer(id:number){
+    const modalRef = this.modalService.open(DeleteComponent,
+      {centered: true, animation: true});
+       modalRef.componentInstance.id = id;
   }
 }
