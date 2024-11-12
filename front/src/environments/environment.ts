@@ -19,7 +19,7 @@ export const establishment = {
 };*/
 export const establishment = {
   // Censer
-  key: '6a837dcf56b04556671e',
+  key: 'e3d17149811e865d78f7',
   userKey: '87eb65c375aa', // le cle permet d'identifier les utilisateurs
   login : 'oumar'
 };

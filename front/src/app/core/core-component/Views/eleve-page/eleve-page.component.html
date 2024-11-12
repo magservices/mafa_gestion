@@ -3,8 +3,9 @@
     <!-- Section Listes des étudiants -->
     <div class="col-md-9">
       <div class="flex items-center justify-between py-4 px-6 bg-gray-100 rounded-md shadow-md">
-        <h4 class="text-xl font-semibold text-gray-800">Liste des élèves</h4>
-
+        @if (filteredStudents && filteredStudents.length !== 0) {
+        <h4 class="text-xl font-semibold text-gray-800">Liste des élèves({{filteredStudents.length}})</h4>
+        }
 
         <div class="flex gap-4">
           @if (user!=undefined && user.roles!=undefined && user.roles[0] !== 'ROLE_ADMIN') {
@@ -14,10 +15,12 @@
             </a>
           }
 
-          <a (click)="export()"
+          @if (filteredStudents && filteredStudents.length !== 0) {  
+            <a (click)="export()"
              class="text-sm bg-amber-500 cursor-pointer text-decoration-none hover:bg-amber-600 text-white font-bold py-2 px-4 rounded transition duration-300">
             Exportation en PDF
           </a>
+        }
         </div>
 
       </div>
@@ -30,13 +33,13 @@
           <th scope="col">Classe</th>
           <th scope="col">Parents</th>
           <th scope="col">Telephone</th>
-          <th scope="col">Date</th>
+        <!-- <th scope="col">Date de naissance</th>--> 
           <th scope="col">Voir</th>
         </tr>
         </thead>
         <tbody>
           @if (filteredStudents && filteredStudents.length !== 0) {
-            @for (student of filteredStudents | slice: (studentPage - 1) * pageSize : studentPage * pageSize; ; track student; let i = $index) {
+            @for (student of filteredStudents | slice: (studentPage - 1) * pageSize : studentPage * pageSize; track student.id; let i = $index) {
               <tr>
                 <th scope="row">{{ i + 1 }}</th>
                 <td>
@@ -54,8 +57,13 @@
                 <td>{{ student.prenom + ' ' + student.nom }}</td>
                 <td>{{ student.classe }}</td>
                 <td>{{ student.prenomPere + ' ' + student.nomPere }}</td>
-                <td>{{ student.tel1 }}</td>
-                <td>{{ student.dateNaissance }}</td>
+                @if(student.tel1==="00 00 00 00"){
+                  <td>Non spécifié</td>
+                }@else{
+                  <td>{{ student.tel1 }}</td>
+                }
+                
+              <!-- <td>{{ student.dateNaissance }}</td>--> 
 
                 <td class="text-red-400">
                   <a routerLink="/dash/detail-student/{{student.id}}"><i class="fas fa-eye text-blue-400"></i></a>

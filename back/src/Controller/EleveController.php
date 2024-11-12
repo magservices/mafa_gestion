@@ -43,7 +43,12 @@ class EleveController extends AbstractController
         $eleve = new Eleve();
         $eleve->setNom($data['nom']);
         $eleve->setPrenom($data['prenom']);
-        $eleve->setDateNaissance(new \DateTime($data['dateNaissance']));
+        try {
+            $eleve->setDateNaissance(new \DateTime($data['dateNaissance']));
+        } catch (\Exception $e) {
+            // Si la date est invalide ou incorrecte, on la met à 1er janvier 1900
+            $eleve->setDateNaissance(new \DateTime('1900-01-01'));
+        }
         $eleve->setNiveau($data['niveau']);
         $eleve->setClasse($data['classe']);
       //  $eleve->setPrive($data['prive']);
@@ -127,7 +132,15 @@ class EleveController extends AbstractController
 
         $eleve->setNom($data['nom'] ?? $eleve->getNom());
         $eleve->setPrenom($data['prenom'] ?? $eleve->getPrenom());
-        $eleve->setDateNaissance(isset($data['dateNaissance']) ? new \DateTime($data['dateNaissance']) : $eleve->getDateNaissance());
+
+       // $eleve->setDateNaissance(isset($data['dateNaissance']) ? new \DateTime($data['dateNaissance']) : $eleve->getDateNaissance());
+         try {
+            $eleve->setDateNaissance(new \DateTime($data['dateNaissance']));
+        } catch (\Exception $e) {
+            // Si la date est invalide ou incorrecte, on la met à 1er janvier 1900
+            $eleve->setDateNaissance(new \DateTime('1900-01-01'));
+        }
+        
         $eleve->setNiveau($data['niveau'] ?? $eleve->getNiveau());
         $eleve->setClasse($data['classe'] ?? $eleve->getClasse());
        // $eleve->setPrive($data['prive'] ?? $eleve->isPrive());

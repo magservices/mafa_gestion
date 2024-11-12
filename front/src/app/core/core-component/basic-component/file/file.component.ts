@@ -19,6 +19,7 @@ export class FileComponent {
   @Input() id!: number;
   @Input() students!: Eleve[];
   studentsInSelectedClass!: Eleve[];
+  loading = false;
 
   // Options pour la liste déroulante
   schoolTypes: string[] = ['Étatique', 'Privé'];
@@ -57,9 +58,15 @@ export class FileComponent {
     }
   }
   onSubmit(): void {
+    this.loading = true;
       if(this.selectedSchoolType && this.selectedFileExcle!=null){
-        this.studentService.uploadFile(this.selectedFileExcle,this.establishment,this.selectedSchoolType);
-        this.activeModal.close();
+          this.studentService.uploadFile(this.selectedFileExcle,this.establishment,this.selectedSchoolType).then(success => {
+            if (success) {
+              this.activeModal.close();
+            } else {
+              
+            }
+          });
       }
     } 
     onSubmitPdf(): void {
@@ -70,4 +77,8 @@ export class FileComponent {
       }
     }
     
+
+    onDelete(){
+      this.activeModal.close();
+    }
 }

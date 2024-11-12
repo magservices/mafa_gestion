@@ -103,6 +103,7 @@
         </div>
 
         <div class="flex justify-end gap-5 py-2.5">
+          @if(student.transfere!=="Étatique"){
           @if (student.registerPaymentStudent.length !== 0) {
             @if (student.registerPaymentStudent[0]!.totalAnnualCosts !== 0 ) {
               <button (click)="newPay('monthly payment', student)" class="btn btn-secondary">Nouveau paiement</button>
@@ -110,6 +111,7 @@
           } @else {
             <button (click)="newPay('first payment', student)" class="btn btn-secondary">Nouveau paiement</button>
           }
+        }
         </div>
       </div>
     </div>

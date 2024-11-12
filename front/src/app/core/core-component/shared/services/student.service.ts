@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {Eleve} from "../model/Eleve";
 import {environment, establishment} from "../../../../../environments/environment";
 import {StudentPayment} from "../model/StudentPayment";
@@ -12,13 +12,13 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable'
 import { Router } from '@angular/router';
 import { generateStudentId } from '../utilis/studentID';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
-
   constructor(private http: HttpClient,private router:Router) {
   }
 
@@ -93,21 +93,25 @@ export class StudentService {
   } 
   
 
-
-
-
-uploadFile(fileXlsx: File, establishment: string, transfere: string) {
-  this.readExcelFile(fileXlsx)
+uploadFile(fileXlsx: File, establishment: string, transfere: string): Promise<boolean> {
+  return this.readExcelFile(fileXlsx)
     .then((jsonData: any) => {
-     const lyceeClasses = ['10èCG', '11èL', '11èSc', '11èSES','TSS', 'TSECO', 'TSEXP','TSE', 'TLL', 'TAL'];
-      // Tableau pour stocker tous les élèves de toutes les feuilles
+      const lyceeClasses = ['10èCG', '11èL', '11èSc', '11èSES','TSS', 'TSECO', 'TSEXP','TSE', 'TLL', 'TAL'];
       const allEleves: Eleve[] = [];
+      
       // Parcours de chaque feuille dans le fichier Excel
       Object.keys(jsonData).forEach(sheetName => {
         const sheetData = jsonData[sheetName];
 
         // Transformer les données JSON de la feuille en objets de type Eleve
         const eleves: Eleve[] = sheetData.map((data: any) => {
+          if (!data['NOM'] || data['NOM'].trim() === '' ||
+          !data['PRENOMS'] || data['PRENOMS'].trim() === '' ||
+          !data['N°MLE'] || data['N°MLE'].trim() === '' ||
+          !data['CLASSE                23-24'] || data['CLASSE                23-24'].trim() === ''
+        ) {
+            return undefined; // Ignorer cette itération et passer à l'élément suivant
+          }
           const eleve = new Eleve();
           eleve.nom = data['NOM'];
           eleve.prenom = data['PRENOMS'];
@@ -115,37 +119,46 @@ uploadFile(fileXlsx: File, establishment: string, transfere: string) {
           eleve.classe = data['CLASSE                23-24'];
           eleve.transfere = transfere;
           eleve.establishment = establishment;
-          eleve.userKey="high school";
-          eleve.studentID=generateStudentId();
-          eleve.dateNaissance=new Date();
-          eleve.nomPere='';
-          eleve.prenomPere='';
-          eleve.nomMere='';
-          eleve.prenomMere='';
+          eleve.userKey = "high school";
+          eleve.studentID = generateStudentId();
+          eleve.nomPere = '';
+          eleve.prenomPere = '';
+          eleve.nomMere = '';
+          eleve.prenomMere = '';
           eleve.tel1 = '00 00 00 00';
-          eleve.tel2=''
+          eleve.tel2 = '';
 
           if (lyceeClasses.includes(eleve.classe)) {
             eleve.niveau = 'Lycee';
           } else {
             eleve.niveau = 'Professionnel';
           }
-          
 
           return eleve;
-        }).filter((eleve: Eleve) => eleve.nom && eleve.nom.trim() !== '' && eleve.prenom && eleve.prenom.trim() !== '');;
+        }).filter((eleve: Eleve | undefined) => eleve !== undefined);
 
         // Ajouter les élèves de la feuille courante au tableau global
         allEleves.push(...eleves);
       });
-
-      allEleves.forEach((eleve)=>{
-       // console.info(eleve);
-        this.createStudent(eleve,new File([''], '')).subscribe();
-      })
-
+      // Création des élèves dans le système
+      return forkJoin(
+        allEleves.map((eleve) => {
+          const photo = new File([''], ''); // Remplacer par la vraie photo si disponible
+          return this.createStudent(eleve, photo);
+        })
+      ).toPromise(); // Convertit l'observable forkJoin en promesse
     })
+    .then(() => {
+      // Si toutes les requêtes réussissent
+      this.router.navigateByUrl("/dash/student");
+      return true; // Retourne true si toutes les opérations ont réussi
+    })
+    .catch((err) => {
+      console.error('Erreur lors de l\'enregistrement des élèves:', err);
+      return false; // Retourne false en cas d'erreur
+    });
 }
+
 
 
 
@@ -197,6 +210,7 @@ uploadFile(fileXlsx: File, establishment: string, transfere: string) {
 
     
     generatePdf(students: Eleve[], classe: string): void {
+      if(students.length>0){
       const doc = new jsPDF();
       // Ajouter l'en-tête centré et stylisé
       const title = `La liste des élèves de la classe ${classe}`;
@@ -244,6 +258,9 @@ uploadFile(fileXlsx: File, establishment: string, transfere: string) {
     
       // Sauvegarder ou télécharger le PDF
       doc.save(`liste_eleves_classe_${classe}.pdf`);
+    }else{
+      alert(`Vous n'avez pas d'élèves en ${classe}`);
+
     }
-    
+  }
 }

@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
 import {StudentPayment} from "../../shared/model/StudentPayment";
 import {establishment} from "../../../../../environments/environment";
 import {ThousandSeparatorDirectiveDirective} from "../../shared/res/directive/thousand-separator-directive.directive";
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-pay-eleve',
@@ -110,9 +111,30 @@ export class PayEleveComponent implements OnInit {
   }
 
 
-  cancel() {
+  async cancel() {
+    if (this.student !== undefined && this.student.registerPaymentStudent.length === 0) {
+      try {
+        // Supprimer tous les paiements de manière asynchrone et attendre leur achèvement
+        const deletePaymentPromises = this.student.registerPaymentStudent.map((payement) => 
+          lastValueFrom(this.paymentService.deletePay(payement.id))
+        );
+    
+        await Promise.all(deletePaymentPromises);
+    
+        // Supprimer l'élève après que tous les paiements ont été supprimés
+        await lastValueFrom(this.paymentService.deleteEleve(this.student.id));
+    
+        // Fermer le modal et rediriger après la suppression réussie
+        this.activeModal.close();
+        this.router.navigateByUrl('dash/register-student');
+      } catch (error) {
+        console.error("Erreur lors de la suppression de l'élève :", error);
+      }
+    
+  }else{
     this.activeModal.close();
   }
+}
 
   private remainingToBePaid(student: Eleve, newAmount: number): void {
     // Vérifier si le tableau contient au moins un élément
@@ -124,18 +146,21 @@ export class PayEleveComponent implements OnInit {
       this.remainingTotal = lastPayment.totalAnnualCosts - newAmount;
     } else {
       // Si aucun paiement n'existe, on utilise une valeur par défaut pour le totalAnnualCosts
-      console.error("Aucun paiement enregistré pour cet élève");
+     // console.error("Aucun paiement enregistré pour cet élève");
       this.remainingTotal = 0; // ou une autre valeur par défaut
     }
   }
 
+  
+  
+  
   updatePaymentStatus(student: Eleve, currentMonth: string, amountPaid: number): string {
     // Vérifier que le coût total annuel est bien défini pour l'élève
     const lastPayment = student.registerPaymentStudent[student.registerPaymentStudent.length - 1];
     const totalAnnualCosts = lastPayment?.totalAnnualCosts || 0;
 
     if (totalAnnualCosts === 0) {
-      console.error("Le coût annuel total n'est pas défini pour cet élève.");
+    //  console.error("Le coût annuel total n'est pas défini pour cet élève.");
       return '';
     }
 
@@ -181,6 +206,10 @@ export class PayEleveComponent implements OnInit {
     // Optionnel : Afficher le statut de paiement dans la console
     return paymentStatus;
   }
+
+
+
+
 
 
   onSubmit(student: Eleve): void {

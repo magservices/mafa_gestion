@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 export class EditPayComponent implements OnInit{
   activeModal = inject(NgbActiveModal);
   // Input doit recuperer l'id d'element a supprimer
-  @Input() id!: number;
+  @Input() idE!: number;
   form!: FormGroup;
   eleveP!:StudentPayment;
   constructor(private studentService: StudentService,private fb: FormBuilder,private route:Router) {
@@ -25,7 +25,7 @@ export class EditPayComponent implements OnInit{
       textInput:  [''],
       amountInput: ['']
     });
-    this.studentService.getPayByID(this.id).subscribe(
+    this.studentService.getPayByID(this.idE).subscribe(
       (sPay)=>{
           this.eleveP=sPay;
           this.form = this.fb.group({
@@ -40,11 +40,10 @@ export class EditPayComponent implements OnInit{
     if (this.form.valid) {
       this.eleveP.amount=this.form.value.amountInput;
       this.eleveP.paymentReason=this.form.value.textInput;
-
       this.studentService.updatePayment(this.eleveP,this.eleveP.id).subscribe(
         (pay)=>{
           this.activeModal.close();
-          this.route.navigateByUrl(`/dash/detail-student/${this.eleveP.id}`).then(() => {
+          this.route.navigateByUrl(`/dash/detail-student/${this.eleveP.register_student_id}`).then(() => {
             window.location.reload();
           });
 

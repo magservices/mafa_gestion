@@ -90,7 +90,7 @@ export class RegisterEleveComponent implements OnInit {
     if (id) {
       this.studentService.getStudentByID(+id).subscribe((data) => {
         this.studentA = data; // Stocker les données de l'élève
-
+        if(this.studentA.transfere==='Étatique'){this.showMatricule=true}
         this.studentForm = this.fb.group({
           prenom: this.studentA.prenom,
           nom: this.studentA.nom,
@@ -190,7 +190,7 @@ export class RegisterEleveComponent implements OnInit {
   Import(){
     const id=1;
     const modalRef = this.modalService.open(FileComponent,
-      {centered: true, animation: true});
+      {animation: true, centered: true, backdrop: 'static'});
        modalRef.componentInstance.id = id; 
        modalRef.componentInstance.establishment=establishment.key
   }
@@ -199,7 +199,9 @@ export class RegisterEleveComponent implements OnInit {
     this.loading = false;  // Variable pour suivre l'état du chargement
     if (this.studentForm.valid && this.selectedFile) {
       this.studentForm.value.studentID = generateStudentId();
-
+      if(this.studentForm.value.dateNaissance==""){
+        this.studentForm.value.dateNaissance="1900-01-01";
+      }
       this.studentForm.value.userKey = this.user && this.user.roles[0] === "ROLE_DIRECTOR"
         ? "primary school"
         : this.user.roles[0] === "ROLE_CENSOR"
@@ -219,7 +221,6 @@ export class RegisterEleveComponent implements OnInit {
         this.studentService.createStudent(this.studentForm.value, this.selectedFile).subscribe(
           (student) => {
             this.loading = true;  // Variable pour suivre l'état du chargement
-  
             if (student.transfere !== "Étatique") {
               const modalRef = this.modalService.open(PayEleveComponent,
                 {size: "lg", animation: true, centered: true, backdrop: 'static'});

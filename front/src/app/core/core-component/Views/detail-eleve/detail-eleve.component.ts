@@ -91,7 +91,7 @@ export class DetailEleveComponent implements OnInit {
   editerPay(id:number){
     const modalRef = this.modalService.open(EditPayComponent,
       {centered: true, animation: true});
-       modalRef.componentInstance.id = id;
+       modalRef.componentInstance.idE = id;
   }
 
 }
