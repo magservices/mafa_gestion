@@ -31,9 +31,9 @@
               <div class="ms-auto">
                 @if (student.registerPaymentStudent.length !== 0) {
                   <p>Montant Restant:
-                    <strong>{{ student.registerPaymentStudent.slice(-1)[0].totalAnnualCosts | number:"1.0-0" }}
+                    <strong>{{ student.registerPaymentStudent[0].totalAnnualCosts | number:"1.0-0" }}
                       FCFA</strong></p>
-                  <p>Dernier Date de paiement: 25 May 2024</p>
+                  <p>Dernier Date de paiement: {{student.registerPaymentStudent[0].create_at}}</p>
                 } @else {
                   <p>Montant Restant: <strong>0 FCFA</strong></p>
                   <p>Dernier Date de paiement: non defini</p>
@@ -41,6 +41,8 @@
               </div>
             </div>
 
+            
+            
             <form [formGroup]="paymentForm">
               <div class="row">
                 <div class="col-md-6 mb-3">
@@ -53,6 +55,10 @@
                     }
                   </select>
                 </div>
+
+
+
+
                 <div class="col-md-6 mb-3">
                   <label for="amount" class="form-label">Montant à payer</label>
                   <input formControlName="amount" type="text" class="form-control" id="amount"
@@ -69,14 +75,16 @@
 
               <div class="d-flex justify-content-end">
                 <button (click)="cancel()" type="button" class="btn btn-secondary me-2">Annulez</button>
-                <button (click)="onSubmit(student)" type="submit" class="btn btn-primary">
-                  <ng-container *ngIf="!loading">Appliquez le paiement</ng-container>
+                <button (click)="onSubmit(student)" type="submit" class="btn btn-primary" [disabled]="paymentForm.invalid">
+                  <ng-container *ngIf="!loading" >Appliquez le paiement</ng-container>
                   <ng-container *ngIf="loading">
                     <i class="bi bi-hourglass-split spinner-border spinner-border-sm"></i> Chargement...
                   </ng-container>
                 </button>
               </div>
             </form>
+
+
           </div>
         </div>
       }
@@ -137,7 +145,7 @@
 
             <div class="d-flex justify-content-end">
               <button (click)="cancel()" type="button" class="btn btn-secondary me-2">Annulez</button>
-              <button (click)="onSubmit(student)" type="submit" class="btn btn-primary">
+              <button (click)="onSubmit(student)" type="submit" class="btn btn-primary" [disabled]="paymentForm.invalid">
                 <ng-container *ngIf="!loading">Appliquez le paiement</ng-container>
                 <ng-container *ngIf="loading">
                   <i class="bi bi-hourglass-split spinner-border spinner-border-sm"></i> Chargement...

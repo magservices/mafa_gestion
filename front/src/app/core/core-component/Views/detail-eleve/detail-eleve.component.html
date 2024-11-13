@@ -76,7 +76,7 @@
                 </thead>
                 <tbody>
                   @if (student.registerPaymentStudent.length !== 0) {
-                    @for (register of student.registerPaymentStudent; track register) {
+                    @for (register of student.registerPaymentStudent; track register;let  i = $index) {
                       <tr>
                         <td>{{ register.paymentReason }}</td>
                         <td>{{ register.month }}</td>
@@ -90,12 +90,21 @@
                         <td>{{ register.amount | number:'1.0-0' }} FCFA</td>
                         <td>{{ register.totalAnnualCosts | number:'1.0-0' }} FCFA</td>
                         <td> {{ register.create_at | date }}</td>
-                        <td> 
-                          <button (click)="editerPay(register.id)"><i class="fas fa-edit text-primary"></i></button>
-                        </td>
+                        @if(i === 0){
+                          <td> 
+                            <button (click)="editerPay(register.id,register.month)"><i class="fas fa-edit text-primary"></i></button>
+                          </td>
+                        }@else{
+                          <td> 
+                            
+                          </td>
+                        }
+                      
                       </tr>
                     }
                   }
+
+                  
                 </tbody>
               </table>
             </div>

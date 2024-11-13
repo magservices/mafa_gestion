@@ -43,8 +43,8 @@ class StudentPayment
     #[ORM\Column]
     private ?bool $fees = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $month_total = null;
+   /* #[ORM\Column(nullable: true)]
+    private ?int $month_total = null;*/
 
     #[ORM\Column(length: 255)]
     private ?string $establishment = null;
@@ -151,7 +151,7 @@ class StudentPayment
         return $this;
     }
 
-    public function getMonthTotal(): ?int
+   /* public function getMonthTotal(): ?int
     {
         return $this->month_total;
     }
@@ -161,7 +161,7 @@ class StudentPayment
         $this->month_total = $month_total;
 
         return $this;
-    }
+    }*/
 
     public function getEstablishment(): ?string
     {

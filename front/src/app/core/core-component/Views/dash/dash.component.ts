@@ -29,9 +29,10 @@ export class DashComponent implements OnInit {
   students: Eleve[] = [];
   pStudents: Eleve[] = []; // fondamentale
   hStudents: Eleve[] = []; // lycée
-  studentT: Eleve[] = [];
+  studentT: Eleve[] = [];// Etatique
   fees: number = 0;
   amountPay: number = 0;
+  monthTotalAnnuelle: number = 0;
   paymentPage!: number;
   studentPage: number = 5;
   pageSize = 5;
@@ -58,8 +59,9 @@ export class DashComponent implements OnInit {
       (resPayment) => {
         this.getStudentByID(resPayment);
         this.paymentPage = resPayment.length / this.pageSize;
-        this.feesRegister(resPayment)
-        this.amountAlreadyPaid(resPayment)
+        this.feesRegister(resPayment);
+        this.amountAlreadyPaid(resPayment);
+        this.totalAnnuelle(resPayment);
         
         
       }
@@ -130,7 +132,7 @@ export class DashComponent implements OnInit {
   // pour recupere les eleves du lycée
   private getHighSchoolStudent(students: Eleve[]) {
     // Filtrer les étudiants du niveau "primary school" et les ajouter à la liste `pStudents`
-    this.hStudents = students.filter(student => student.userKey === "high school");
+    this.hStudents = students.filter(student => student.userKey === "high school" && student.transfere !== "Étatique");
   }
 
 
@@ -154,6 +156,10 @@ export class DashComponent implements OnInit {
       return !payment.fees ? total + payment.amount : total;
     }, 0);
   }
-
+ private totalAnnuelle(payments: StudentPayment[]){
+   // Calculer le total des paiements sans frais en utilisant `reduce`
+   this.monthTotalAnnuelle = payments.reduce((total, payment) => {
+    return payment.fees ? total + payment.amount+ payment.totalAnnualCosts : total;}, 0);
+ }
 
 }

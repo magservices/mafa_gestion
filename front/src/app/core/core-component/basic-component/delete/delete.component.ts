@@ -18,6 +18,7 @@ export class DeleteComponent implements OnInit{
   @Input() id!: number;
 
   student!: Eleve;
+  loading:boolean=false;
   constructor(private studentService: StudentService, private route:Router) {
   }
   ngOnInit(): void {
@@ -26,6 +27,7 @@ export class DeleteComponent implements OnInit{
     });
   }
       async deleteId() {
+        this.loading=true;
         try {
           // Supprimer tous les paiements de manière asynchrone et attendre leur achèvement
           const deletePaymentPromises = this.student.registerPaymentStudent.map((payement) => 
@@ -39,6 +41,7 @@ export class DeleteComponent implements OnInit{
       
           // Fermer le modal et rediriger après la suppression réussie
           this.activeModal.close();
+          this.loading=false;
           this.route.navigateByUrl('/dash/student');
         } catch (error) {
           console.error("Erreur lors de la suppression de l'élève :", error);

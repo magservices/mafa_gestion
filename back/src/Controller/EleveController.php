@@ -225,7 +225,7 @@ class EleveController extends AbstractController
                 'paymentStatus' => $payment->getPaymentStatus(),
                 'amount' => $payment->getAmount(),
                 'month' => $payment->getMonth(),
-                'month_total' => $payment->getMonthTotal(),
+              //  'month_total' => $payment->getMonthTotal(),
                 'create_at' => $payment->getCreateAt()->format('Y-m-d H:i:s'), // Retourner la date dans un format lisible
                 'register_student_id' => $payment->getRegisterStudent()->getId() // ID de l'élève lié
             ];
@@ -286,7 +286,7 @@ class EleveController extends AbstractController
                     'paymentStatus' => $payment->getPaymentStatus(),
                     'amount' => $payment->getAmount(),
                     'month' => $payment->getMonth(),
-                    'month_total' => $payment->getMonthTotal(),
+                 //   'month_total' => $payment->getMonthTotal(),
                 ];
             }
 
@@ -352,7 +352,7 @@ class EleveController extends AbstractController
                     'paymentStatus' => $payment->getPaymentStatus(),
                     'amount' => $payment->getAmount(),
                     'month' => $payment->getMonth(),
-                    'month_total' => $payment->getMonthTotal(),
+                   // 'month_total' => $payment->getMonthTotal(),
                 ];
             }
 
@@ -433,7 +433,7 @@ class EleveController extends AbstractController
                     'paymentStatus' => $payment->getPaymentStatus(),
                     'amount' => $payment->getAmount(),
                     'month' => $payment->getMonth(),
-                    'month_total' => $payment->getMonthTotal(),
+                   // 'month_total' => $payment->getMonthTotal(),
                 ];
             }
 

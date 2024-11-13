@@ -6,9 +6,14 @@
           à l'élève, y compris ces payements.
         </p>
         <div class="button-box flex justify-center">
-            <button (click)="deleteId()" class="w-1/2 bg-red-500 text-white fw-bold mx-auto p-2" id="delete_yes_btn" type="submit">
-                Supprimer
-            </button>
+            @if(loading){
+                <i class="spinner-border"></i>
+            }@else{
+                <button (click)="deleteId()" class="w-1/2 bg-red-500 text-white fw-bold mx-auto p-2" id="delete_yes_btn" type="submit">
+                    Supprimer
+                </button>
+            }
+            
         </div>
     </div>
   </div>

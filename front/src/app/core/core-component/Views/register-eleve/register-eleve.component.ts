@@ -210,8 +210,9 @@ export class RegisterEleveComponent implements OnInit {
 
           const id = this.route.snapshot.paramMap.get('id');
       if(id){
+        this.loading = true;
         this.studentService.updateStudent(this.studentForm.value,this.studentA.id, this.selectedFile).subscribe(
-          () => this.router.navigateByUrl("dash/student").then(
+          () => this.router.navigateByUrl(`dash/detail-student/${this.studentA.id}`).then( 
             () => {
               window.location.reload()
             }

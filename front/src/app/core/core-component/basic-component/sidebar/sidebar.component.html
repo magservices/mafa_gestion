@@ -2,7 +2,7 @@
   <ul class="list-group">
     @if (user!=undefined && user.roles!=undefined && user.roles[0] === 'ROLE_ADMIN') {
       @if (notifications.length !== 0) {
-        @for (notification of notifications; track notification) {
+        @for (notification of notifications.slice(0, 8); track notification) {
           @if (!notification.data.register_student_id) {
             <li
               class="list-group-item d-flex justify-content-between align-items-center"

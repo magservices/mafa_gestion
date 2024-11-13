@@ -5,7 +5,7 @@ export const environment = {
 };
 
 /*export const establishment = {
-  // key: '6930fa12059d5d1f9968',
+  // key: 'e3d17149811e865d78f7',
   key: '0d4a18c1c80e08c7a90f',
   userKey: '95a93bdab15e', // le cle permet d'identifier les utilisateurs
   login : "mohamed"
@@ -13,10 +13,11 @@ export const environment = {
 
 export const establishment = {
   //Admin
-  key: '6a837dcf56b04556671e',
+  key: 'e3d17149811e865d78f7',
   userKey: '0b0728f2ca81', // le cle permet d'identifier les utilisateurs
   login : 'moussa'
-};*/
+};
+*/
 export const establishment = {
   // Censer
   key: 'e3d17149811e865d78f7',
@@ -26,7 +27,7 @@ export const establishment = {
 /*
 export const establishment = {
   // directeur
-  key: '6a837dcf56b04556671e',
+  key: 'e3d17149811e865d78f7',
   userKey: '1a3de7f9ab01', // le cle permet d'identifier les utilisateurs
   login : 'sadio'
 };*/

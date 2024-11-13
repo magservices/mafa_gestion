@@ -88,10 +88,12 @@ export class DetailEleveComponent implements OnInit {
        modalRef.componentInstance.id = id;
   }
 
-  editerPay(id:number){
+  editerPay(id:number,mois : string){
     const modalRef = this.modalService.open(EditPayComponent,
       {centered: true, animation: true});
        modalRef.componentInstance.idE = id;
+       modalRef.componentInstance.mois = mois;
+       modalRef.componentInstance.elevePay = this.student.registerPaymentStudent;
   }
 
 }

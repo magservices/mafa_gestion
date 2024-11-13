@@ -47,10 +47,10 @@ export class PayEleveComponent implements OnInit {
     this.paymentForm = this.fb.group({
       totalAnnualCosts: [null],
       paymentReason: ['', Validators.required],
-      paymentStatus: [''],
       amount: [null, Validators.required],
       month: ['october'],
-      month_total: [null],
+      paymentStatus: [''],
+    //  month_total: [null], 
     });
     this.remainingMonthsToPay();
     if (this.remainingMonths.length > 0) {
@@ -58,6 +58,88 @@ export class PayEleveComponent implements OnInit {
       this.paymentForm.get('month')?.setValue(this.remainingMonths[0].month);
     }
   }
+
+
+  
+  
+  
+  updatePaymentStatus(student: Eleve, currentMonth: string, amountPaid: number): string {
+    // Vérifier que le coût total annuel est bien défini pour l'élève
+    const lastPayment = student.registerPaymentStudent[student.registerPaymentStudent.length - 1];
+    const totalAnnualCosts = lastPayment?.totalAnnualCosts || 0;
+
+    if (totalAnnualCosts === 0) {
+    //  console.error("Le coût annuel total n'est pas défini pour cet élève.");
+      return '';
+    }
+
+    // Calcul du montant à payer chaque mois en fonction du montant annuel
+    const monthlyCost = totalAnnualCosts / 9; // Diviser le montant annuel par le nombre de mois (9)
+
+    // Convertir le mois en cours sélectionné en un index de mois (1 à 9)
+    const monthMap: { [key: string]: number } = {
+      'octobre': 1, 'novembre': 2, 'decembre': 3,
+      'janvier': 4, 'fevrier': 5, 'mars': 6,
+      'avril': 7, 'mai': 8, 'juin': 9
+    };
+
+    const selectedMonthIndex = monthMap[currentMonth] || 0;
+
+    if (selectedMonthIndex === 0) {
+      console.error("Mois sélectionné invalide.");
+      return '';
+    }
+
+    // Calcul du montant total attendu jusqu'au mois courant
+    const expectedPayment = selectedMonthIndex * monthlyCost;
+    //console.info(expectedPayment);
+    // Calcul du total payé par l'élève jusqu'à présent
+    // Inclure le montant payé dans le paiement actuel
+    let totalPaid = student.registerPaymentStudent.reduce((acc, payment) => acc + payment.amount, 0) + amountPaid;
+    totalPaid-=student.registerPaymentStudent[0].amount;
+   // console.info(totalPaid);
+    // Comparer le montant payé avec le montant attendu
+    let paymentStatus = '';
+    if (totalPaid > expectedPayment) {
+      paymentStatus = 'avance'; // L'élève a payé plus que ce qu'il devait jusqu'à maintenant
+    } else if (totalPaid < expectedPayment) {
+      paymentStatus = 'retard'; // L'élève est en retard
+    } else {
+      paymentStatus = 'normal'; // L'élève est à jour
+    }
+
+    // Mettre à jour le statut de paiement dans chaque enregistrement
+   /* student.registerPaymentStudent.forEach(payment => {
+      payment.paymentStatus = paymentStatus;
+    });*/
+
+    // Optionnel : Afficher le statut de paiement dans la console
+    return paymentStatus;
+  }
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -106,9 +188,94 @@ export class PayEleveComponent implements OnInit {
           amountRemaining
         };
       }
-    }).filter(item => item !== null); // Filtrer les mois totalement payés (retirer les null)
+    }).filter((item): item is { month: string; amountRemaining: number } => item !== null && item.amountRemaining > 1); // Filtrer les mois totalement payés (retirer les null et les montants de 0)
+
 
   }
+
+
+
+
+
+  private remainingToBePaid(student: Eleve, newAmount: number): void {
+    // Vérifier si le tableau contient au moins un élément
+    if (student.registerPaymentStudent && student.registerPaymentStudent.length > 0) {
+      // Récupérer le dernier paiement dans le tableau
+      const lastPayment = student.registerPaymentStudent[0];
+
+      // Calculer le montant restant par rapport au nouveau montant payé
+      this.remainingTotal = lastPayment.totalAnnualCosts - newAmount;
+    } else {
+      // Si aucun paiement n'existe, on utilise une valeur par défaut pour le totalAnnualCosts
+     // console.error("Aucun paiement enregistré pour cet élève");
+      this.remainingTotal = 0; // ou une autre valeur par défaut
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  onSubmit(student: Eleve): void {
+    this.loading = true;  // Variable pour suivre l'état du chargement
+
+    this.remainingToBePaid(student, this.paymentForm.value.amount);
+    this.updatePaymentStatus(student, this.paymentForm.value.month, this.paymentForm.value.amount);
+    if (this.paymentForm.valid) {
+      let studentPayment: any = {
+        id: 0,
+        totalAnnualCosts: this.paymentForm.value.totalAnnualCosts !== null ? this.paymentForm.value.totalAnnualCosts : this.remainingTotal,
+        amount: this.paymentForm.value.amount,
+        month: this.paymentForm.value.month,
+       // month_total: this.paymentForm.value.month_total,
+        fees: this.componentName === "first payment",
+        paymentReason: this.paymentForm.value.paymentReason,
+        establishment: establishment.key,
+        paymentStatus: this.componentName === "first payment" ? "normal" : this.updatePaymentStatus(student, this.paymentForm.value.month, this.paymentForm.value.amount)
+      }
+      console.info(studentPayment);
+      this.paymentService.createPayment(studentPayment, student.id)
+        .subscribe(response => {
+          this.loading = false;  // Variable pour suivre l'état du chargement
+          if (this.componentName === "monthly payment") {
+            this.activeModal.close()
+            window.location.reload()
+          } else {
+            this.activeModal.close()
+            this.router.navigateByUrl("dash/student").then(
+              () => {
+                window.location.reload()
+              }
+            )
+          }
+        });
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   async cancel() {
@@ -135,116 +302,4 @@ export class PayEleveComponent implements OnInit {
     this.activeModal.close();
   }
 }
-
-  private remainingToBePaid(student: Eleve, newAmount: number): void {
-    // Vérifier si le tableau contient au moins un élément
-    if (student.registerPaymentStudent && student.registerPaymentStudent.length > 0) {
-      // Récupérer le dernier paiement dans le tableau
-      const lastPayment = student.registerPaymentStudent[0];
-
-      // Calculer le montant restant par rapport au nouveau montant payé
-      this.remainingTotal = lastPayment.totalAnnualCosts - newAmount;
-    } else {
-      // Si aucun paiement n'existe, on utilise une valeur par défaut pour le totalAnnualCosts
-     // console.error("Aucun paiement enregistré pour cet élève");
-      this.remainingTotal = 0; // ou une autre valeur par défaut
-    }
-  }
-
-  
-  
-  
-  updatePaymentStatus(student: Eleve, currentMonth: string, amountPaid: number): string {
-    // Vérifier que le coût total annuel est bien défini pour l'élève
-    const lastPayment = student.registerPaymentStudent[student.registerPaymentStudent.length - 1];
-    const totalAnnualCosts = lastPayment?.totalAnnualCosts || 0;
-
-    if (totalAnnualCosts === 0) {
-    //  console.error("Le coût annuel total n'est pas défini pour cet élève.");
-      return '';
-    }
-
-    // Calcul du montant à payer chaque mois en fonction du montant annuel
-    const monthlyCost = totalAnnualCosts / 9; // Diviser le montant annuel par le nombre de mois (9)
-
-    // Convertir le mois en cours sélectionné en un index de mois (1 à 9)
-    const monthMap: { [key: string]: number } = {
-      'octobre': 1, 'novembre': 2, 'decembre': 3,
-      'janvier': 4, 'fevrier': 5, 'mars': 6,
-      'avril': 7, 'mai': 8, 'juin': 9
-    };
-
-    const selectedMonthIndex = monthMap[currentMonth] || 0;
-
-    if (selectedMonthIndex === 0) {
-      console.error("Mois sélectionné invalide.");
-      return '';
-    }
-
-    // Calcul du montant total attendu jusqu'au mois courant
-    const expectedPayment = selectedMonthIndex * monthlyCost;
-
-    // Calcul du total payé par l'élève jusqu'à présent
-    // Inclure le montant payé dans le paiement actuel
-    const totalPaid = student.registerPaymentStudent.reduce((acc, payment) => acc + payment.amount, 0) + amountPaid;
-
-    // Comparer le montant payé avec le montant attendu
-    let paymentStatus = '';
-    if (totalPaid > expectedPayment) {
-      paymentStatus = 'avance'; // L'élève a payé plus que ce qu'il devait jusqu'à maintenant
-    } else if (totalPaid < expectedPayment) {
-      paymentStatus = 'retard'; // L'élève est en retard
-    } else {
-      paymentStatus = 'normal'; // L'élève est à jour
-    }
-
-    // Mettre à jour le statut de paiement dans chaque enregistrement
-    student.registerPaymentStudent.forEach(payment => {
-      payment.paymentStatus = paymentStatus;
-    });
-
-    // Optionnel : Afficher le statut de paiement dans la console
-    return paymentStatus;
-  }
-
-
-
-
-
-
-  onSubmit(student: Eleve): void {
-    this.loading = true;  // Variable pour suivre l'état du chargement
-
-    this.remainingToBePaid(student, this.paymentForm.value.amount);
-    this.updatePaymentStatus(student, this.paymentForm.value.month, this.paymentForm.value.amount);
-    if (this.paymentForm.valid) {
-      let studentPayment: any = {
-        id: 0,
-        totalAnnualCosts: this.paymentForm.value.totalAnnualCosts !== null ? this.paymentForm.value.totalAnnualCosts : this.remainingTotal,
-        amount: this.paymentForm.value.amount,
-        month: this.paymentForm.value.month,
-        month_total: this.paymentForm.value.month_total,
-        fees: this.componentName === "first payment",
-        paymentReason: this.paymentForm.value.paymentReason,
-        establishment: establishment.key,
-        paymentStatus: this.componentName === "first payment" ? "normal" : this.updatePaymentStatus(student, this.paymentForm.value.month, this.paymentForm.value.amount)
-      }
-
-      this.paymentService.createPayment(studentPayment, student.id)
-        .subscribe(response => {
-          this.loading = false;  // Variable pour suivre l'état du chargement
-          if (this.componentName === "monthly payment") {
-            this.activeModal.close()
-            window.location.reload()
-          } else {
-            this.activeModal.close()
-            this.router.navigateByUrl("dash/student").then(
-              () => {
-                window.location.reload()
-              }
-            )
-          }
-        });
-    }
-  }
 }
