@@ -9,4 +9,5 @@ export class StudentPayment {
   //month_total!: number;
   register_student_id!: number;
   create_at! : number;
+  establishment!: string;
 }

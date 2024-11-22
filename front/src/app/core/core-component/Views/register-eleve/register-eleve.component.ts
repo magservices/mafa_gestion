@@ -30,10 +30,10 @@ export class RegisterEleveComponent implements OnInit {
 
   filteredClasses: string[] = [];
   cycle1Classes = ['1ère A','1ère B', '2ème A','2ème B', '3ème A','3ème B','4ème A','4ème B','5ème A', '5ème B', '6ème A', '6ème B'];
-  cycle2Classes = ['7ème A','7ème B','8ème A', '8ème B', '9ème A','9ème B','9ème C'];
+  cycle2Classes = ['7ème A','7ème B','8ème A', '8ème B', '9ème A','9ème B','9ème C','9ème D','9ème E'];
   santeClasses=[]
 
-  lyceeClasses = ['10èCG', '11èL', '11èSc', '11èSES','TSS', 'TSECO', 'TSEXP','TSE', 'TLL', 'TAL'];
+  lyceeClasses = ['10èCG', '11èL', '11èS', '11èSES','TSS', 'TSECO', 'TSEXP','TSE', 'TLL', 'TAL'];
   professionalClasses = ['1ère TC', '2è TC', '3è TCA', '4è TCA', '1ère SD', '2è SD', '3è SD', '4è SD', '1ère EM', '2è EM', '3è EM', '4è EM'];
 
   onLevelChange(): void {

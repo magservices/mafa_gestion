@@ -94,8 +94,20 @@ onLevelChange(): void {
         const userRole = user.roles[0];
         const userKey = roleUserKeyMap[userRole];
 
-        // Filtrer en fonction du rôle ou retourner tous les étudiants
+       if (userRole === "ROLE_DIRECTOR") {
+        // Cas spécifique pour le directeur : inclure 'high school' + 'transfere == prive'
+        const students1 = resStudent.filter(student => 
+          (student.userKey === 'high school' && student.transfere === 'Privé')
+        );
+        this.students = resStudent.filter(student => 
+          (student.userKey === 'primary school')
+        );
+        this.students.push(...students1);
+
+      } else {
         this.students = userKey ? resStudent.filter(student => student.userKey === userKey) : resStudent;
+      } 
+
 
         this.filteredStudents = this.students;
         this.taile = this.filteredStudents.length;

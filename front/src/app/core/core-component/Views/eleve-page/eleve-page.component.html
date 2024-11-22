@@ -102,17 +102,12 @@
           <label for="niveau" class="form-label">Niveau</label>
           <select class="form-select" id="niveau" [(ngModel)]="searchNiveau" name="niveau" (change)="onLevelChange()">
             <option selected>Selectionnez le niveau</option>
-            @if (user!=undefined && user.roles!=undefined && user.roles[0] === 'ROLE_DIRECTOR' ) {
-              <option value="cycle1">1er cycle</option>
-              <option value="cycle2">2e cycle</option>
-            }
 
             @if (user!=undefined && user.roles!=undefined && user.roles[0] === 'ROLE_CENSOR') {
               <option value="Lycee">Lycée</option>
               <option value="Professionnel">Professionnel</option>
               <option value="sante">École de santé</option>
-            }
-            @if(user!=undefined && user.roles!=undefined && user.roles[0] === 'ROLE_ADMIN'){
+            }@else{
               <option value="cycle1">1er cycle</option>
               <option value="cycle2">2e cycle</option>
               <option value="Lycee">Lycée</option>

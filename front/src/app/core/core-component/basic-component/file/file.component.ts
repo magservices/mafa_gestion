@@ -34,7 +34,6 @@ export class FileComponent {
   schoolTypesClass: string[] =this.lyceeClasses;
   selectedSchoolClass : string | undefined;
 
-
   @Input() establishment!: string;
   
   selectedFileExcle: File | null = null;
@@ -59,8 +58,8 @@ export class FileComponent {
   }
   onSubmit(): void {
     this.loading = true;
-      if(this.selectedSchoolType && this.selectedFileExcle!=null){
-          this.studentService.uploadFile(this.selectedFileExcle,this.establishment,this.selectedSchoolType).then(success => {
+      if(this.selectedFileExcle!=null){
+          this.studentService.uploadFile(this.selectedFileExcle,this.establishment).then(success => {
             if (success) {
               this.activeModal.close();
             } else {

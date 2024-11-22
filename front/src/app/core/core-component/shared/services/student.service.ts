@@ -2,10 +2,9 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {forkJoin, Observable} from 'rxjs';
 import {Eleve} from "../model/Eleve";
-import {environment, establishment} from "../../../../../environments/environment";
 import {StudentPayment} from "../model/StudentPayment";
 import {Establishment} from "../../../../admin/admin-component/shared/models/establishment";
-import {catchError} from "rxjs/operators";
+import {catchError, switchMap} from "rxjs/operators";
 import * as XLSX from 'xlsx';
 
 import { jsPDF } from 'jspdf';
@@ -13,6 +12,7 @@ import autoTable from 'jspdf-autotable'
 import { Router } from '@angular/router';
 import { generateStudentId } from '../utilis/studentID';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment, establishment } from '../../../../../environments/environment';
 
 
 @Injectable({
@@ -93,60 +93,151 @@ export class StudentService {
   } 
   
 
-uploadFile(fileXlsx: File, establishment: string, transfere: string): Promise<boolean> {
+uploadFile(fileXlsx: File, establishment: string): Promise<boolean> {
+
   return this.readExcelFile(fileXlsx)
     .then((jsonData: any) => {
       const lyceeClasses = ['10èCG', '11èL', '11èSc', '11èSES','TSS', 'TSECO', 'TSEXP','TSE', 'TLL', 'TAL'];
-      const allEleves: Eleve[] = [];
+      const professionalClasses = ['1ère TC', '2è TC', '3è TCA', '4è TCA', '1ère SD', '2è SD', '3è SD', '4è SD', '1ère EM', '2è EM', '3è EM', '4è EM'];
+      const cycle1Classes = ['1ère A','1ère B', '2ème A','2ème B', '3ème A','3ème B','4ème A','4ème B','5ème A', '5ème B', '6ème A', '6ème B'];
+      const cycle2Classes = ['7ème A','7ème B','8ème A', '8ème B', '9ème A','9ème B','9ème C','9ème D','9ème E'];
+
       
+      const allEleves: Eleve[] = [];
       // Parcours de chaque feuille dans le fichier Excel
       Object.keys(jsonData).forEach(sheetName => {
         const sheetData = jsonData[sheetName];
-
+        const normalizedData = sheetData.map((data: any) => {
+          const normalizedRow: any = {};
+          Object.keys(data).forEach(columnName => {
+            const normalizedColumnName = this.normalizeColumnName(columnName);
+            normalizedRow[normalizedColumnName] = data[columnName];
+          });
+          return normalizedRow;
+        });
+      
+       // console.info(normalizedData);
         // Transformer les données JSON de la feuille en objets de type Eleve
-        const eleves: Eleve[] = sheetData.map((data: any) => {
-          if (!data['NOM'] || data['NOM'].trim() === '' ||
-          !data['PRENOMS'] || data['PRENOMS'].trim() === '' ||
-          !data['N°MLE'] || data['N°MLE'].trim() === '' ||
-          !data['CLASSE                23-24'] || data['CLASSE                23-24'].trim() === ''
-        ) {
-            return undefined; // Ignorer cette itération et passer à l'élément suivant
-          }
-          const eleve = new Eleve();
-          eleve.nom = data['NOM'];
-          eleve.prenom = data['PRENOMS'];
-          eleve.matricule = data['N°MLE'];
-          eleve.classe = data['CLASSE                23-24'];
-          eleve.transfere = transfere;
-          eleve.establishment = establishment;
-          eleve.userKey = "high school";
-          eleve.studentID = generateStudentId();
-          eleve.nomPere = '';
-          eleve.prenomPere = '';
-          eleve.nomMere = '';
-          eleve.prenomMere = '';
-          eleve.tel1 = '00 00 00 00';
-          eleve.tel2 = '';
+      
+       
+        const eleves: Eleve[] = normalizedData.map((data: any) => {
+          // Détecter les noms de colonnes pour 'nom' et 'prenom'
+            const nomKey = Object.keys(data).find(key => ['nom', 'noms'].includes(key.toLowerCase()));
+            const prenomKey = Object.keys(data).find(key => ['prenom', 'prenoms'].includes(key.toLowerCase()));
+            const matriculeKey = Object.keys(data).find(key => ['n°mle', 'n°matricule'].includes(key.toLowerCase()));
+          
+            // Détecter les noms de colonnes pour 'classe'
+            const classeKey = Object.keys(data).find(key =>
+              ['classe', 'classe 2024-2025', 'classe 24-25']
+                .map(k => k.toLowerCase())
+                .includes(key.toLowerCase())
+            );
+            // Si les champs obligatoires ne sont pas trouvés, ignorer l'entrée
+            if (!nomKey || !prenomKey || !classeKey ) {
+              return undefined;
+            }
+         const eleve = new Eleve();
+         eleve.registerPaymentStudent=[];
+          if(data["frais d'inscription"] && data["total general"]){ 
+            const studentPayment = new StudentPayment();
+            studentPayment.fees=true;
+            studentPayment.month='octobre';
+            studentPayment.paymentReason="Frais d'inscription";
+            studentPayment.amount=data["frais d'inscription"];
+            studentPayment.paymentStatus='normal';
+            studentPayment.totalAnnualCosts=data["total general"];
+            studentPayment.establishment=establishment;
+            eleve.registerPaymentStudent.push(studentPayment);
 
+            if(data["total paye"]){
+              const studentPayment1 = new StudentPayment();
+              studentPayment1.fees=false;
+              studentPayment1.month='october';
+              studentPayment1.paymentReason="Frais du premier paiement";
+              studentPayment1.amount=data["total paye"];
+              studentPayment1.paymentStatus=this.updatePaymentStatus(studentPayment,'octobre',data["montant paye"]);
+              studentPayment1.totalAnnualCosts=data["total general"]-studentPayment1.amount;
+              studentPayment1.establishment=establishment;
+              eleve.registerPaymentStudent.push(studentPayment1);
+            }
+                 
+           }
+          
+          
+          eleve.nom = data[nomKey]?.trim();
+          eleve.prenom = data[prenomKey]?.trim();
+          eleve.classe = data[classeKey]?.trim();
+          eleve.matricule = eleve.matricule = matriculeKey && typeof data[matriculeKey] === 'string' ? data[matriculeKey].trim() : '';
+          eleve.establishment = establishment;
+          eleve.studentID = generateStudentId();
+
+          
+          eleve.dateNaissance = data['date naiss'] || null;
+          eleve.nomPere = data['nom du père']?.trim() || eleve.nom;
+          eleve.prenomPere = data['prenom du père']?.trim() || '';
+          eleve.nomMere = data['nom de la mère']?.trim() || '';
+          eleve.prenomMere = data['prenom de la mère']?.trim() || '';
+          eleve.tel1 = data['tel1']?.trim() || '00 00 00 00';
+          eleve.tel2 = data['tel2']?.trim() || '';
+
+          if(eleve.matricule!==''){
+            eleve.transfere = "Étatique";
+          }else{
+            eleve.transfere = "Privé";
+          }
           if (lyceeClasses.includes(eleve.classe)) {
             eleve.niveau = 'Lycee';
-          } else {
+          } else if(professionalClasses.includes(eleve.classe)) {
             eleve.niveau = 'Professionnel';
+          }else if(cycle1Classes.includes(eleve.classe)){
+            eleve.niveau='cycle1';
+          }else if(cycle2Classes.includes(eleve.classe)){
+            eleve.niveau='cycle2';
+          }else{
+            return undefined;
           }
 
+          if(eleve.niveau === 'Professionnel' || eleve.niveau === 'Lycee'){
+            eleve.userKey = "high school";
+          }else{
+            eleve.userKey = "primary school";
+          }    
           return eleve;
         }).filter((eleve: Eleve | undefined) => eleve !== undefined);
 
         // Ajouter les élèves de la feuille courante au tableau global
         allEleves.push(...eleves);
       });
+      console.info(allEleves);
       // Création des élèves dans le système
       return forkJoin(
         allEleves.map((eleve) => {
           const photo = new File([''], ''); // Remplacer par la vraie photo si disponible
+      
+          // Extraire les paiements associés à l'élève
+          const studentPayments = eleve.registerPaymentStudent || [];
+          eleve.registerPaymentStudent = []; // Réinitialiser pour éviter de renvoyer cette propriété à l'API
+      
+          if (studentPayments.length > 0) {
+            return this.createStudent(eleve, photo).pipe(
+              switchMap((createdStudent) => {
+                // Gestion séquentielle des paiements
+                const paymentRequests = studentPayments.map((payment) => {
+                  payment.register_student_id = createdStudent.id;
+                  return this.createPayment(payment, createdStudent.id);
+                });
+      
+                // Retourner tous les paiements liés à cet étudiant
+                return forkJoin(paymentRequests);
+              })
+            );
+          }
+      
+          // Si aucun paiement, créer seulement l'étudiant
           return this.createStudent(eleve, photo);
         })
-      ).toPromise(); // Convertit l'observable forkJoin en promesse
+      ).toPromise();
+      // Convertit l'observable forkJoin en promesse*/
     })
     .then(() => {
       // Si toutes les requêtes réussissent
@@ -161,9 +252,9 @@ uploadFile(fileXlsx: File, establishment: string, transfere: string): Promise<bo
 
 
 
-
-
-
+private normalizeColumnName(columnName: string): string {
+  return columnName.toLowerCase().replace(/\s+/g, ' ').trim();
+}
 
 
 
@@ -175,19 +266,64 @@ uploadFile(fileXlsx: File, establishment: string, transfere: string): Promise<bo
         reader.onload = (e: any) => {
           const data = e.target.result;
           
-          try {
-            // Utilisez SheetJS pour convertir les données en JSON
-            const workbook = XLSX.read(data, { type: 'binary' });
-            
-            // Récupérer toutes les feuilles du fichier Excel
-            let allSheetsData: { [key: string]: any[] } = {};
-            // Parcours de toutes les feuilles
-            workbook.SheetNames.forEach(sheetName => {
-              const sheet = workbook.Sheets[sheetName];
-              //allSheetsData[sheetName] = XLSX.utils.sheet_to_json(sheet);
-              allSheetsData[sheetName] = XLSX.utils.sheet_to_json(sheet, { range: 1 });
-            });
-    
+        try {
+
+              // Utilisez SheetJS pour convertir les données en JSON
+              const workbook = XLSX.read(data, { type: 'binary' });
+
+              // Récupérer toutes les feuilles du fichier Excel
+              let allSheetsData: { [key: string]: any[] } = {};
+
+              workbook.SheetNames.forEach(sheetName => {
+                const sheet = workbook.Sheets[sheetName];
+
+                // Convertir la feuille en tableau brut (chaque ligne est un tableau)
+                const sheetData: any[][] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                if (sheetData.length > 0) {
+                  // Trouver la ligne d'en-tête contenant les colonnes spécifiées
+                  const headerRowIndex = sheetData.findIndex(row => 
+                    row.some(cell => 
+                      typeof cell === 'string' && 
+                      ['nom', 'noms', 'prenom', 'prenoms', 'classe'].includes(cell.trim().toLowerCase())
+                    )
+                  );
+
+                  if (headerRowIndex !== -1) {
+                    // Obtenir les en-têtes
+                    const headers = sheetData[headerRowIndex].map((header: any) =>
+                      typeof header === 'string' ? header.trim() : header
+                    );
+
+                    // Filtrer les colonnes vides
+                    const validColumns = headers.reduce((acc: number[], header, index) => {
+                      const isEmptyColumn = sheetData.slice(headerRowIndex + 1).every(row => !row[index]);
+                      if (!isEmptyColumn) acc.push(index); // Conserver les colonnes non vides
+                      return acc;
+                    }, []);
+
+                    // Lire les données filtrées à partir de la ligne d'en-tête
+                    const filteredData = sheetData.slice(headerRowIndex + 1).map(row => 
+                      validColumns.reduce((obj: any, colIndex) => {
+                        if (headers[colIndex]) obj[headers[colIndex]] = row[colIndex];
+                        return obj;
+                      }, {})
+                    );
+
+                    // Ajouter les données filtrées
+                    allSheetsData[sheetName] = filteredData;
+                  } else {
+                    // Si aucune ligne d'en-tête correspondante n'est trouvée, laisser vide ou lever une erreur
+                    allSheetsData[sheetName] = [];
+                  }
+                } else {
+                  // Si la feuille est vide, retourner un tableau vide
+                  allSheetsData[sheetName] = [];
+                }
+              });
+
+
+
             // Retourner les données JSON pour toutes les feuilles
             resolve(allSheetsData);
           } catch (error) {
@@ -204,6 +340,56 @@ uploadFile(fileXlsx: File, establishment: string, transfere: string): Promise<bo
       })
     }
  
+
+
+
+
+
+    updatePaymentStatus(registerPaymentStudent: StudentPayment, currentMonth: string, amountPaid: number): string {
+      // Vérifier que le coût total annuel est bien défini pour l'élève
+      const lastPayment = registerPaymentStudent;
+      const totalAnnualCosts = lastPayment?.totalAnnualCosts || 0;
+      
+      if (totalAnnualCosts === 0) {
+      //  console.error("Le coût annuel total n'est pas défini pour cet élève.");
+        return '';
+      }
+  
+      // Calcul du montant à payer chaque mois en fonction du montant annuel
+      const monthlyCost = totalAnnualCosts / 9; // Diviser le montant annuel par le nombre de mois (9)
+  
+      // Convertir le mois en cours sélectionné en un index de mois (1 à 9)
+      const monthMap: { [key: string]: number } = {
+        'octobre': 1, 'novembre': 2, 'decembre': 3,
+        'janvier': 4, 'fevrier': 5, 'mars': 6,
+        'avril': 7, 'mai': 8, 'juin': 9
+      };
+  
+      
+      const selectedMonthIndex = monthMap[currentMonth] || 0;
+  
+      if (selectedMonthIndex === 0) {
+        console.error("Mois sélectionné invalide.");
+        return '';
+      }
+  
+      const expectedPayment = selectedMonthIndex * monthlyCost;
+      let totalPaid = 0
+  
+      let paymentStatus = '';
+      if (totalPaid > expectedPayment) {
+        paymentStatus = 'avance'; // L'élève a payé plus que ce qu'il devait jusqu'à maintenant
+      } else if (totalPaid < expectedPayment) {
+        paymentStatus = 'retard'; // L'élève est en retard
+      } else {
+        paymentStatus = 'normal'; // L'élève est à jour
+      }
+  
+      return paymentStatus;
+    }
+
+
+
 
 
 

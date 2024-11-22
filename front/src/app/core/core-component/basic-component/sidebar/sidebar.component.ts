@@ -73,8 +73,22 @@ export class SidebarComponent implements OnInit {
         const userKey = roleUserKeyMap[userRole];
 
         // Filtrer en fonction du rôle ou retourner tous les étudiants
-        let students = userKey ? resStudent.filter(student => student.userKey === userKey) : resStudent;
-        this.studentArrears(students)
+        let students;
+
+        if (userRole === "ROLE_DIRECTOR") {
+          // Cas spécifique pour le directeur : inclure 'high school' + 'transfere == prive'
+          const students1 = resStudent.filter(student => 
+            (student.userKey === 'high school' && student.transfere === 'Privé')
+          );
+          students = resStudent.filter(student => 
+            (student.userKey === 'primary school')
+          );
+          students.push(...students1);
+  
+        } else {
+          students = userKey ? resStudent.filter(student => student.userKey === userKey) : resStudent;
+        } 
+        this.studentArrears(students) 
       }
     )
   }

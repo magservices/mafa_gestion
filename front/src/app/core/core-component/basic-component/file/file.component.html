@@ -22,20 +22,17 @@
 
 <div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
     <h2 class="text-xl font-semibold text-gray-800 mb-4">Téléverser un fichier Excel</h2>
+   
+
+
+
     <form (submit)="onSubmit()" class="space-y-4">
-      <select
-      id="schoolType"
-      [(ngModel)]="selectedSchoolType"
-      name="schoolType"
-      class="block w-full text-sm text-gray-500 border border-gray-300 rounded-md p-2"
-      required
-    >
-      <option value="" disabled selected>Sélectionnez le type d'établissement</option>
-      <option *ngFor="let type of schoolTypes" [value]="type">{{ type }}</option>
-    </select>
+      <label>
+        Veuillez selectonner un fichier
+      </label>
       <input
         type="file"
-        accept=".xls, .xlsx"
+        accept=".xls, .xlsx, .ods"
         (change)="onFileSelected($event)"
         class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
       />
@@ -52,6 +49,11 @@
       <i class="spinner-border"></i>
     }
     </form>
+
+
+
+
+
   </div>
 }@else if(id===0){
   <div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
